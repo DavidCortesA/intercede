@@ -6,15 +6,38 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.3.0] - 2026-11-10 — Fase 2: Supabase base
+
 ### Añadido
+- Proyecto Supabase con CLI (`supabase/`): `config.toml` alineado con el proyecto remoto, migraciones y
+  `seed.sql`. Scripts `db:types`, `db:reset` y `test:db`.
+- Migración `create_profiles`: tabla `profiles` con RLS, trigger de alta automática (invitados y cuentas),
+  privilegios mínimos por columna, validación de nombre, idioma y zona horaria, y `updated_at`.
+- Invitados con Anonymous Sign-ins: acción `signInAsGuest` (solo un nombre, sin cuenta) y consulta
+  `getCurrentSession` (`src/features/auth/`).
+- Clientes de Supabase para navegador, servidor y proxy (`src/lib/supabase/`) con `@supabase/ssr`;
+  refresco de sesión en `src/proxy.ts` solo cuando ya hay sesión.
+- Variables públicas de Supabase validadas con Zod (`src/lib/env.ts`).
+- Tipos generados de la base (`src/types/database.ts`).
+- Pruebas de integración contra Supabase local: RLS de `profiles` (A nunca accede a datos de B), acción de
+  invitado y refresco de sesión; 23 pruebas.
+- Job `db` en el CI (migraciones, tipos al día y RLS).
+- ADR 0006 con las decisiones y los pendientes de seguridad.
+
+### Aplicado al proyecto remoto
+- Migración `create_profiles` y ajustes de Auth: Anonymous sign-ins activado, redirección a
+  `http://localhost:3000/**` y contraseña mínima de 8. Verificado con invitados de prueba.
+
+### Marca
 - Logo oficial en `public/brand/` (`logo.svg`, `logo-white.svg`, `logo-mark.svg`, `logo-mark-white.svg`).
 - `npm run icons`: genera favicons (32/48), íconos PWA (192/512/maskable) y apple-touch-icon desde el
   símbolo oficial sobre el degradado de marca.
-
-### Cambiado
 - El wordmark de texto se reemplazó por el logo oficial en el encabezado, el pie, `/orar` y la imagen
-  Open Graph; el JSON-LD de la organización incluye su logo.
-- Favicon e íconos de la PWA ahora salen del logo oficial (antes eran placeholders).
+  Open Graph; el JSON-LD de la organización incluye su logo. Favicon e íconos de la PWA dejaron de ser
+  placeholders.
+
+### Pendiente
+- CAPTCHA en las entradas anónimas antes de producción (Fase 8).
 
 ## [0.2.0] - 2026-11-10 — Fase 1: Landing
 

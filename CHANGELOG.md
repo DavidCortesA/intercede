@@ -6,6 +6,39 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.5.0] - 2026-11-10 — Fase 4: Audio con LiveKit
+
+### Añadido
+- **Audio en vivo** en la sala con LiveKit: "Orar con micrófono" o "Solo escuchar". El micrófono no se
+  pide al cargar la página ni en modo oyente; solo al decidir hablar.
+- **Orador activo** (anillo pulsante y "Está orando"), insignias de micrófono por persona y silenciar o
+  activar el propio micrófono. Audio optimizado para voz.
+- **Controles del anfitrión:** silenciar a una persona, silenciar a todos, sacar de la sala (con
+  confirmación y sin poder volver) y cerrar la sala cortando el audio de todos.
+- **Servidor:** `POST /api/livekit/token` (valida sesión y membresía con RLS; token de 2 h, solo escuchar y
+  publicar micrófono) y `POST /api/livekit/host` (acciones del anfitrión con la API de LiveKit). Defensa
+  CSRF, reintento ante fallos pasajeros y sin caché.
+- **Reconexión:** reintenta con un token nuevo si LiveKit se rinde; contempla audio bloqueado por el
+  navegador, entrada desde otro dispositivo, sala cerrada y expulsión.
+- **Wake Lock:** la pantalla se mantiene encendida durante la sala.
+- Errores claros del micrófono: permiso denegado, sin micrófono, en uso; la sala sigue funcionando.
+- Migración `remove_member`: `room_members.removed_at`, RPC `remove_member` y bloqueo del reingreso.
+- Pruebas: 17 de las rutas (token y anfitrión), `remove_member` en la base, Wake Lock y e2e de audio real
+  contra LiveKit Cloud con micrófonos simulados (se saltan sin credenciales); axe con el audio conectado.
+- ADR 0008 y lista de verificación para dispositivos reales (`docs/testing/audio-dispositivos-reales.md`).
+
+### Cambiado
+- Cerrar la sala pasa por el servidor para desconectar a todas las personas del audio.
+- El CI pasa los secretos `LIVEKIT_*` al e2e (opcional); `test:db` espera a que Auth esté listo tras reiniciarlo.
+
+### Aplicado al proyecto remoto
+- Migración `remove_member`, verificada con invitados de prueba que se borraron al terminar.
+
+### Pendiente
+- **Probar en iPhone/iPad y Android reales** (lista en `docs/testing/`): bloqueo de pantalla, segundo plano,
+  cambio de red y permisos de Safari no se pueden verificar en automático.
+- Cámara (opcional en el CLAUDE.md) y límite de tasa en `/api/livekit/*` (Fase 8).
+
 ## [0.4.0] - 2026-11-10 — Fase 3: Salas y peticiones (sin audio)
 
 ### Añadido

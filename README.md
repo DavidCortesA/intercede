@@ -43,6 +43,10 @@ Requiere Docker. La app usa el proyecto remoto vía `.env.local`; las pruebas us
 | `npx supabase db push --remote` | Aplica migraciones al proyecto remoto (pide confirmación) |
 | `npx supabase config diff` | Compara `config.toml` con el remoto. Hazlo **antes** de cualquier `config push` |
 
+Las pruebas de audio (`tests/e2e/audio.spec.ts`) usan **LiveKit Cloud real** con micrófonos simulados de
+Chromium y se saltan solas si no hay `LIVEKIT_*` en `.env.local`. Corren con `npm run test:e2e:db`. Lo
+que no pueden probar (iPhone, Android, segundo plano) está en `docs/testing/audio-dispositivos-reales.md`.
+
 Los scripts `test:db` y `test:e2e:db` reinician el contenedor de Auth antes de correr: las altas anónimas
 tienen un tope de 30 por hora y por IP y se alcanza al repetir pruebas. Si algo falla con
 `rate_limited`, reinicia Auth (`docker restart supabase_auth_intercede`).

@@ -1,0 +1,2 @@
+-- Datos de desarrollo. Intencionalmente vacío en la Fase 2: los usuarios de prueba se crean
+-- por la API de Auth (invitados anónimos) para que el trigger de perfiles se ejecute.

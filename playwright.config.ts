@@ -1,4 +1,9 @@
+import { loadEnvConfig } from "@next/env";
 import { defineConfig, devices } from "@playwright/test";
+
+// Lee .env.local para que las pruebas vean, por ejemplo, si hay credenciales de LiveKit
+// (las de audio se saltan si no existen). Lo que ya esté en el entorno tiene prioridad.
+loadEnvConfig(process.cwd());
 
 const PORT = 3000;
 const isCI = Boolean(process.env.CI);
@@ -18,7 +23,14 @@ export default defineConfig({
   projects: [
     // Móvil primero (CLAUDE.md §8.7)
     { name: "mobile-chrome", use: { ...devices["Pixel 7"] } },
-    { name: "desktop-chrome", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "desktop-chrome",
+      use: {
+        ...devices["Desktop Chrome"],
+        // Micrófono y cámara simulados que aceptan el permiso solos: pruebas de audio sin hardware
+        launchOptions: { args: ["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream"] },
+      },
+    },
   ],
   webServer: {
     // En CI se ejecuta el build de producción (el job de CI hace `npm run build` antes).

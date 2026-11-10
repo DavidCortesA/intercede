@@ -33,6 +33,8 @@ if (!process.env.CI) {
       if (ping?.ok) break;
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
+    // Auth responde a /health un instante antes de aceptar altas: un margen evita fallos al arrancar
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 }
 

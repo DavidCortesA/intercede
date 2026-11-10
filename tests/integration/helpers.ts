@@ -1,3 +1,4 @@
+import { createServerClient } from "@supabase/ssr";
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
 
@@ -47,6 +48,34 @@ export async function signInTestUser(displayName: string): Promise<{ client: Tes
   const signIn = await client.auth.signInWithPassword({ email, password });
   if (signIn.error) throw new Error(`No se pudo iniciar sesión: ${signIn.error.message}`);
   return { client, user: data.user };
+}
+
+/**
+ * Usuario de prueba con su sesión guardada en una "jarra" de cookies (como las escribe
+ * @supabase/ssr). Sirve para llamar a Route Handlers y Server Actions, que leen la sesión de
+ * las cookies. `client` actúa como esa persona (RLS) para preparar salas y membresías.
+ */
+export async function createCookieSession(displayName: string) {
+  const email = `ruta-${crypto.randomUUID()}@example.test`;
+  const password = `Pw-${crypto.randomUUID()}`;
+  const { data, error } = await adminClient().auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: { display_name: displayName },
+  });
+  if (error || !data.user) throw new Error(`No se pudo crear el usuario de prueba: ${error?.message}`);
+
+  const jar = new Map<string, string>();
+  const client = createServerClient<Database>(testEnv.url!, testEnv.publishableKey!, {
+    cookies: {
+      getAll: () => [...jar].map(([name, value]) => ({ name, value })),
+      setAll: (list) => list.forEach(({ name, value }) => jar.set(name, value)),
+    },
+  });
+  const signIn = await client.auth.signInWithPassword({ email, password });
+  if (signIn.error) throw new Error(`No se pudo iniciar sesión: ${signIn.error.message}`);
+  return { userId: data.user.id, jar, client: client as TestClient };
 }
 
 /** Usuario sin sesión (solo existe en la base): para llenar aforos desde el administrador. */

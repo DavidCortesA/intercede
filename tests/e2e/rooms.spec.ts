@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type Browser, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { createRoomAs, joinRoomAs, newPerson } from "./helpers";
 
 // Estas pruebas necesitan el Supabase local: `npm run test:e2e:db` (o el job e2e del CI).
 test.skip(!process.env.SUPABASE_TEST_URL, "requiere Supabase local (npm run test:e2e:db)");
@@ -7,28 +8,6 @@ test.skip(!process.env.SUPABASE_TEST_URL, "requiere Supabase local (npm run test
 // Dos personas en contextos distintos = dos navegadores sin cookies compartidas.
 // Solo en escritorio: cada prueba crea invitados reales y las altas anónimas tienen tope por hora.
 test.skip(({ isMobile }) => isMobile, "se corre solo en escritorio");
-
-async function newPerson(browser: Browser): Promise<Page> {
-  const context = await browser.newContext();
-  return context.newPage();
-}
-
-async function createRoomAs(page: Page, name: string): Promise<string> {
-  await page.goto("/es");
-  await page.locator("section").first().getByRole("link", { name: "Orar ahora" }).click();
-  await expect(page).toHaveURL(/\/es\/orar$/);
-  await page.getByLabel("¿Cómo te llamas?").fill(name);
-  await page.getByRole("button", { name: "Crear sala de oración" }).click();
-  await expect(page).toHaveURL(/\/es\/r\/[a-hj-km-np-z2-9]{6}$/);
-  return page.url();
-}
-
-async function joinRoomAs(page: Page, roomUrl: string, name: string) {
-  await page.goto(roomUrl);
-  await page.getByLabel("¿Cómo te llamas?").fill(name);
-  await page.getByRole("button", { name: "Entrar a la sala" }).click();
-  await expect(page.getByRole("heading", { level: 2, name: "Peticiones" })).toBeVisible();
-}
 
 test("flujo completo: crear sin cuenta, unirse, peticiones en vivo, bloquear y cerrar", async ({ browser }) => {
   test.setTimeout(90_000);

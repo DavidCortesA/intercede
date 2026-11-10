@@ -165,6 +165,55 @@ describe.skipIf(!hasTestDb)("salas y peticiones — RPC y RLS", () => {
     });
   });
 
+  describe("remove_member (expulsar)", () => {
+    it("solo el anfitrión expulsa; la persona sale y no puede volver a entrar", async () => {
+      const room = await newRoom(host.client);
+      await guest.client.rpc("join_room", { p_code: room.code, p_display_name: "Beto" });
+      await outsider.client.rpc("join_room", { p_code: room.code, p_display_name: "Carla" });
+
+      // Una participante no puede expulsar a otra
+      expect(errorOf(await outsider.client.rpc("remove_member", { p_room_id: room.id, p_user_id: guest.user.id }))).toBe("not_host");
+
+      expect((await host.client.rpc("remove_member", { p_room_id: room.id, p_user_id: guest.user.id })).error).toBeNull();
+
+      const { data: row } = await adminClient()
+        .from("room_members")
+        .select("left_at,removed_at")
+        .eq("room_id", room.id)
+        .eq("user_id", guest.user.id)
+        .single();
+      expect(row?.left_at).not.toBeNull();
+      expect(row?.removed_at).not.toBeNull();
+
+      // Sigue viendo su propia fila (para saber que la sacaron) pero ya no lo que pasa en la sala
+      const own = await guest.client.from("room_members").select("removed_at").eq("room_id", room.id);
+      expect(own.data).toHaveLength(1);
+      expect(own.data?.[0]?.removed_at).not.toBeNull();
+
+      expect(errorOf(await guest.client.rpc("join_room", { p_code: room.code, p_display_name: "Beto" }))).toBe("removed");
+      // A las demás no les afecta
+      const others = await host.client.from("room_members").select("user_id").eq("room_id", room.id).is("left_at", null);
+      expect(others.data).toHaveLength(2);
+    });
+
+    it("no se puede expulsar al anfitrión, a uno mismo ni a quien no está", async () => {
+      const room = await newRoom(host.client);
+      await guest.client.rpc("join_room", { p_code: room.code, p_display_name: "Beto" });
+
+      expect(errorOf(await host.client.rpc("remove_member", { p_room_id: room.id, p_user_id: host.user.id }))).toBe("cannot_remove_self");
+      expect(errorOf(await host.client.rpc("remove_member", { p_room_id: room.id, p_user_id: outsider.user.id }))).toBe("member_not_found");
+      // La persona participante tampoco puede expulsar al anfitrión
+      expect(errorOf(await guest.client.rpc("remove_member", { p_room_id: room.id, p_user_id: host.user.id }))).toBe("not_host");
+    });
+
+    it("no funciona en una sala cerrada", async () => {
+      const room = await newRoom(host.client);
+      await guest.client.rpc("join_room", { p_code: room.code, p_display_name: "Beto" });
+      await host.client.rpc("close_room", { p_room_id: room.id });
+      expect(errorOf(await host.client.rpc("remove_member", { p_room_id: room.id, p_user_id: guest.user.id }))).toBe("not_host");
+    });
+  });
+
   describe("close_room", () => {
     it("solo el anfitrión cierra: cierra la sala, saca a todos y nadie más entra", async () => {
       const room = await newRoom(host.client);
@@ -334,19 +383,20 @@ describe.skipIf(!hasTestDb)("salas y peticiones — RPC y RLS", () => {
       const fromOutsider: string[] = [];
       const stopGuest = await subscribe(guest.client, fromGuest);
       const stopOutsider = await subscribe(outsider.client, fromOutsider);
-      // Realtime avisa SUBSCRIBED un instante antes de registrar la suscripción en la base:
-      // por eso la app vuelve a leer la lista justo después de suscribirse (ver use-room-live).
-      await new Promise((r) => setTimeout(r, 1000));
-
-      await host.client.from("prayer_requests").insert({ room_id: room.id, content: "Llega en vivo" });
-
-      const deadline = Date.now() + 8000;
-      while (fromGuest.length === 0 && Date.now() < deadline) await new Promise((r) => setTimeout(r, 100));
+      // Realtime avisa SUBSCRIBED un instante antes de registrar la suscripción en la base (más
+      // lento justo tras reiniciar el servicio): por eso se publica hasta que llegue el primer
+      // evento. La app, por su parte, vuelve a leer la lista tras suscribirse (use-room-live).
+      for (let attempt = 0; attempt < 6 && fromGuest.length === 0; attempt++) {
+        await host.client.from("prayer_requests").insert({ room_id: room.id, content: `Llega en vivo ${attempt}` });
+        const until = Date.now() + 2000;
+        while (fromGuest.length === 0 && Date.now() < until) await new Promise((r) => setTimeout(r, 100));
+      }
       await new Promise((r) => setTimeout(r, 500)); // margen para confirmar que a la otra persona no le llega
 
       await stopGuest();
       await stopOutsider();
-      expect(fromGuest).toEqual(["Llega en vivo"]);
+      expect(fromGuest.length).toBeGreaterThanOrEqual(1);
+      expect(fromGuest.every((content) => content.startsWith("Llega en vivo"))).toBe(true);
       expect(fromOutsider).toEqual([]);
     }, 20000);
   });

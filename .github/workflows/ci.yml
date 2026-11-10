@@ -63,7 +63,13 @@ jobs:
       # Exporta la URL y las claves del Supabase local (enmascaradas) para el build y las pruebas
       - run: node scripts/lib/local-supabase.mjs --github-env
       - run: npm run build
+      # Las pruebas de audio usan LiveKit Cloud: se saltan solas si no hay secretos configurados
+      # (Settings → Secrets → Actions: LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET).
       - run: npm run test:e2e
+        env:
+          LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
+          LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
+          LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
       - run: npx supabase stop
         if: always()
       - uses: actions/upload-artifact@v4

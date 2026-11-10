@@ -6,6 +6,7 @@ export type Profile = Tables<"profiles">;
 export interface CurrentSession {
   userId: string;
   isAnonymous: boolean;
+  email: string | null;
   profile: Profile | null;
 }
 
@@ -22,5 +23,10 @@ export async function getCurrentSession(): Promise<CurrentSession | null> {
 
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", claims.sub).maybeSingle();
 
-  return { userId: claims.sub, isAnonymous: claims.is_anonymous === true, profile };
+  return {
+    userId: claims.sub,
+    isAnonymous: claims.is_anonymous === true,
+    email: typeof claims.email === "string" && claims.email ? claims.email : null,
+    profile,
+  };
 }

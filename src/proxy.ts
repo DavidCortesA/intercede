@@ -13,7 +13,7 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Excluye API, internos de Next y cualquier archivo con extensión
-  // (manifest.webmanifest, sw.js, íconos, etc.).
-  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
+  // Excluye API, los enlaces de correo/OAuth (/auth/*), internos de Next y cualquier archivo con
+  // extensión (manifest.webmanifest, sw.js, íconos, etc.).
+  matcher: "/((?!api|auth|_next|_vercel|.*\\..*).*)",
 };

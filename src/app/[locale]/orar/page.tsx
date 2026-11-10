@@ -3,7 +3,10 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Wordmark } from "@/components/marketing/wordmark";
+import { CreateRoomForm } from "@/components/room/create-room-form";
+import { JoinByCodeForm } from "@/components/room/join-by-code-form";
 import { buttonVariants } from "@/components/ui/button";
+import { getCurrentSession } from "@/features/auth/queries";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
@@ -21,25 +24,44 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/orar">):
   });
 }
 
-// PROVISIONAL (Fase 1): el CTA "Orar ahora" de la landing apunta aquí hasta que existan
-// las salas (Fase 3). No simula crear una sala: avisa con honestidad que viene pronto.
+// Capa 1 (CLAUDE.md §1): orar sin cuenta. Un nombre y un toque crean la sala.
 export default async function PrayPage({ params }: PageProps<"/[locale]/orar">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const t = await getTranslations("Pray");
+  const session = await getCurrentSession();
 
   return (
     <main
       id="contenido"
-      className="dark flex min-h-dvh flex-col items-center justify-center gap-6 bg-brand-dusk px-6 text-center text-foreground"
+      className="dark flex min-h-dvh flex-col items-center justify-center gap-8 bg-brand-dusk px-6 py-10 text-foreground"
     >
-      <Wordmark className="h-10" />
-      <h1 className="max-w-xl font-heading text-4xl font-extrabold text-balance sm:text-5xl">{t("title")}</h1>
-      <p className="max-w-md text-lg text-brand-cream/85">{t("body")}</p>
-      <Link href="/" className={buttonVariants({ variant: "secondary", size: "md" })}>
-        {t("back")}
+      <Link href="/" className="rounded-lg">
+        <Wordmark className="h-8" />
       </Link>
+
+      <div className="w-full max-w-sm">
+        <h1 className="text-center font-heading text-4xl font-extrabold text-balance">{t("title")}</h1>
+        <p className="mt-3 text-center text-lg text-brand-cream/85">{t("subtitle")}</p>
+
+        <div className="mt-8">
+          <CreateRoomForm initialName={session?.profile?.display_name ?? ""} />
+        </div>
+
+        <section className="mt-10 border-t border-border pt-8" aria-labelledby="join-title">
+          <h2 id="join-title" className="mb-4 text-center font-heading text-lg font-bold">
+            {t("joinTitle")}
+          </h2>
+          <JoinByCodeForm />
+        </section>
+
+        <div className="mt-8 flex justify-center">
+          <Link href="/" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+            {t("back")}
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }

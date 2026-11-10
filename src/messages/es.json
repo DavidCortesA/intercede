@@ -7,7 +7,8 @@
     "termsTitle": "Términos de uso — INTERCEDE",
     "termsDescription": "Reglas básicas para orar juntos en INTERCEDE con respeto y seguridad.",
     "prayTitle": "Orar ahora — INTERCEDE",
-    "prayDescription": "Estamos terminando las salas de oración de INTERCEDE."
+    "prayDescription": "Crea una sala de oración en segundos, sin cuenta, y comparte el enlace.",
+    "roomTitle": "Sala de oración — INTERCEDE"
   },
   "Brand": {
     "name": "INTERCEDE",
@@ -199,9 +200,122 @@
     "close": "Entendido"
   },
   "Pray": {
-    "title": "Estamos terminando las salas de oración.",
-    "body": "Muy pronto podrás crear una sala y orar con otras personas desde aquí. Gracias por tu paciencia.",
+    "title": "Orar ahora",
+    "subtitle": "Crea una sala y comparte el enlace. Sin cuenta y sin configurar nada.",
+    "nameLabel": "¿Cómo te llamas?",
+    "namePlaceholder": "Tu nombre",
+    "nameHint": "Es el nombre que verán las demás personas en la sala.",
+    "create": "Crear sala de oración",
+    "creating": "Creando sala…",
+    "joinTitle": "¿Te invitaron a una sala?",
+    "codeLabel": "Código o enlace de la sala",
+    "codePlaceholder": "Por ejemplo: abc234",
+    "join": "Unirme",
     "back": "Volver al inicio"
+  },
+  "Room": {
+    "defaultName": "Sala de {name}",
+    "header": {
+      "participants": "{count, plural, one {# persona} other {# personas}}",
+      "live": "En vivo",
+      "share": "Compartir enlace",
+      "copied": "Enlace copiado",
+      "code": "Código",
+      "leave": "Salir de la sala",
+      "you": "Tú",
+      "host": "Anfitrión"
+    },
+    "participants": {
+      "title": "En la sala"
+    },
+    "join": {
+      "title": "Unirte a {name}",
+      "titleGeneric": "Unirte a una sala de oración",
+      "people": "{count, plural, =0 {Nadie por ahora} one {# persona orando} other {# personas orando}}",
+      "nameLabel": "¿Cómo te llamas?",
+      "namePlaceholder": "Tu nombre",
+      "submit": "Entrar a la sala",
+      "submitting": "Entrando…",
+      "hint": "Sin cuenta. Solo tu nombre."
+    },
+    "states": {
+      "notFound": {
+        "title": "No encontramos esta sala",
+        "body": "Revisa el enlace o pídele a quien te invitó uno nuevo."
+      },
+      "closed": {
+        "title": "Esta sala ya terminó",
+        "body": "Quien la creó la cerró."
+      },
+      "locked": {
+        "title": "La sala está bloqueada",
+        "body": "El anfitrión no admite nuevas personas por ahora."
+      },
+      "full": {
+        "title": "La sala está llena",
+        "body": "Ya hay 20 personas orando. Inténtalo de nuevo en un momento."
+      },
+      "closedLive": {
+        "title": "La sala se cerró",
+        "body": "Gracias por orar juntos."
+      },
+      "home": "Ir al inicio",
+      "newRoom": "Crear mi propia sala"
+    },
+    "requests": {
+      "title": "Peticiones",
+      "empty": "Aún no hay peticiones. Comparte la primera.",
+      "placeholder": "Escribe una petición de oración…",
+      "label": "Nueva petición de oración",
+      "send": "Enviar",
+      "sending": "Enviando…",
+      "counter": "{count} de {max}",
+      "answered": "Respondida",
+      "markAnswered": "Marcar como respondida",
+      "unmarkAnswered": "Quitar “respondida”",
+      "testimonyLabel": "Testimonio (opcional)",
+      "testimonyPlaceholder": "¿Cómo respondió Dios?",
+      "testimonyPrefix": "Testimonio:",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar petición",
+      "by": "{name}",
+      "unknownAuthor": "Alguien"
+    },
+    "host": {
+      "title": "Anfitrión",
+      "lock": "Bloquear sala",
+      "unlock": "Desbloquear sala",
+      "locked": "Sala bloqueada: no entra nadie más",
+      "close": "Cerrar sala",
+      "closeTitle": "¿Cerrar la sala para todos?",
+      "closeBody": "Todas las personas saldrán y no podrán volver a entrar.",
+      "closeConfirm": "Sí, cerrar sala",
+      "cancel": "Cancelar"
+    },
+    "connection": {
+      "reconnecting": "Reconectando…",
+      "offline": "Sin conexión a internet. Se actualizará al volver la red."
+    },
+    "errors": {
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "invalid_name": "Escribe un nombre de hasta 40 caracteres.",
+      "invalid_room_name": "El nombre de la sala no es válido.",
+      "room_not_found": "No encontramos una sala con ese código.",
+      "room_closed": "Esa sala ya terminó.",
+      "room_locked": "La sala está bloqueada por el anfitrión.",
+      "room_full": "La sala está llena (20 personas).",
+      "too_many_rooms": "Ya tienes 5 salas abiertas. Cierra alguna para crear otra.",
+      "too_many_requests": "Llegaste al máximo de 20 peticiones en esta sala.",
+      "not_host": "Solo el anfitrión puede hacer eso.",
+      "not_authenticated": "Tu sesión expiró. Recarga la página.",
+      "rate_limited": "Demasiados intentos. Espera un momento y vuelve a probar.",
+      "guests_disabled": "Entrar sin cuenta no está disponible ahora.",
+      "request_empty": "Escribe algo antes de enviar.",
+      "request_too_long": "Máximo 500 caracteres.",
+      "permission_denied": "No tienes permiso para hacer eso.",
+      "network": "No hay conexión. Revisa tu internet."
+    }
   },
   "Legal": {
     "draft": "Borrador: este texto se revisará antes del lanzamiento público.",

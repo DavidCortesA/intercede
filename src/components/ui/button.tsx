@@ -16,6 +16,7 @@ export const buttonVariants = cva(
           "bg-brand-gradient text-white shadow-[0_10px_24px_-8px_rgba(91,46,230,0.7)] hover:-translate-y-0.5 hover:shadow-[0_16px_30px_-8px_rgba(91,46,230,0.85)]",
         secondary: "border-[1.5px] border-current/30 hover:border-current/60 hover:bg-current/10",
         light: "bg-white text-brand-violet hover:bg-brand-cream",
+        danger: "bg-destructive text-destructive-foreground hover:opacity-90",
       },
       size: {
         sm: "min-h-11 px-5 py-2.5 text-sm",

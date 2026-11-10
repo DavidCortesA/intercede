@@ -6,6 +6,38 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.9.0] - 2026-11-10 — Fase 8: Moderación y producción
+
+### Añadido
+- **Reportar** salas, peticiones de sala, publicaciones del muro y personas (motivo + detalle; solo lo que puedes ver; tope diario; sin
+  duplicados abiertos) y **bloquear** a quien se conoce: oculta lo suyo en las salas y en el muro (en ambos sentidos; la anfitriona y el
+  liderazgo ven todo) y cierra las salas propias a esa persona. Lista de bloqueados con "Desbloquear" en *Perfil*. También para invitados.
+- **Reportes de la comunidad** para su liderazgo (*Comunidades → Reportes*): atender, descartar, reabrir y eliminar la publicación; quien
+  reportó permanece anónima.
+- **Eliminar mi cuenta** (*Perfil*): confirmación escrita + contraseña; borra todo en cascada, limpia fotos y logos de Storage, cierra sus salas de
+  audio y **transfiere la administración** de las comunidades (o elimina las vacías). Los invitados también pueden borrar sus datos y los que no
+  vuelven en 90 días se borran solos.
+- **Auditoría de seguridad automatizada** (`security_audit`) con prueba que exige cero hallazgos inesperados; cerró 3 funciones públicas de más.
+- **CAPTCHA opcional** (Cloudflare Turnstile) para invitados, registro, entrada y recuperación; apagado por defecto y sin scripts de terceros si no se configura.
+- **Sentry** con privacidad (sin datos personales, URLs generalizadas, sin migajas de teclas ni consola; carga diferida) y **Vercel Analytics** sin cookies con las
+  rutas con llave generalizadas. Pantallas de error amigables.
+- Cabeceras: HSTS, `frame-ancestors`, `base-uri`, `object-src`, `payment/usb` en Permissions-Policy.
+- Base de datos: `blocks`, `reports`, `block_user`, `create_report`, `resolve_report`, `prepare_account_deletion`, `purge_inactive_guests`, `security_audit`.
+- Pruebas: 17 de base de datos, 11 unitarias y 9 e2e. Total: 155 + 64 + 124 (producción).
+- Documentación: ADR 0012 y `docs/operaciones/produccion.md` (lista de verificación para publicar).
+- `CLAUDE.md` §14–15 (planes y cobros, organizaciones, peticiones de la iglesia y sala con cámara) incorporadas por la propietaria/el propietario: **no se implementan en esta fase**.
+
+### Cambiado
+- `join_room`, y las políticas de lectura de `prayer_requests` y `community_requests`, consideran los bloqueos.
+- Las pruebas locales pasan la service role local a la app (`scripts/lib/local-supabase.mjs`).
+- Rendimiento (Lighthouse, producción local): móvil 91–93 / 100 / 100 / 100 y escritorio 100 / 100 / 100 / 100 (el SDK de Sentry se carga cuando la página está libre).
+
+### Límites
+- Bloquear no silencia el audio de una sala en curso. Sin limitador propio de intentos de códigos de sala (activar el firewall de Vercel).
+- Sin CSP con `script-src` (obligaría a renderizar la landing en el servidor). Sin mapas de fuentes de Sentry.
+- Reportes fuera de comunidades: se leen con SQL hasta que exista el panel interno (CLAUDE.md §5.6).
+- `npm audit`: avisos en herramientas de build de Serwist.
+
 ## [0.8.0] - 2026-11-10 — Fase 7: Comunidades y eventos
 
 ### Añadido

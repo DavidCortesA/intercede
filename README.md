@@ -64,6 +64,11 @@ teléfonos: `docs/testing/avisos-dispositivos-reales.md`.
 Las pruebas de PWA (`tests/e2e/pwa.spec.ts`, `tests/e2e/push-sw.spec.ts`) requieren `npm run build` y `CI=1`, porque el service worker
 no se registra en desarrollo. La primera vez: `npx playwright install chromium`.
 
+## Producción
+
+Lista de verificación para publicar (Vercel, Supabase, CAPTCHA, Sentry, moderación): [`docs/operaciones/produccion.md`](docs/operaciones/produccion.md).
+Auditoría de seguridad de la base: `select * from public.security_audit()` (solo la service role; debe listar únicamente las vistas previas de invitación).
+
 ## Fases y versiones
 
 El avance se publica por fases con su tag y su entrada en [`CHANGELOG.md`](CHANGELOG.md)

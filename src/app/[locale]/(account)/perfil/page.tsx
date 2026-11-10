@@ -6,12 +6,15 @@ import { notFound } from "next/navigation";
 import { AvatarUploader } from "@/components/account/avatar-uploader";
 import { PasswordForm } from "@/components/account/password-form";
 import { ProfileForm } from "@/components/account/profile-form";
+import { BlockedList, type BlockedPerson } from "@/components/moderation/blocked-list";
+import { DeleteAccountForm } from "@/components/moderation/delete-account-form";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { signOutAction } from "@/features/auth/account-actions";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { requireSession } from "@/lib/auth-guard";
 import { pageMetadata } from "@/lib/seo";
+import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/perfil">): Promise<Metadata> {
   const { locale } = await params;
@@ -34,6 +37,7 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
 
   if (session.isAnonymous) {
     return (
+      <div className="flex flex-col gap-6">
       <section className="flex flex-col items-start gap-4 rounded-3xl bg-background p-7 shadow-sm ring-1 ring-border">
         <h1 className="font-heading text-2xl font-extrabold text-balance">{t("guestTitle")}</h1>
         <p className="leading-relaxed text-muted-foreground">{t("guestBody")}</p>
@@ -46,8 +50,27 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
           </Link>
         </div>
       </section>
+      <DeleteAccountForm needsPassword={false} isGuest />
+      </div>
     );
   }
+
+  // Personas bloqueadas (con su nombre si todavía compartimos comunidad o sala) y tipo de cuenta
+  const supabase = await createClient();
+  const [{ data: userData }, { data: blocks }] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.from("blocks").select("blocked_id").order("created_at", { ascending: false }),
+  ]);
+  const blockedIds = (blocks ?? []).map((row) => row.blocked_id);
+  const [{ data: fromCommunities }, { data: fromRooms }] = blockedIds.length
+    ? await Promise.all([
+        supabase.from("community_members").select("user_id, display_name, avatar_url").in("user_id", blockedIds),
+        supabase.from("room_members").select("user_id, display_name, avatar_url").in("user_id", blockedIds),
+      ])
+    : [{ data: [] }, { data: [] }];
+  const known = new Map([...(fromRooms ?? []), ...(fromCommunities ?? [])].map((row) => [row.user_id, row]));
+  const blockedPeople: BlockedPerson[] = blockedIds.map((id) => ({ id, name: known.get(id)?.display_name ?? null, avatarUrl: known.get(id)?.avatar_url ?? null }));
+  const hasPassword = Boolean(session.email) && (userData.user?.app_metadata?.providers ?? []).includes("email");
 
   const profile = session.profile;
   const name = profile?.display_name ?? "";
@@ -93,6 +116,10 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
         </h2>
         <PasswordForm variant="profile" />
       </section>
+
+      <BlockedList initial={blockedPeople} />
+
+      <DeleteAccountForm needsPassword={hasPassword} isGuest={false} />
 
       <form action={signOutAction}>
         <input type="hidden" name="locale" value={locale} />

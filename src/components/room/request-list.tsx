@@ -4,6 +4,7 @@ import { BookmarkPlus, CheckCircle2, Heart, HandHeart, Trash2 } from "lucide-rea
 import { useFormatter, useNow, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ModerationMenu } from "@/components/moderation/moderation-menu";
 import { Textarea } from "@/components/ui/input";
 import { REQUEST_MAX_LENGTH } from "@/features/rooms/schemas";
 import type { PrayerRequest, PrayerSupport, RoomMember } from "@/features/rooms/types";
@@ -27,17 +28,22 @@ interface Props {
 export function RequestList({ requests, members, meId, isHost, support, canSaveToJournal, onSetAnswered, onRemove, onToggleSupport, onSaveToJournal }: Props) {
   const t = useTranslations("Room.requests");
   const people = new Map(members.map((m) => [m.user_id, m]));
+  // Quien bloqueas desaparece al instante (la base ya no te las envía en la próxima lectura). La anfitriona no oculta
+  // nada: ve todo para poder moderar.
+  const [blockedAuthors, setBlockedAuthors] = useState<ReadonlySet<string>>(new Set());
+  const visible = isHost ? requests : requests.filter((request) => !blockedAuthors.has(request.author_id));
 
-  if (requests.length === 0) {
+  if (visible.length === 0) {
     return <p className="rounded-2xl border border-dashed border-border px-4 py-8 text-center text-muted-foreground">{t("empty")}</p>;
   }
 
   return (
     // aria-live: las peticiones nuevas se anuncian sin quitar el foco al lector de pantalla
     <ul aria-live="polite" className="flex flex-col gap-3">
-      {requests.map((request) => (
+      {visible.map((request) => (
         <RequestItem
           key={request.id}
+          onBlocked={(userId) => setBlockedAuthors((current) => new Set(current).add(userId))}
           request={request}
           authorName={people.get(request.author_id)?.display_name ?? t("unknownAuthor")}
           authorAvatar={people.get(request.author_id)?.avatar_url ?? null}
@@ -69,9 +75,10 @@ interface ItemProps {
   canDelete: boolean;
   onSetAnswered: Props["onSetAnswered"];
   onRemove: Props["onRemove"];
+  onBlocked: (userId: string) => void;
 }
 
-function RequestItem({ request, authorName, authorAvatar, supporters, meId, canSaveToJournal, onToggleSupport, onSaveToJournal, canEdit, canDelete, onSetAnswered, onRemove }: ItemProps) {
+function RequestItem({ onBlocked, request, authorName, authorAvatar, supporters, meId, canSaveToJournal, onToggleSupport, onSaveToJournal, canEdit, canDelete, onSetAnswered, onRemove }: ItemProps) {
   const t = useTranslations("Room.requests");
   const format = useFormatter();
   // "hace 2 min" se actualiza solo cada minuto
@@ -225,6 +232,15 @@ function RequestItem({ request, authorName, authorAvatar, supporters, meId, canS
           ) : null}
         </div>
       )}
+
+      {request.author_id !== meId ? (
+        <ModerationMenu
+          className="mt-3"
+          target={{ type: "prayer_request", id: request.id }}
+          author={{ id: request.author_id, name: authorName }}
+          onBlocked={onBlocked}
+        />
+      ) : null}
     </li>
   );
 }

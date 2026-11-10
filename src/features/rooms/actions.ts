@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { signInAsGuest } from "@/features/auth/actions";
 import { displayNameSchema } from "@/features/auth/schemas";
 import { redirect } from "@/i18n/navigation";
+import { getCaptchaToken } from "@/lib/captcha";
 import { routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { toRoomError, type RoomErrorCode } from "./errors";
@@ -16,7 +17,7 @@ export interface RoomActionState {
   displayName?: string;
 }
 
-function guestError(error: "invalid_name" | "rate_limited" | "guests_disabled" | "unexpected"): RoomErrorCode {
+function guestError(error: "invalid_name" | "rate_limited" | "guests_disabled" | "captcha_failed" | "unexpected"): RoomErrorCode {
   return error === "unexpected" ? "generic" : error;
 }
 
@@ -29,7 +30,7 @@ export async function createRoomAction(_prev: RoomActionState, formData: FormDat
   const name = displayNameSchema.safeParse(rawName);
   if (!name.success) return { error: "invalid_name", displayName: rawName };
 
-  const guest = await signInAsGuest({ displayName: name.data });
+  const guest = await signInAsGuest({ displayName: name.data }, getCaptchaToken(formData));
   if (!guest.ok) return { error: guestError(guest.error), displayName: rawName };
 
   const t = await getTranslations({ locale, namespace: "Room" });
@@ -56,7 +57,7 @@ export async function joinRoomAction(_prev: RoomActionState, formData: FormData)
   const name = displayNameSchema.safeParse(rawName);
   if (!name.success) return { error: "invalid_name", displayName: rawName };
 
-  const guest = await signInAsGuest({ displayName: name.data });
+  const guest = await signInAsGuest({ displayName: name.data }, getCaptchaToken(formData));
   if (!guest.ok) return { error: guestError(guest.error), displayName: rawName };
 
   const supabase = await createClient();

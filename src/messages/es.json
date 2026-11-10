@@ -346,7 +346,8 @@
       "request_too_long": "Máximo 500 caracteres.",
       "permission_denied": "No tienes permiso para hacer eso.",
       "network": "No hay conexión. Revisa tu internet.",
-      "community_only": "Esta sala es de una comunidad: solo entran sus miembros."
+      "community_only": "Esta sala es de una comunidad: solo entran sus miembros.",
+      "captcha_failed": "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo."
     }
   },
   "Legal": {
@@ -367,19 +368,19 @@
         },
         "data": {
           "title": "Datos que guardamos",
-          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración, tu historial de salas, las notas de tus devocionales y tu progreso. Si activas los avisos, el dato técnico del navegador que el servicio de notificaciones necesita para entregártelos (puedes quitarlo cuando quieras). Si usas comunidades, tu nombre y tu foto los ven las personas de esa comunidad, igual que lo que publicas en su muro (según la visibilidad que elijas)."
+          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración, tu historial de salas, las notas de tus devocionales y tu progreso. Si activas los avisos, el dato técnico del navegador que el servicio de notificaciones necesita para entregártelos (puedes quitarlo cuando quieras). Si usas comunidades, tu nombre y tu foto los ven las personas de esa comunidad, igual que lo que publicas en su muro (según la visibilidad que elijas). Si bloqueas a alguien o reportas un contenido, guardamos ese bloqueo o reporte."
         },
         "providers": {
           "title": "Proveedores",
-          "body": "Usamos servicios de terceros para operar la plataforma: Supabase (base de datos y autenticación), LiveKit (audio en tiempo real) y Vercel (alojamiento). Ninguno recibe tus oraciones en forma de grabación."
+          "body": "Usamos servicios de terceros para operar la plataforma: Supabase (base de datos y autenticación), LiveKit (audio en tiempo real), Vercel (alojamiento y estadísticas de visitas sin cookies) y Sentry (avisos de errores técnicos, sin tu nombre ni el contenido de tus oraciones). Si se activa, Cloudflare Turnstile verifica que quien entra es una persona. Ninguno recibe tus oraciones en forma de grabación."
         },
         "analytics": {
           "title": "Analítica",
-          "body": "Si medimos el uso, será con herramientas respetuosas de la privacidad y nunca analizaremos el contenido de tus oraciones o peticiones."
+          "body": "Medimos visitas con una herramienta sin cookies y sin rastrearte entre sitios; las direcciones de salas e invitaciones se generalizan antes de registrarse. Nunca analizamos el contenido de tus oraciones o peticiones."
         },
         "deletion": {
           "title": "Eliminar tu cuenta y tus datos",
-          "body": "Podrás eliminar tu cuenta y los datos asociados desde la aplicación."
+          "body": "Puedes eliminar tu cuenta y todos los datos asociados cuando quieras desde Perfil → Eliminar mi cuenta (también si entraste como invitado). Las personas que entraron como invitadas y no vuelven en 90 días se borran solas. Si reportas algo, el reporte se conserva sin tu identidad."
         }
       }
     },
@@ -550,7 +551,8 @@
       "not_authenticated": "Tu sesión expiró. Entra de nuevo.",
       "invalid_name": "Escribe un nombre de hasta 40 caracteres.",
       "invalid_timezone": "Elige una zona horaria válida.",
-      "generic": "Algo salió mal. Inténtalo de nuevo."
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "captcha_failed": "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo."
     }
   },
   "Account": {
@@ -587,7 +589,8 @@
     "notificationsLink": "Avisos y recordatorios",
     "notificationsLinkHelp": "Elige cómo y cuándo te avisamos.",
     "communitiesLink": "Comunidades",
-    "communitiesLinkHelp": "Tu iglesia, ministerio o grupo."
+    "communitiesLinkHelp": "Tu iglesia, ministerio o grupo.",
+    "dangerTitle": "Zona de cuidado"
   },
   "Journal": {
     "title": "Mi diario de oración",
@@ -883,7 +886,8 @@
       "devotional": "Devocional",
       "members": "Miembros",
       "settings": "Ajustes",
-      "back": "Mis comunidades"
+      "back": "Mis comunidades",
+      "reports": "Reportes"
     },
     "members": {
       "title": "Miembros",
@@ -1080,6 +1084,30 @@
         "confirmYes": "Sí, eliminar",
         "cancel": "Cancelar"
       }
+    },
+    "reports": {
+      "title": "Reportes",
+      "subtitle": "Lo que las personas de la comunidad reportaron. Quien reportó permanece anónimo.",
+      "empty": "No hay reportes abiertos.",
+      "resolvedTitle": "Atendidos",
+      "types": {
+        "room": "Sala",
+        "prayer_request": "Petición de una sala",
+        "community_request": "Publicación del muro",
+        "user": "Persona"
+      },
+      "reasonLabel": "Motivo",
+      "received": "{date}",
+      "target": "Sobre {name}",
+      "unknownTarget": "Alguien de la comunidad",
+      "removed": "El contenido ya no está.",
+      "deletePost": "Eliminar publicación",
+      "markResolved": "Marcar como atendido",
+      "dismiss": "Descartar",
+      "reopen": "Volver a abrir",
+      "confirmDelete": "¿Eliminar esta publicación?",
+      "confirmYes": "Sí, eliminar",
+      "cancel": "Cancelar"
     }
   },
   "CommunityInvite": {
@@ -1100,5 +1128,79 @@
     "errors": {
       "generic": "No pudimos unirte. Inténtalo de nuevo."
     }
+  },
+  "Moderation": {
+    "trigger": "Reportar o bloquear",
+    "triggerReport": "Reportar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "report": {
+      "title": "Reportar",
+      "reason": "Motivo",
+      "details": "Detalles (opcional)",
+      "detailsHelp": "No incluyas datos personales de otras personas.",
+      "submit": "Enviar reporte",
+      "submitting": "Enviando…",
+      "sent": "Gracias. Recibimos tu reporte y lo revisaremos.",
+      "reasons": {
+        "harassment": "Acoso o maltrato",
+        "hate": "Odio o discriminación",
+        "spam": "Spam o publicidad",
+        "inappropriate": "Contenido inapropiado",
+        "self_harm": "Riesgo de autolesión o de daño",
+        "other": "Otro motivo"
+      }
+    },
+    "block": {
+      "action": "Bloquear a {name}",
+      "help": "Dejarás de ver lo que publique y tampoco verá lo tuyo. No se entera de que lo bloqueaste.",
+      "done": "Listo. Ya no verás lo que publique {name}.",
+      "confirm": "Sí, bloquear"
+    },
+    "room": {
+      "report": "Reportar esta sala"
+    },
+    "blocked": {
+      "title": "Personas bloqueadas",
+      "empty": "No has bloqueado a nadie.",
+      "unblock": "Desbloquear",
+      "unknown": "Persona bloqueada",
+      "help": "Ellas no ven que las bloqueaste."
+    },
+    "delete": {
+      "title": "Eliminar mi cuenta",
+      "titleGuest": "Borrar mis datos",
+      "body": "Se borran tu cuenta y todo lo tuyo: diario, notas, peticiones, historial, avisos y dispositivos, tu foto y tus publicaciones en comunidades. No se puede deshacer.",
+      "bodyCommunities": "Si eres la única persona administradora de una comunidad, la administración pasa a otro miembro; si la comunidad está vacía, se elimina.",
+      "confirmLabel": "Escribe ELIMINAR para confirmar",
+      "password": "Tu contraseña",
+      "submit": "Eliminar para siempre",
+      "submitting": "Eliminando…",
+      "open": "Quiero eliminar mi cuenta",
+      "errors": {
+        "generic": "No pudimos eliminar la cuenta. Inténtalo de nuevo.",
+        "invalid_password": "La contraseña no es correcta.",
+        "confirmation": "Escribe ELIMINAR para confirmar."
+      }
+    },
+    "errors": {
+      "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "not_authenticated": "Necesitas una sesión para esto.",
+      "target_not_found": "Eso ya no está disponible.",
+      "own_content": "No puedes reportar lo tuyo.",
+      "no_shared_context": "Solo puedes reportar o bloquear a personas con las que coincidiste.",
+      "invalid_reason": "Elige un motivo.",
+      "invalid_details": "El detalle es demasiado largo (máximo 500 letras).",
+      "already_reported": "Ya enviaste un reporte sobre esto. Lo estamos revisando.",
+      "too_many_reports": "Enviaste muchos reportes hoy. Inténtalo mañana.",
+      "cannot_block_self": "No puedes bloquearte.",
+      "too_many_blocks": "Llegaste al máximo de personas bloqueadas."
+    }
+  },
+  "ErrorPage": {
+    "title": "Algo salió mal",
+    "body": "Ya lo registramos. Inténtalo de nuevo; si estabas en una sala de oración, puedes volver a entrar con el mismo enlace.",
+    "retry": "Reintentar",
+    "home": "Ir al inicio"
   }
 }

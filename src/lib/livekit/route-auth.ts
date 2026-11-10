@@ -20,6 +20,8 @@ export type ApiErrorCode =
   | "account_required"
   | "too_many_devices"
   | "invalid_endpoint"
+  | "invalid_password"
+  | "deletion_failed"
   | "unexpected";
 
 /** Respuesta de error uniforme: `{ error: <código> }`, siempre sin caché. */

@@ -3,6 +3,7 @@
 import { Check, Copy, Link2, LogOut, UserMinus } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState, useSyncExternalStore } from "react";
+import { ModerationMenu } from "@/components/moderation/moderation-menu";
 import { Avatar } from "@/components/room/avatar";
 import { Button } from "@/components/ui/button";
 import { COMMUNITY_ROLES, toCommunityError, type CommunityErrorKey, type CommunityRole } from "@/features/communities/schemas";
@@ -190,6 +191,14 @@ export function MembersScreen({
                     {t("members.remove")}
                   </Button>
                 )
+              ) : null}
+              {member.user_id !== meId ? (
+                <ModerationMenu
+                  className="w-full"
+                  target={{ type: "user", id: member.user_id }}
+                  author={{ id: member.user_id, name: member.display_name }}
+                  communityId={communityId}
+                />
               ) : null}
             </li>
           ))}

@@ -35,6 +35,8 @@ export function getLocalSupabaseEnv() {
     // Para que la app (build/dev) hable con el Supabase local y no con el remoto de .env.local
     NEXT_PUBLIC_SUPABASE_URL: url,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishableKey,
+    // Rutas del servidor con la service role (eliminar cuenta): también deben hablar con el Supabase local
+    SUPABASE_SERVICE_ROLE_KEY: serviceRoleKey,
   };
 }
 

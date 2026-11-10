@@ -19,6 +19,7 @@ export const ROOM_ERROR_CODES = [
   "not_authenticated",
   "rate_limited",
   "guests_disabled",
+  "captcha_failed",
   "request_empty",
   "request_too_long",
   "permission_denied",

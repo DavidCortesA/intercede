@@ -4,12 +4,13 @@ import { useLocale, useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Turnstile } from "@/components/shared/turnstile";
 import { createRoomAction, type RoomActionState } from "@/features/rooms/actions";
 
 const INITIAL: RoomActionState = {};
 
 /** Un campo (tu nombre) y un botón: la sala se crea sin cuenta y sin configurar nada. */
-export function CreateRoomForm({ initialName }: { initialName: string }) {
+export function CreateRoomForm({ initialName, needsCaptcha = true }: { initialName: string; needsCaptcha?: boolean }) {
   const t = useTranslations("Pray");
   const errors = useTranslations("Room.errors");
   const locale = useLocale();
@@ -40,6 +41,7 @@ export function CreateRoomForm({ initialName }: { initialName: string }) {
           {t("nameHint")}
         </p>
       </div>
+      {needsCaptcha ? <Turnstile resetKey={state} /> : null}
       {state.error ? (
         <p id="create-error" role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {errors(state.error)}

@@ -6,6 +6,7 @@ import { GOOGLE_AUTH_ENABLED, SITE_URL } from "@/config/site";
 import { redirect } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
+import { getCaptchaToken } from "@/lib/captcha";
 import { toAuthError, safeNextPath, type AuthErrorCode } from "./errors";
 import { displayNameSchema, emailSchema, isValidTimeZone, passwordSchema } from "./schemas";
 
@@ -63,7 +64,7 @@ export async function signUpAction(_prev: AuthActionState, formData: FormData): 
   const { error } = await supabase.auth.signUp({
     email: email.data,
     password: password.data,
-    options: { emailRedirectTo: redirectTo, data: name?.success ? { display_name: name.data } : undefined },
+    options: { emailRedirectTo: redirectTo, captchaToken: getCaptchaToken(formData), data: name?.success ? { display_name: name.data } : undefined },
   });
   return error ? { error: toAuthError(error) } : { done: "check_email", email: email.data };
 }
@@ -78,7 +79,7 @@ export async function signInAction(_prev: AuthActionState, formData: FormData): 
   if (!password) return { error: "invalid_credentials" };
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email: email.data, password });
+  const { error } = await supabase.auth.signInWithPassword({ email: email.data, password, options: { captchaToken: getCaptchaToken(formData) } });
   if (error) return { error: toAuthError(error) };
 
   redirect({ href: safeNextPath(text(formData, "next"), "/orar"), locale });
@@ -93,7 +94,7 @@ export async function requestPasswordResetAction(_prev: AuthActionState, formDat
   if (!email.success) return { error: "invalid_email" };
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.resetPasswordForEmail(email.data, { redirectTo: confirmUrl(`/${locale}/restablecer`) });
+  const { error } = await supabase.auth.resetPasswordForEmail(email.data, { redirectTo: confirmUrl(`/${locale}/restablecer`), captchaToken: getCaptchaToken(formData) });
   if (error && toAuthError(error) === "rate_limited") return { error: "rate_limited" };
   return { done: "reset_sent", email: email.data };
 }

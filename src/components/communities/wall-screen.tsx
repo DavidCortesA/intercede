@@ -3,6 +3,7 @@
 import { CheckCircle2, HandHeart, Lock, Trash2 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
+import { ModerationMenu } from "@/components/moderation/moderation-menu";
 import { Avatar } from "@/components/room/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
@@ -47,6 +48,9 @@ export function WallScreen({
   const [deleting, setDeleting] = useState<string | null>(null);
   const [testimonyFor, setTestimonyFor] = useState<string | null>(null);
   const [testimony, setTestimony] = useState("");
+  // Quien bloqueas desaparece al instante; el liderazgo ve todo para poder moderar
+  const [blocked, setBlocked] = useState<ReadonlySet<string>>(new Set());
+  const shown = isLeader ? requests : requests.filter((request) => !blocked.has(request.author_id));
 
   const supportCount = useMemo(() => {
     const counts = new Map<string, number>();
@@ -144,11 +148,11 @@ export function WallScreen({
         </p>
       ) : null}
 
-      {requests.length === 0 ? (
+      {shown.length === 0 ? (
         <p className="rounded-3xl border border-dashed border-border p-6 text-muted-foreground">{wall("empty")}</p>
       ) : (
         <ul className="flex flex-col gap-3">
-          {requests.map((request) => {
+          {shown.map((request) => {
             const author = authors[request.author_id];
             const isMine = request.author_id === meId;
             const praying = mine.has(request.id);
@@ -250,6 +254,14 @@ export function WallScreen({
                       </Button>
                     )
                   ) : null}
+                  {isMine ? null : (
+                    <ModerationMenu
+                      target={{ type: "community_request", id: request.id }}
+                      author={{ id: request.author_id, name: author?.display_name ?? wall("unknownAuthor") }}
+                      communityId={communityId}
+                      onBlocked={(userId) => setBlocked((current) => new Set(current).add(userId))}
+                    />
+                  )}
                 </article>
               </li>
             );

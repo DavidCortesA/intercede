@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useActionState } from "react";
+import { Turnstile } from "@/components/shared/turnstile";
 import { Button } from "@/components/ui/button";
 import { FormError, FormField } from "@/components/ui/form-field";
 import { signInAction, type AuthActionState } from "@/features/auth/account-actions";
@@ -28,6 +29,7 @@ export function SignInForm({ next, showGuestWarning }: { next: string; showGuest
         required
       />
       <FormField id="signin-password" name="password" type="password" label={t("password")} autoComplete="current-password" required />
+      <Turnstile resetKey={state} />
       {state.error ? <FormError>{t(`errors.${state.error}`)}</FormError> : null}
       <Button type="submit" size="lg" disabled={pending} aria-busy={pending}>
         {pending ? t("signIn.submitting") : t("signIn.submit")}

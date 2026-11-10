@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useActionState } from "react";
+import { Turnstile } from "@/components/shared/turnstile";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { FormError, FormField } from "@/components/ui/form-field";
 import { requestPasswordResetAction, type AuthActionState } from "@/features/auth/account-actions";
@@ -38,6 +39,7 @@ export function RecoverForm() {
         autoComplete="email"
         required
       />
+      <Turnstile resetKey={state} />
       {state.error ? <FormError>{t(`errors.${state.error}`)}</FormError> : null}
       <Button type="submit" size="lg" disabled={pending} aria-busy={pending}>
         {pending ? t("recover.submitting") : t("recover.submit")}

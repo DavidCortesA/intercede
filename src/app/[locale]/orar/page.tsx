@@ -50,7 +50,7 @@ export default async function PrayPage({ params }: PageProps<"/[locale]/orar">) 
           <p className="mt-3 text-center text-lg text-brand-cream/85">{t("subtitle")}</p>
 
           <div className="mt-8">
-            <CreateRoomForm initialName={session?.profile?.display_name ?? ""} />
+            <CreateRoomForm initialName={session?.profile?.display_name ?? ""} needsCaptcha={!session} />
           </div>
 
           <section className="mt-10 border-t border-border pt-8" aria-labelledby="join-title">

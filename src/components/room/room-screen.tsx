@@ -14,6 +14,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { ActiveSpeaker } from "./active-speaker";
 import { AudioPanel } from "./audio-panel";
 import { ConnectionBanner } from "./connection-banner";
+import { ModerationMenu } from "@/components/moderation/moderation-menu";
 import { HostControls } from "./host-controls";
 import { Participants } from "./participants";
 import { RequestComposer } from "./request-composer";
@@ -56,6 +57,7 @@ function EndedScreen({ kind }: { kind: "closedLive" | "removed" }) {
 export function RoomScreen(props: Props) {
   const t = useTranslations("Room");
   const audioText = useTranslations("Audio");
+  const moderation = useTranslations("Moderation");
   const router = useRouter();
   const { room, members, requests, support, connection, online, error, actions } = useRoomLive({
     room: props.room,
@@ -142,6 +144,8 @@ export function RoomScreen(props: Props) {
           onMute={(userId) => void hostCommand({ action: "mute", roomId: room.id, identity: userId })}
           onRemove={(userId) => void hostCommand({ action: "remove", roomId: room.id, identity: userId })}
         />
+
+        {isHost ? null : <ModerationMenu className="self-start" target={{ type: "room", id: room.id }} label={moderation("room.report")} />}
 
         {isHost ? (
           <HostControls

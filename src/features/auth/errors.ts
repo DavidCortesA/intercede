@@ -8,6 +8,7 @@ export const AUTH_ERROR_CODES = [
   "email_in_use",
   "already_signed_in",
   "rate_limited",
+  "captcha_failed",
   "same_password",
   "link_expired",
   "not_authenticated",
@@ -39,6 +40,8 @@ export function toAuthError(error: AuthErrorLike | null | undefined): AuthErrorC
     case "user_already_exists":
     case "identity_already_exists":
       return "email_in_use";
+    case "captcha_failed":
+      return "captcha_failed";
     case "over_email_send_rate_limit":
     case "over_request_rate_limit":
     case "over_sms_send_rate_limit":

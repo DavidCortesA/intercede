@@ -13,12 +13,13 @@ const SECTIONS = [
 ] as const;
 
 /** Secciones de una comunidad. `Ajustes` solo aparece para la administración. */
-export function CommunityNav({ communityId, isAdmin }: { communityId: string; isAdmin: boolean }) {
+export function CommunityNav({ communityId, isAdmin, isLeader = isAdmin }: { communityId: string; isAdmin: boolean; isLeader?: boolean }) {
   const t = useTranslations("Communities.nav");
   const pathname = usePathname();
   const base = `/comunidades/${communityId}`;
-  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "settings"; path: string }[] = [
+  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "settings"; path: string }[] = [
     ...SECTIONS,
+    ...(isLeader ? [{ key: "reports" as const, path: "/reportes" }] : []),
     ...(isAdmin ? [{ key: "settings" as const, path: "/ajustes" }] : []),
   ];
 

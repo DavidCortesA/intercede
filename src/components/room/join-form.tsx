@@ -4,12 +4,13 @@ import { useLocale, useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Turnstile } from "@/components/shared/turnstile";
 import { joinRoomAction, type RoomActionState } from "@/features/rooms/actions";
 
 const INITIAL: RoomActionState = {};
 
 /** Entrar a una sala con solo un nombre (sin cuenta). */
-export function JoinForm({ code, suggestedName }: { code: string; suggestedName: string }) {
+export function JoinForm({ code, suggestedName, needsCaptcha = true }: { code: string; suggestedName: string; needsCaptcha?: boolean }) {
   const t = useTranslations("Room.join");
   const errors = useTranslations("Room.errors");
   const locale = useLocale();
@@ -46,6 +47,7 @@ export function JoinForm({ code, suggestedName }: { code: string; suggestedName:
           {errors(state.error)}
         </p>
       ) : null}
+      {needsCaptcha ? <Turnstile resetKey={state} /> : null}
       <Button type="submit" size="lg" disabled={pending || name.trim().length === 0} aria-busy={pending}>
         {pending ? t("submitting") : t("submit")}
       </Button>

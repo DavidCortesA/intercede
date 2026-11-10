@@ -7,6 +7,7 @@ import { RoomMessage } from "@/components/room/room-message";
 import { RoomScreen } from "@/components/room/room-screen";
 import { RoomShell } from "@/components/room/room-shell";
 import { getRoomSnapshot } from "@/features/rooms/queries";
+import { getCurrentSession } from "@/features/auth/queries";
 import { routing } from "@/i18n/routing";
 
 // La sala es privada por definición: nunca se indexa (el código es la llave de entrada).
@@ -35,12 +36,14 @@ export default async function RoomPage({ params }: PageProps<"/[locale]/r/[code]
       return <RoomMessage kind="removed" roomName={snapshot.name} />;
     case "join": {
       const t = await getTranslations("Room.join");
+      // Quien ya tiene sesión (invitada o cuenta) no necesita CAPTCHA: no se crea ningún usuario nuevo
+      const hasSession = Boolean(await getCurrentSession());
       return (
         <RoomShell>
           <h1 className="font-heading text-3xl font-extrabold text-balance">{t("title", { name: snapshot.name })}</h1>
           <p className="mt-3 text-muted-foreground">{t("people", { count: snapshot.activeMembers })}</p>
           <div className="mt-8">
-            <JoinForm code={snapshot.code} suggestedName={snapshot.suggestedName} />
+            <JoinForm code={snapshot.code} suggestedName={snapshot.suggestedName} needsCaptcha={!hasSession} />
           </div>
         </RoomShell>
       );

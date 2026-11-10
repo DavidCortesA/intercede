@@ -32,7 +32,7 @@ export default async function CommunityLayout({ children, params }: LayoutProps<
         </div>
       </header>
       {community.description ? <p className="text-muted-foreground">{community.description}</p> : null}
-      <CommunityNav communityId={community.id} isAdmin={ctx.isAdmin} />
+      <CommunityNav communityId={community.id} isAdmin={ctx.isAdmin} isLeader={ctx.isLeader} />
       <div>{children}</div>
     </div>
   );

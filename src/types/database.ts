@@ -23,7 +23,21 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "communities": {
+            "blocks": {
+                  Row: {
+                    "blocked_id": string,"blocker_id": string,"created_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "blocked_id": string,"blocker_id"?: string,"created_at"?: string
+                  }
+                  Update: {
+                    "blocked_id"?: string,"blocker_id"?: string,"created_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"communities": {
                   Row: {
                     "created_at": string,"created_by": string | null,"description": string | null,"id": string,"kind": string,"logo_url": string | null,"name": string
                   }
@@ -331,6 +345,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"reports": {
+                  Row: {
+                    "community_id": string | null,"created_at": string,"details": string | null,"id": string,"reason": string,"reporter_id": string | null,"resolved_at": string | null,"resolved_by": string | null,"status": string,"target_id": string,"target_type": string,"target_user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "community_id"?: string | null,"created_at"?: string,"details"?: string | null,"id"?: string,"reason": string,"reporter_id"?: string | null,"resolved_at"?: string | null,"resolved_by"?: string | null,"status"?: string,"target_id": string,"target_type": string,"target_user_id"?: string | null
+                  }
+                  Update: {
+                    "community_id"?: string | null,"created_at"?: string,"details"?: string | null,"id"?: string,"reason"?: string,"reporter_id"?: string | null,"resolved_at"?: string | null,"resolved_by"?: string | null,"status"?: string,"target_id"?: string,"target_type"?: string,"target_user_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "reports_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"room_members": {
                   Row: {
                     "avatar_url": string | null,"display_name": string,"joined_at": string,"left_at": string | null,"removed_at": string | null,"role": string,"room_id": string,"user_id": string
@@ -449,7 +483,10 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "can_manage_schedule":
+            "block_user":
+{ Args: { "p_user_id": string }; Returns: undefined
+                           },
+"can_manage_schedule":
 { Args: { "p_schedule_id": string }; Returns: boolean
                            },
 "claim_notifications":
@@ -474,6 +511,9 @@ isOneToOne: false
                            },
 "create_event":
 { Args: { "p_community_id": string,"p_date": string,"p_description": string,"p_duration_minutes"?: number,"p_opens_room"?: boolean,"p_reminder_minutes"?: number,"p_time": string,"p_timezone": string,"p_title": string }; Returns: string
+                           },
+"create_report":
+{ Args: { "p_community_id"?: string,"p_details"?: string,"p_reason": string,"p_target_id": string,"p_type": string }; Returns: string
                            },
 "create_room":
 { Args: { "p_display_name": string,"p_name": string }; Returns: {
@@ -511,6 +551,9 @@ isOneToOne: false
                            },
 "is_allowed_push_endpoint":
 { Args: { "p_endpoint": string }; Returns: boolean
+                           },
+"is_blocked_between":
+{ Args: { "p_other": string }; Returns: boolean
                            },
 "is_community_admin":
 { Args: { "p_community_id": string }; Returns: boolean
@@ -575,8 +618,14 @@ isOneToOne: false
               "is_active": boolean,"local_time": string,"name": string,"recurrence": string,"timezone": string,"weekdays": (number)[]
             }[]
                            },
+"prepare_account_deletion":
+{ Args: { "p_user_id": string }; Returns: Json
+                           },
 "process_scheduled_work":
 { Args: { "p_now"?: string }; Returns: Json
+                           },
+"purge_inactive_guests":
+{ Args: { "p_days"?: number,"p_only"?: (string)[] }; Returns: number
                            },
 "regenerate_community_invite":
 { Args: { "p_community_id": string }; Returns: string
@@ -590,6 +639,14 @@ isOneToOne: false
 "remove_member":
 { Args: { "p_room_id": string,"p_user_id": string }; Returns: undefined
                            },
+"resolve_report":
+{ Args: { "p_report_id": string,"p_status": string }; Returns: undefined
+                           },
+"security_audit":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "category": string,"detail": string,"object_name": string
+            }[]
+                           },
 "set_member_role":
 { Args: { "p_community_id": string,"p_role": string,"p_user_id": string }; Returns: undefined
                            },
@@ -601,6 +658,9 @@ isOneToOne: false
                            },
 "set_schedule_active":
 { Args: { "p_active": boolean,"p_schedule_id": string }; Returns: undefined
+                           },
+"shares_context_with":
+{ Args: { "p_user_id": string }; Returns: boolean
                            },
 "subscribe_to_schedule":
 { Args: { "p_token": string }; Returns: string

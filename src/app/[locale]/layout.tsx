@@ -1,14 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
-import { Analytics } from "@vercel/analytics/next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BRAND } from "@/config/brand";
+import { SiteAnalytics } from "@/components/shared/analytics";
 import { PwaProvider } from "@/components/shared/pwa-provider";
 import { SITE_URL } from "@/config/site";
 import { routing } from "@/i18n/routing";
-import { scrubAnalyticsEvent } from "@/lib/sentry/scrub";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -72,7 +71,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <PwaProvider>{children}</PwaProvider>
         </NextIntlClientProvider>
         {/* Analítica sin cookies, solo en Vercel; las rutas con llaves (/r/código, /p/…, /c/…) se generalizan antes de enviarse */}
-        {process.env.VERCEL ? <Analytics beforeSend={scrubAnalyticsEvent} /> : null}
+        {process.env.VERCEL ? <SiteAnalytics /> : null}
       </body>
     </html>
   );

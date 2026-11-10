@@ -24,6 +24,26 @@ jobs:
       - run: npm run lint
       - run: npm test
 
+  db:
+    name: Base de datos (migraciones, tipos y RLS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # Supabase local con solo los servicios necesarios (se amplía al usarlos: realtime, storage…)
+      - run: npx supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,mailpit,storage-api,realtime
+      - name: Los tipos generados están al día
+        run: |
+          npm run db:types
+          git diff --exit-code src/types/database.ts
+      - run: npm run test:db
+      - run: npx supabase stop
+        if: always()
+
   e2e:
     name: Build y pruebas e2e
     runs-on: ubuntu-latest

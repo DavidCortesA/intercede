@@ -1,7 +1,7 @@
 import { getCurrentSession } from "@/features/auth/queries";
 import { createClient } from "@/lib/supabase/server";
 import { extractRoomCode } from "./schemas";
-import type { PrayerRequest, Room, RoomMember } from "./types";
+import type { PrayerRequest, PrayerSupport, Room, RoomMember } from "./types";
 
 export type RoomSnapshot =
   | { kind: "not_found" }
@@ -13,6 +13,9 @@ export type RoomSnapshot =
       kind: "member";
       room: Room;
       meId: string;
+      /** Los invitados no tienen diario (la base lo exige); las cuentas sí. */
+      isAnonymous: boolean;
+      support: PrayerSupport[];
       /** Todas las filas de la sala (incluye a quienes salieron, para mostrar sus nombres en peticiones). */
       members: RoomMember[];
       requests: PrayerRequest[];
@@ -39,14 +42,23 @@ export async function getRoomSnapshot(rawCode: string): Promise<RoomSnapshot> {
     // RLS: solo devuelve la sala si la persona participa (o participó) en ella
     const { data: room } = await supabase.from("rooms").select("*").eq("code", code).maybeSingle();
     if (room) {
-      const [{ data: members }, { data: requests }] = await Promise.all([
+      const [{ data: members }, { data: requests }, { data: support }] = await Promise.all([
         supabase.from("room_members").select("*").eq("room_id", room.id),
         supabase.from("prayer_requests").select("*").eq("room_id", room.id).order("created_at", { ascending: false }).limit(200),
+        supabase.from("prayer_support").select("*").eq("room_id", room.id),
       ]);
       const me = members?.find((m) => m.user_id === session.userId);
       if (me?.removed_at) return { kind: "removed", name: preview.name };
       if (me && me.left_at === null) {
-        return { kind: "member", room, meId: session.userId, members: members ?? [], requests: requests ?? [] };
+        return {
+          kind: "member",
+          room,
+          meId: session.userId,
+          isAnonymous: session.isAnonymous,
+          members: members ?? [],
+          requests: requests ?? [],
+          support: support ?? [],
+        };
       }
     }
   }

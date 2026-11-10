@@ -46,6 +46,7 @@ export function Participants({ members, meId, presence, audioActive, isHost, onM
                 <Avatar
                   userId={member.user_id}
                   name={member.display_name}
+                  src={member.avatar_url}
                   className={cn("size-12", state?.speaking && "ring-2 ring-brand-cyan ring-offset-2 ring-offset-background")}
                 />
                 {inAudio ? (

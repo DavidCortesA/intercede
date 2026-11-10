@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { sendHostCommand } from "@/features/audio/api";
+import type { TablesInsert } from "@/types/database";
 import { createClient } from "@/lib/supabase/client";
 import { toRoomError, type RoomErrorCode } from "./errors";
-import type { PrayerRequest, Room, RoomMember } from "./types";
+import type { PrayerRequest, PrayerSupport, Room, RoomMember } from "./types";
 
 export type ConnectionState = "connecting" | "live" | "reconnecting";
 
@@ -12,6 +13,14 @@ interface Initial {
   room: Room;
   members: RoomMember[];
   requests: PrayerRequest[];
+  support: PrayerSupport[];
+}
+
+const sameSupport = (a: Pick<PrayerSupport, "request_id" | "user_id">, b: Pick<PrayerSupport, "request_id" | "user_id">) =>
+  a.request_id === b.request_id && a.user_id === b.user_id;
+
+function addSupport(list: PrayerSupport[], next: PrayerSupport): PrayerSupport[] {
+  return list.some((s) => sameSupport(s, next)) ? list : [...list, next];
 }
 
 const byNewest = (a: PrayerRequest, b: PrayerRequest) => b.created_at.localeCompare(a.created_at);
@@ -40,6 +49,7 @@ export function useRoomLive(initial: Initial) {
   const [room, setRoom] = useState(initial.room);
   const [members, setMembers] = useState(initial.members);
   const [requests, setRequests] = useState(initial.requests);
+  const [support, setSupport] = useState(initial.support);
   const [connection, setConnection] = useState<ConnectionState>("connecting");
   const [online, setOnline] = useState(true);
   const [error, setError] = useState<RoomErrorCode | null>(null);
@@ -52,11 +62,14 @@ export function useRoomLive(initial: Initial) {
     // en vez de reemplazar: se conserva lo local que se creó mientras leíamos (margen de 15 s
     // por posibles diferencias de reloj) y las salas cerradas no se "reabren".
     const startedAt = new Date(Date.now() - 15_000).toISOString();
-    const [roomRes, membersRes, requestsRes] = await Promise.all([
+    const [roomRes, membersRes, requestsRes, supportRes] = await Promise.all([
       supabase.from("rooms").select("*").eq("id", roomId).maybeSingle(),
       supabase.from("room_members").select("*").eq("room_id", roomId),
       supabase.from("prayer_requests").select("*").eq("room_id", roomId).order("created_at", { ascending: false }).limit(200),
+      supabase.from("prayer_support").select("*").eq("room_id", roomId),
     ]);
+    // Al volver de un corte, "orando por esto" se reemplaza por lo leído (es un conjunto, sin orden)
+    if (supportRes.data) setSupport(supportRes.data);
     const fetchedRoom = roomRes.data;
     if (fetchedRoom) setRoom((current) => (current.status === "closed" ? current : fetchedRoom));
     const fetchedMembers = membersRes.data;
@@ -101,6 +114,19 @@ export function useRoomLive(initial: Initial) {
         if (!id) return;
         deletedRef.current.add(id);
         setRequests((list) => list.filter((r) => r.id !== id));
+      })
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "prayer_support", filter: `room_id=eq.${roomId}` },
+        (payload) => setSupport((list) => addSupport(list, payload.new as PrayerSupport)),
+      )
+      // Sin filtro (Realtime no filtra DELETE); la clave primaria (petición + persona) basta para quitarlo
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "prayer_support" }, (payload) => {
+        const old = payload.old as Partial<PrayerSupport>;
+        if (old.request_id && old.user_id) {
+          const gone = { request_id: old.request_id, user_id: old.user_id };
+          setSupport((list) => list.filter((s) => !sameSupport(s, gone)));
+        }
       })
       .on(
         "postgres_changes",
@@ -190,6 +216,33 @@ export function useRoomLive(initial: Initial) {
         }
         return rows !== null;
       },
+      /** "Estoy orando por esto": alterna el apoyo de la persona a una petición ajena. */
+      async toggleSupport(requestId: string, meId: string, on: boolean): Promise<boolean> {
+        if (on) {
+          // room_id lo completa un trigger de la base a partir de la petición
+          const row = await run(() =>
+            supabase.from("prayer_support").insert({ request_id: requestId } as TablesInsert<"prayer_support">).select().single(),
+          );
+          if (row) setSupport((list) => addSupport(list, row));
+          return row !== null;
+        }
+        const rows = await run(() => supabase.from("prayer_support").delete().eq("request_id", requestId).eq("user_id", meId).select("request_id"));
+        if (rows) setSupport((list) => list.filter((s) => !(s.request_id === requestId && s.user_id === meId)));
+        return rows !== null;
+      },
+      /** Copia una petición de la sala al diario (solo cuentas; una vez por petición). */
+      async saveToJournal(request: PrayerRequest): Promise<boolean> {
+        setError(null);
+        const { error: failure } = await supabase
+          .from("prayer_journal_entries")
+          .insert({ content: request.content, source_request_id: request.id });
+        // 23505: ya estaba guardada: para quien la guardó es lo mismo que haberlo logrado
+        if (failure && failure.code !== "23505") {
+          setError(toRoomError(failure));
+          return false;
+        }
+        return true;
+      },
       async setLocked(locked: boolean): Promise<boolean> {
         const res = await run(async () => ({ ...(await supabase.rpc("set_room_locked", { p_room_id: roomId, p_locked: locked })), data: true }));
         if (res) setRoom((r) => ({ ...r, is_locked: locked }));
@@ -216,5 +269,5 @@ export function useRoomLive(initial: Initial) {
     [supabase, roomId, run],
   );
 
-  return { room, members, requests, connection, online, error, actions };
+  return { room, members, requests, support, connection, online, error, actions };
 }

@@ -1,12 +1,12 @@
 "use client";
 
-import { CheckCircle2, HandHeart, Trash2 } from "lucide-react";
+import { BookmarkPlus, CheckCircle2, Heart, HandHeart, Trash2 } from "lucide-react";
 import { useFormatter, useNow, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { REQUEST_MAX_LENGTH } from "@/features/rooms/schemas";
-import type { PrayerRequest, RoomMember } from "@/features/rooms/types";
+import type { PrayerRequest, PrayerSupport, RoomMember } from "@/features/rooms/types";
 import { cn } from "@/lib/utils";
 import { Avatar } from "./avatar";
 
@@ -15,13 +15,18 @@ interface Props {
   members: RoomMember[];
   meId: string;
   isHost: boolean;
+  support: PrayerSupport[];
+  /** Solo las cuentas tienen diario (la base lo exige). */
+  canSaveToJournal: boolean;
   onSetAnswered: (id: string, isAnswered: boolean, testimony: string | null) => Promise<boolean>;
   onRemove: (id: string) => Promise<boolean>;
+  onToggleSupport: (requestId: string, on: boolean) => Promise<boolean>;
+  onSaveToJournal: (request: PrayerRequest) => Promise<boolean>;
 }
 
-export function RequestList({ requests, members, meId, isHost, onSetAnswered, onRemove }: Props) {
+export function RequestList({ requests, members, meId, isHost, support, canSaveToJournal, onSetAnswered, onRemove, onToggleSupport, onSaveToJournal }: Props) {
   const t = useTranslations("Room.requests");
-  const names = new Map(members.map((m) => [m.user_id, m.display_name]));
+  const people = new Map(members.map((m) => [m.user_id, m]));
 
   if (requests.length === 0) {
     return <p className="rounded-2xl border border-dashed border-border px-4 py-8 text-center text-muted-foreground">{t("empty")}</p>;
@@ -34,7 +39,13 @@ export function RequestList({ requests, members, meId, isHost, onSetAnswered, on
         <RequestItem
           key={request.id}
           request={request}
-          authorName={names.get(request.author_id) ?? t("unknownAuthor")}
+          authorName={people.get(request.author_id)?.display_name ?? t("unknownAuthor")}
+          authorAvatar={people.get(request.author_id)?.avatar_url ?? null}
+          supporters={support.filter((s) => s.request_id === request.id).map((s) => s.user_id)}
+          meId={meId}
+          canSaveToJournal={canSaveToJournal}
+          onToggleSupport={onToggleSupport}
+          onSaveToJournal={onSaveToJournal}
           canEdit={request.author_id === meId}
           canDelete={request.author_id === meId || isHost}
           onSetAnswered={onSetAnswered}
@@ -48,13 +59,19 @@ export function RequestList({ requests, members, meId, isHost, onSetAnswered, on
 interface ItemProps {
   request: PrayerRequest;
   authorName: string;
+  authorAvatar: string | null;
+  supporters: string[];
+  meId: string;
+  canSaveToJournal: boolean;
+  onToggleSupport: Props["onToggleSupport"];
+  onSaveToJournal: Props["onSaveToJournal"];
   canEdit: boolean;
   canDelete: boolean;
   onSetAnswered: Props["onSetAnswered"];
   onRemove: Props["onRemove"];
 }
 
-function RequestItem({ request, authorName, canEdit, canDelete, onSetAnswered, onRemove }: ItemProps) {
+function RequestItem({ request, authorName, authorAvatar, supporters, meId, canSaveToJournal, onToggleSupport, onSaveToJournal, canEdit, canDelete, onSetAnswered, onRemove }: ItemProps) {
   const t = useTranslations("Room.requests");
   const format = useFormatter();
   // "hace 2 min" se actualiza solo cada minuto
@@ -62,6 +79,8 @@ function RequestItem({ request, authorName, canEdit, canDelete, onSetAnswered, o
   const [editing, setEditing] = useState(false);
   const [testimony, setTestimony] = useState("");
   const [busy, setBusy] = useState(false);
+  const [savedToJournal, setSavedToJournal] = useState(false);
+  const iPray = supporters.includes(meId);
 
   async function save(isAnswered: boolean, text: string | null) {
     setBusy(true);
@@ -78,7 +97,7 @@ function RequestItem({ request, authorName, canEdit, canDelete, onSetAnswered, o
       )}
     >
       <div className="flex items-center gap-3">
-        <Avatar userId={request.author_id} name={authorName} className="size-9 text-xs" />
+        <Avatar userId={request.author_id} name={authorName} src={authorAvatar} className="size-9 text-xs" />
         <div className="min-w-0 flex-1">
           <p className="truncate font-heading text-sm font-bold">{t("by", { name: authorName })}</p>
           <time
@@ -104,6 +123,54 @@ function RequestItem({ request, authorName, canEdit, canDelete, onSetAnswered, o
           <strong>{t("testimonyPrefix")}</strong> {request.testimony}
         </p>
       ) : null}
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {request.author_id === meId ? (
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Heart className="size-4 text-brand-gold" aria-hidden="true" />
+            {t("support.count", { count: supporters.length })}
+          </p>
+        ) : (
+          <button
+            type="button"
+            aria-pressed={iPray}
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              await onToggleSupport(request.id, !iPray);
+              setBusy(false);
+            }}
+            className={cn(
+              "inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-[1.5px] px-4 text-sm font-semibold transition-colors disabled:opacity-60",
+              iPray ? "bg-brand-gradient border-transparent text-white" : "border-border bg-surface text-primary-text hover:border-ring",
+            )}
+          >
+            <Heart className="size-4" aria-hidden="true" fill={iPray ? "currentColor" : "none"} />
+            {t("support.pray")} · {supporters.length}
+          </button>
+        )}
+        {canSaveToJournal ? (
+          savedToJournal ? (
+            <span role="status" className="text-sm font-semibold text-success">
+              {t("savedToJournal")}
+            </span>
+          ) : (
+            <Button
+              size="sm"
+              variant="secondary"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                if (await onSaveToJournal(request)) setSavedToJournal(true);
+                setBusy(false);
+              }}
+            >
+              <BookmarkPlus className="size-4" aria-hidden="true" />
+              {t("saveToJournal")}
+            </Button>
+          )
+        ) : null}
+      </div>
 
       {editing ? (
         <div className="mt-3 flex flex-col gap-2">

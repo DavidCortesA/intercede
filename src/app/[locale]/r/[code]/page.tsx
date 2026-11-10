@@ -47,7 +47,14 @@ export default async function RoomPage({ params }: PageProps<"/[locale]/r/[code]
     }
     case "member":
       return (
-        <RoomScreen room={snapshot.room} meId={snapshot.meId} members={snapshot.members} requests={snapshot.requests} />
+        <RoomScreen
+          room={snapshot.room}
+          meId={snapshot.meId}
+          isAnonymous={snapshot.isAnonymous}
+          members={snapshot.members}
+          requests={snapshot.requests}
+          support={snapshot.support}
+        />
       );
   }
 }

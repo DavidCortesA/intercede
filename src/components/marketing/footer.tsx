@@ -5,6 +5,7 @@ import { Wordmark } from "./wordmark";
 
 export async function Footer() {
   const t = await getTranslations("Footer");
+  const nav = await getTranslations("Nav");
   const brand = await getTranslations("Brand");
   // Correo de contacto real: solo se muestra si se configura (no se inventan datos de contacto).
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
@@ -20,6 +21,9 @@ export async function Footer() {
           </p>
         </div>
         <nav className="flex flex-wrap gap-x-7 gap-y-3 text-sm">
+          <Link href="/entrar" className="hover:text-white hover:underline underline-offset-4">
+            {nav("signIn")}
+          </Link>
           <Link href="/privacidad" className="hover:text-white hover:underline underline-offset-4">
             {t("privacy")}
           </Link>

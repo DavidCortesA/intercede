@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { sendHostCommand, type HostCommand } from "@/features/audio/api";
 import { useLiveAudio } from "@/features/audio/use-live-audio";
 import { useWakeLock } from "@/features/audio/use-wake-lock";
-import type { PrayerRequest, Room, RoomMember } from "@/features/rooms/types";
+import type { PrayerRequest, PrayerSupport, Room, RoomMember } from "@/features/rooms/types";
 import { useRoomLive } from "@/features/rooms/use-room-live";
 import { Link, useRouter } from "@/i18n/navigation";
 import { ActiveSpeaker } from "./active-speaker";
@@ -23,8 +23,10 @@ import { ShareButton } from "./share-button";
 interface Props {
   room: Room;
   meId: string;
+  isAnonymous: boolean;
   members: RoomMember[];
   requests: PrayerRequest[];
+  support: PrayerSupport[];
 }
 
 /** Pantalla final cuando la sala se cerró o el anfitrión sacó a la persona. */
@@ -55,10 +57,11 @@ export function RoomScreen(props: Props) {
   const t = useTranslations("Room");
   const audioText = useTranslations("Audio");
   const router = useRouter();
-  const { room, members, requests, connection, online, error, actions } = useRoomLive({
+  const { room, members, requests, support, connection, online, error, actions } = useRoomLive({
     room: props.room,
     members: props.members,
     requests: props.requests,
+    support: props.support,
   });
   const audio = useLiveAudio(props.room.id);
   const [hostError, setHostError] = useState(false);
@@ -163,8 +166,12 @@ export function RoomScreen(props: Props) {
             members={members}
             meId={meId}
             isHost={isHost}
+            support={support}
+            canSaveToJournal={!props.isAnonymous}
             onSetAnswered={actions.setAnswered}
             onRemove={actions.removeRequest}
+            onToggleSupport={(requestId, on) => actions.toggleSupport(requestId, meId, on)}
+            onSaveToJournal={actions.saveToJournal}
           />
         </section>
       </main>

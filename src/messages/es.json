@@ -8,6 +8,13 @@
     "termsDescription": "Reglas básicas para orar juntos en INTERCEDE con respeto y seguridad.",
     "prayTitle": "Orar ahora — INTERCEDE",
     "prayDescription": "Crea una sala de oración en segundos, sin cuenta, y comparte el enlace.",
+    "signInTitle": "Entrar — INTERCEDE",
+    "signUpTitle": "Crear cuenta — INTERCEDE",
+    "recoverTitle": "Recuperar contraseña — INTERCEDE",
+    "resetTitle": "Nueva contraseña — INTERCEDE",
+    "profileTitle": "Tu perfil — INTERCEDE",
+    "journalTitle": "Mi diario — INTERCEDE",
+    "historyTitle": "Mis salas — INTERCEDE",
     "roomTitle": "Sala de oración — INTERCEDE"
   },
   "Brand": {
@@ -28,7 +35,8 @@
     "churches": "Iglesias",
     "trust": "Privacidad",
     "faq": "Preguntas",
-    "cta": "Orar ahora"
+    "cta": "Orar ahora",
+    "signIn": "Entrar"
   },
   "Hero": {
     "eyebrow": "Ora · Conecta · Permanece",
@@ -211,6 +219,7 @@
     "codeLabel": "Código o enlace de la sala",
     "codePlaceholder": "Por ejemplo: abc234",
     "join": "Unirme",
+    "signIn": "Entrar o crear cuenta",
     "back": "Volver al inicio"
   },
   "Room": {
@@ -284,7 +293,14 @@
       "cancel": "Cancelar",
       "delete": "Eliminar petición",
       "by": "{name}",
-      "unknownAuthor": "Alguien"
+      "unknownAuthor": "Alguien",
+      "support": {
+        "pray": "Estoy orando por esto",
+        "praying": "Estás orando por esto",
+        "count": "{count, plural, =0 {Nadie ha dicho que ora por esto} one {# persona ora por esto} other {# personas oran por esto}}"
+      },
+      "saveToJournal": "Guardar en mi diario",
+      "savedToJournal": "Guardada en tu diario"
     },
     "host": {
       "title": "Anfitrión",
@@ -443,6 +459,189 @@
       "server_misconfigured": "El audio no está configurado en este momento.",
       "network": "No hay conexión. Revisa tu internet.",
       "host_action": "No se pudo completar la acción. Inténtalo de nuevo."
+    }
+  },
+  "Tabs": {
+    "label": "Navegación de tu cuenta",
+    "pray": "Orar",
+    "journal": "Diario",
+    "rooms": "Salas",
+    "profile": "Perfil"
+  },
+  "Auth": {
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "passwordHint": "Mínimo 8 caracteres.",
+    "newPassword": "Contraseña nueva",
+    "confirmPassword": "Repite la contraseña",
+    "name": "Tu nombre",
+    "or": "o",
+    "google": {
+      "continue": "Continuar con Google"
+    },
+    "signIn": {
+      "title": "Entra a tu cuenta",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "forgot": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes cuenta?",
+      "createAccount": "Crear cuenta",
+      "guestWarning": "Si entras a una cuenta que ya existe, lo que hiciste como invitado en este dispositivo no se une a ella.",
+      "asGuest": "Seguir sin cuenta"
+    },
+    "signUp": {
+      "title": "Crea tu cuenta",
+      "titleGuest": "Guarda tu historial con una cuenta",
+      "subtitle": "Para conservar tu diario, tus salas y tus peticiones.",
+      "guestNote": "Conservamos lo que ya hiciste como invitado: las salas en las que estuviste seguirán en tu historial.",
+      "submit": "Crear cuenta",
+      "submitting": "Creando…",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "signIn": "Entrar"
+    },
+    "checkEmail": {
+      "title": "Revisa tu correo",
+      "body": "Te enviamos un enlace a {email}. Ábrelo para confirmar tu cuenta.",
+      "spam": "Si no lo ves, revisa la carpeta de spam. El enlace caduca en una hora.",
+      "back": "Volver al inicio"
+    },
+    "recover": {
+      "title": "Recupera tu contraseña",
+      "subtitle": "Escribe tu correo y te enviaremos un enlace.",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "sentTitle": "Revisa tu correo",
+      "sentBody": "Si existe una cuenta con {email}, te enviamos un enlace para elegir una contraseña nueva.",
+      "back": "Volver a entrar"
+    },
+    "reset": {
+      "title": "Elige una contraseña nueva",
+      "submit": "Guardar contraseña",
+      "submitting": "Guardando…",
+      "done": "Listo: tu contraseña se actualizó.",
+      "continue": "Continuar",
+      "expiredTitle": "El enlace ya no sirve",
+      "expiredBody": "Pide uno nuevo para cambiar tu contraseña.",
+      "request": "Pedir otro enlace"
+    },
+    "linkError": "El enlace del correo no es válido o ya caducó. Pide uno nuevo.",
+    "errors": {
+      "invalid_email": "Escribe un correo válido.",
+      "weak_password": "La contraseña debe tener al menos 8 caracteres.",
+      "password_mismatch": "Las contraseñas no coinciden.",
+      "invalid_credentials": "Correo o contraseña incorrectos.",
+      "email_not_confirmed": "Primero confirma tu correo con el enlace que te enviamos.",
+      "email_in_use": "Ese correo ya tiene una cuenta. Prueba entrar.",
+      "already_signed_in": "Ya tienes una cuenta abierta.",
+      "rate_limited": "Demasiados intentos o correos enviados. Espera unos minutos.",
+      "same_password": "Elige una contraseña distinta a la actual.",
+      "link_expired": "El enlace ya no es válido. Pide uno nuevo.",
+      "not_authenticated": "Tu sesión expiró. Entra de nuevo.",
+      "invalid_name": "Escribe un nombre de hasta 40 caracteres.",
+      "invalid_timezone": "Elige una zona horaria válida.",
+      "generic": "Algo salió mal. Inténtalo de nuevo."
+    }
+  },
+  "Account": {
+    "title": "Tu perfil",
+    "guestTitle": "Estás orando como invitado",
+    "guestBody": "Crea una cuenta para guardar tu diario, tu historial de salas y tus peticiones. Lo que ya hiciste se conserva.",
+    "createAccount": "Crear cuenta",
+    "signIn": "Ya tengo cuenta",
+    "name": "Nombre",
+    "nameHelp": "Es el que verán en las salas.",
+    "timezone": "Zona horaria",
+    "timezoneHelp": "La usaremos para tus recordatorios.",
+    "timezoneUseDevice": "Usar la de mi dispositivo",
+    "email": "Correo",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "saved": "Cambios guardados",
+    "avatar": {
+      "title": "Foto",
+      "change": "Cambiar foto",
+      "remove": "Quitar foto",
+      "uploading": "Subiendo…",
+      "help": "Se recorta en cuadrado. Máximo 1 MB.",
+      "errors": {
+        "invalid": "Elige una imagen (JPG, PNG o WEBP).",
+        "failed": "No pudimos subir la foto. Inténtalo de nuevo."
+      }
+    },
+    "password": {
+      "title": "Cambiar contraseña",
+      "submit": "Cambiar contraseña"
+    },
+    "signOut": "Cerrar sesión"
+  },
+  "Journal": {
+    "title": "Mi diario de oración",
+    "subtitle": "Es privado: solo tú lo ves.",
+    "placeholder": "¿Por qué estás orando?",
+    "label": "Nueva petición",
+    "add": "Guardar en mi diario",
+    "adding": "Guardando…",
+    "category": "Categoría",
+    "categories": {
+      "all": "Todas",
+      "family": "Familia",
+      "health": "Salud",
+      "work": "Trabajo",
+      "finances": "Finanzas",
+      "faith": "Fe",
+      "other": "Otro"
+    },
+    "filters": {
+      "praying": "En oración",
+      "answered": "Respondidas",
+      "all": "Todas"
+    },
+    "empty": {
+      "praying": "No tienes peticiones en oración.",
+      "answered": "Aún no hay peticiones respondidas.",
+      "all": "Tu diario está vacío. Empieza escribiendo una petición."
+    },
+    "markAnswered": "Marcar como respondida",
+    "unmark": "Quitar “respondida”",
+    "testimonyLabel": "Testimonio (opcional)",
+    "testimonyPlaceholder": "¿Cómo respondió Dios?",
+    "testimonyPrefix": "Testimonio:",
+    "answered": "Respondida",
+    "fromRoom": "Guardada desde una sala",
+    "edit": "Editar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "confirmDelete": "¿Eliminar esta petición? No se puede deshacer.",
+    "confirmDeleteYes": "Sí, eliminar",
+    "errors": {
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "too_many_entries": "Llegaste al máximo de 1000 peticiones en tu diario.",
+      "request_empty": "Escribe algo antes de guardar.",
+      "request_too_long": "Máximo 2000 caracteres."
+    }
+  },
+  "History": {
+    "title": "Mis salas",
+    "subtitle": "Las salas en las que has orado.",
+    "empty": "Aún no has entrado a ninguna sala.",
+    "pray": "Orar ahora",
+    "open": "Abierta",
+    "closed": "Cerrada",
+    "host": "Anfitrión",
+    "rejoin": "Volver a entrar",
+    "joined": "Entraste el {date}"
+  },
+  "GuestInvite": {
+    "cta": "Crear cuenta",
+    "journal": {
+      "title": "El diario es para quienes tienen cuenta",
+      "body": "Crea una cuenta gratis para guardar tus peticiones y ver cómo Dios responde."
+    },
+    "history": {
+      "title": "Guarda tu historial",
+      "body": "Crea una cuenta para que tus salas queden guardadas. Las que visites ahora se conservan."
     }
   },
   "Offline": {

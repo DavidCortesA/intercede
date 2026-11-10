@@ -29,9 +29,14 @@ export async function Header() {
             </Link>
           ))}
         </nav>
-        <Link href="/orar" className={buttonVariants({ size: "sm", variant: "light" })}>
-          {t("cta")}
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href="/entrar" className="hidden px-2 text-sm font-semibold text-brand-cream/85 transition-colors hover:text-white sm:inline">
+            {t("signIn")}
+          </Link>
+          <Link href="/orar" className={buttonVariants({ size: "sm", variant: "light" })}>
+            {t("cta")}
+          </Link>
+        </div>
       </Container>
     </header>
   );

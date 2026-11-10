@@ -49,7 +49,8 @@ export async function signUpAction(_prev: AuthActionState, formData: FormData): 
 
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
-  const redirectTo = confirmUrl(`/${locale}/perfil`);
+  // Tras confirmar el correo vuelve a donde iba (p. ej. una invitación); por defecto, al perfil
+  const redirectTo = confirmUrl(`/${locale}${safeNextPath(text(formData, "next"), "/perfil")}`);
 
   if (data.user && !data.user.is_anonymous) return { error: "already_signed_in" };
 

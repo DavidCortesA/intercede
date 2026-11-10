@@ -19,7 +19,10 @@
     "devotionalTitle": "Devocional de hoy — INTERCEDE",
     "notificationsTitle": "Avisos — INTERCEDE",
     "schedulesTitle": "Salas programadas — INTERCEDE",
-    "inviteTitle": "Invitación a orar — INTERCEDE"
+    "inviteTitle": "Invitación a orar — INTERCEDE",
+    "communitiesTitle": "Comunidades — INTERCEDE",
+    "communityTitle": "Comunidad — INTERCEDE",
+    "communityInviteTitle": "Invitación a una comunidad — INTERCEDE"
   },
   "Brand": {
     "name": "INTERCEDE",
@@ -342,7 +345,8 @@
       "request_empty": "Escribe algo antes de enviar.",
       "request_too_long": "Máximo 500 caracteres.",
       "permission_denied": "No tienes permiso para hacer eso.",
-      "network": "No hay conexión. Revisa tu internet."
+      "network": "No hay conexión. Revisa tu internet.",
+      "community_only": "Esta sala es de una comunidad: solo entran sus miembros."
     }
   },
   "Legal": {
@@ -363,7 +367,7 @@
         },
         "data": {
           "title": "Datos que guardamos",
-          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración, tu historial de salas, las notas de tus devocionales y tu progreso. Si activas los avisos, el dato técnico del navegador que el servicio de notificaciones necesita para entregártelos (puedes quitarlo cuando quieras)."
+          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración, tu historial de salas, las notas de tus devocionales y tu progreso. Si activas los avisos, el dato técnico del navegador que el servicio de notificaciones necesita para entregártelos (puedes quitarlo cuando quieras). Si usas comunidades, tu nombre y tu foto los ven las personas de esa comunidad, igual que lo que publicas en su muro (según la visibilidad que elijas)."
         },
         "providers": {
           "title": "Proveedores",
@@ -471,7 +475,8 @@
     "journal": "Diario",
     "rooms": "Salas",
     "profile": "Perfil",
-    "devotional": "Devocional"
+    "devotional": "Devocional",
+    "communities": "Comunidades"
   },
   "Auth": {
     "email": "Correo electrónico",
@@ -580,7 +585,9 @@
     },
     "signOut": "Cerrar sesión",
     "notificationsLink": "Avisos y recordatorios",
-    "notificationsLinkHelp": "Elige cómo y cuándo te avisamos."
+    "notificationsLinkHelp": "Elige cómo y cuándo te avisamos.",
+    "communitiesLink": "Comunidades",
+    "communitiesLinkHelp": "Tu iglesia, ministerio o grupo."
   },
   "Journal": {
     "title": "Mi diario de oración",
@@ -663,6 +670,10 @@
     "notifications": {
       "title": "Los avisos son para quienes tienen cuenta",
       "body": "Crea una cuenta gratis para recibir recordatorios de tus salas y de tu devocional."
+    },
+    "communities": {
+      "title": "Las comunidades son para quienes tienen cuenta",
+      "body": "Crea una cuenta gratis para crear o unirte a una comunidad: muro de oración, salas, eventos y devocional."
     }
   },
   "Offline": {
@@ -723,7 +734,7 @@
       "title": "Preferencias",
       "push": "Recibir avisos en mis dispositivos",
       "email": "Recibirlos también por correo",
-      "schedules": "Avisarme de mis salas programadas",
+      "schedules": "Avisarme de mis salas programadas y eventos",
       "devotional": "Recordarme el devocional del día",
       "devotionalTime": "Hora del recordatorio",
       "save": "Guardar preferencias",
@@ -799,7 +810,8 @@
       "leave": "Dejar de seguir",
       "followers": "{count, plural, one {# persona la sigue} other {# personas la siguen}}",
       "openRoom": "Entrar a la sala abierta",
-      "zone": "Zona horaria: {zone}"
+      "zone": "Zona horaria: {zone}",
+      "follow": "Seguir"
     },
     "errors": {
       "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
@@ -829,5 +841,264 @@
       "generic": "No pudimos suscribirte. Inténtalo de nuevo."
     },
     "pray": "Orar ahora"
+  },
+  "Communities": {
+    "title": "Comunidades",
+    "subtitle": "Tu iglesia, ministerio o grupo, orando juntos.",
+    "empty": "Todavía no perteneces a ninguna comunidad.",
+    "kinds": {
+      "church": "Iglesia",
+      "ministry": "Ministerio",
+      "group": "Grupo"
+    },
+    "roles": {
+      "admin": "Administración",
+      "leader": "Liderazgo",
+      "member": "Miembro"
+    },
+    "card": {
+      "members": "{count, plural, one {# persona} other {# personas}}"
+    },
+    "create": {
+      "title": "Crear una comunidad",
+      "name": "Nombre",
+      "namePlaceholder": "Iglesia Vida Nueva",
+      "kind": "Tipo",
+      "description": "Descripción (opcional)",
+      "submit": "Crear comunidad",
+      "submitting": "Creando…"
+    },
+    "join": {
+      "title": "Unirme con un enlace",
+      "label": "Enlace o código de invitación",
+      "placeholder": "Pega aquí el enlace",
+      "submit": "Unirme",
+      "submitting": "Uniéndome…"
+    },
+    "nav": {
+      "label": "Secciones de la comunidad",
+      "wall": "Muro",
+      "rooms": "Salas",
+      "events": "Eventos",
+      "devotional": "Devocional",
+      "members": "Miembros",
+      "settings": "Ajustes",
+      "back": "Mis comunidades"
+    },
+    "members": {
+      "title": "Miembros",
+      "invite": {
+        "title": "Enlace de invitación",
+        "help": "Quien lo abra y tenga cuenta podrá unirse.",
+        "copy": "Copiar enlace",
+        "copied": "Enlace copiado",
+        "revoke": "Revocar y crear otro",
+        "revoked": "Enlace nuevo creado. El anterior ya no sirve."
+      },
+      "roleLabel": "Rol de {name}",
+      "remove": "Quitar",
+      "confirmRemove": "¿Quitar a {name} de la comunidad?",
+      "confirm": "Sí, quitar",
+      "cancel": "Cancelar",
+      "leave": "Salir de la comunidad",
+      "confirmLeave": "¿Salir de esta comunidad? Dejarás de ver su muro y sus eventos.",
+      "confirmLeaveYes": "Sí, salir",
+      "you": "(tú)"
+    },
+    "settings": {
+      "title": "Ajustes de la comunidad",
+      "info": "Datos",
+      "name": "Nombre",
+      "kind": "Tipo",
+      "description": "Descripción",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "saved": "Cambios guardados",
+      "logo": {
+        "title": "Logo",
+        "change": "Cambiar logo",
+        "remove": "Quitar logo",
+        "uploading": "Subiendo…",
+        "help": "Se recorta en cuadrado. Máximo 1 MB.",
+        "invalid": "Elige una imagen (JPG, PNG o WEBP).",
+        "failed": "No pudimos subir el logo. Inténtalo de nuevo."
+      },
+      "danger": {
+        "title": "Eliminar la comunidad",
+        "body": "Se borran su muro, eventos, devocionales y salas. No se puede deshacer.",
+        "delete": "Eliminar comunidad",
+        "confirm": "Sí, eliminar para siempre",
+        "cancel": "Cancelar"
+      }
+    },
+    "errors": {
+      "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "invalid_name": "Escribe un nombre (hasta 60 letras).",
+      "invalid_kind": "Elige un tipo de comunidad.",
+      "too_many_communities": "Ya creaste 5 comunidades, el máximo por ahora.",
+      "community_not_found": "Ese enlace ya no sirve.",
+      "community_full": "Esta comunidad llegó a su límite de personas.",
+      "not_admin": "Solo la administración puede hacer esto.",
+      "not_leader": "Solo el liderazgo puede hacer esto.",
+      "not_member": "Ya no perteneces a esta comunidad.",
+      "member_not_found": "Esa persona ya no está en la comunidad.",
+      "invalid_role": "Ese rol no es válido.",
+      "last_admin": "Debe quedar al menos una persona en la administración. Nombra a otra antes.",
+      "cannot_remove_admin": "No puedes quitar a esa persona.",
+      "account_required": "Necesitas una cuenta para esto.",
+      "too_many_requests": "Ya tienes muchas peticiones abiertas aquí. Marca algunas como respondidas.",
+      "invalid_title": "Revisa el título y la descripción.",
+      "invalid_timezone": "Esa zona horaria no es válida.",
+      "invalid_duration": "La duración debe ser de 15 minutos a 24 horas.",
+      "event_in_past": "Esa fecha y hora ya pasó.",
+      "too_many_events": "Hay demasiados eventos próximos. Borra alguno.",
+      "event_ended": "Ese evento ya terminó.",
+      "invalid_weekdays": "Elige al menos un día de la semana.",
+      "schedule_in_past": "Esa fecha y hora ya pasó.",
+      "too_many_schedules": "Ya tienes 10 programadas activas. Pausa o elimina una.",
+      "invalid_room_name": "Escribe un nombre para la sala (hasta 60 letras).",
+      "too_many_rooms": "Ya tienes 5 salas abiertas. Cierra alguna.",
+      "duplicate_devotional": "Ya hay un devocional de la comunidad para ese día."
+    },
+    "wall": {
+      "title": "Muro de oración",
+      "subtitle": "Peticiones de la comunidad. Oren unos por otros.",
+      "label": "Nueva petición",
+      "placeholder": "Comparte una petición con la comunidad…",
+      "visibility": {
+        "label": "¿Quién la ve?",
+        "community": "Toda la comunidad",
+        "leaders": "Solo el liderazgo"
+      },
+      "leadersOnly": "Solo liderazgo",
+      "publish": "Publicar",
+      "publishing": "Publicando…",
+      "empty": "Aún no hay peticiones. Sé la primera persona en compartir una.",
+      "praying": "Estoy orando por esto",
+      "stopPraying": "Dejar de orar por esto",
+      "count": "{count, plural, =0 {Nadie ha orado aún} one {# persona ora por esto} other {# personas oran por esto}}",
+      "answered": "Oración respondida",
+      "markAnswered": "Marcar como respondida",
+      "reopen": "Volver a abrir",
+      "testimony": "Testimonio",
+      "testimonyPlaceholder": "¿Cómo respondió Dios?",
+      "saveTestimony": "Guardar testimonio",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar esta petición?",
+      "confirmYes": "Sí, eliminar",
+      "cancel": "Cancelar",
+      "by": "De {name}",
+      "own": "Tuya",
+      "unknownAuthor": "Alguien de la comunidad"
+    },
+    "devotional": {
+      "title": "Devocional de la comunidad",
+      "empty": {
+        "title": "Hoy no hay devocional de la comunidad",
+        "body": "Cuando el liderazgo publique el de hoy, aparecerá aquí."
+      },
+      "manage": {
+        "title": "Publicar un devocional",
+        "date": "Día",
+        "reference": "Pasaje (referencia)",
+        "text": "Texto del pasaje",
+        "version": "Versión bíblica",
+        "reflection": "Reflexión",
+        "question": "Para pensar",
+        "prayer": "Oración sugerida (opcional)",
+        "submit": "Publicar devocional",
+        "submitting": "Publicando…",
+        "published": "Devocional publicado",
+        "listTitle": "Programados y recientes",
+        "listEmpty": "Todavía no hay devocionales de la comunidad.",
+        "remove": "Eliminar",
+        "confirmRemove": "¿Eliminar el devocional del {date}?",
+        "confirmYes": "Sí, eliminar",
+        "cancel": "Cancelar",
+        "license": "Usa solo textos que tengas derecho a compartir (dominio público o con licencia)."
+      }
+    },
+    "rooms": {
+      "title": "Salas",
+      "openNow": {
+        "title": "Abrir una sala ahora",
+        "name": "Nombre de la sala",
+        "namePlaceholder": "Oración de la tarde",
+        "yourName": "¿Cómo te llamas en la sala?",
+        "submit": "Abrir sala",
+        "submitting": "Abriendo…"
+      },
+      "open": {
+        "title": "Abiertas ahora",
+        "empty": "No hay salas abiertas en este momento.",
+        "join": "Entrar"
+      },
+      "schedules": {
+        "title": "Programadas",
+        "empty": "Aún no hay salas programadas para la comunidad.",
+        "new": "Programar una sala de la comunidad"
+      }
+    },
+    "events": {
+      "title": "Eventos",
+      "empty": "No hay eventos próximos.",
+      "pastTitle": "Anteriores",
+      "upcomingTitle": "Próximos",
+      "new": {
+        "title": "Nuevo evento",
+        "name": "Título",
+        "namePlaceholder": "Vigilia de oración",
+        "description": "Descripción (opcional)",
+        "date": "Fecha",
+        "time": "Hora",
+        "timezone": "Zona horaria",
+        "duration": "Duración",
+        "durationOption": "{minutes, plural, =60 {1 hora} =90 {1 hora y media} =120 {2 horas} =180 {3 horas} =240 {4 horas} =480 {8 horas} =720 {12 horas} other {# minutos}}",
+        "opensRoom": "Abrir una sala de oración a la hora del evento",
+        "reminder": "Recordatorio",
+        "reminderOption": "{minutes, plural, =0 {Sin recordatorio} =60 {1 hora antes} =120 {2 horas antes} =1440 {1 día antes} other {# min antes}}",
+        "submit": "Crear evento",
+        "submitting": "Creando…"
+      },
+      "rsvp": {
+        "label": "¿Vas a ir?",
+        "going": "Voy",
+        "maybe": "Tal vez",
+        "no": "No voy",
+        "summary": "{going, plural, =0 {Nadie confirmó aún} one {# persona va} other {# personas van}}{maybe, plural, =0 {} other { · # tal vez}}",
+        "saved": "Tu respuesta se guardó"
+      },
+      "card": {
+        "when": "{date}",
+        "zone": "Hora de {zone}",
+        "addToCalendar": "Añadir al calendario",
+        "room": "Entrar a la sala",
+        "roomLater": "Se abrirá una sala de oración a la hora del evento",
+        "ended": "Terminó",
+        "delete": "Eliminar",
+        "confirmDelete": "¿Eliminar este evento?",
+        "confirmYes": "Sí, eliminar",
+        "cancel": "Cancelar"
+      }
+    }
+  },
+  "CommunityInvite": {
+    "title": "Te invitaron a una comunidad",
+    "members": "{count, plural, one {# persona} other {# personas}}",
+    "join": "Unirme a la comunidad",
+    "joining": "Uniéndome…",
+    "needAccount": "Para unirte necesitas una cuenta gratuita.",
+    "createAccount": "Crear cuenta",
+    "signIn": "Ya tengo cuenta",
+    "done": "Listo, ya eres parte de la comunidad.",
+    "open": "Abrir la comunidad",
+    "pray": "Orar ahora",
+    "notFound": {
+      "title": "Este enlace ya no sirve",
+      "body": "Puede que lo hayan revocado. Pide uno nuevo a quien te invitó."
+    },
+    "errors": {
+      "generic": "No pudimos unirte. Inténtalo de nuevo."
+    }
   }
 }

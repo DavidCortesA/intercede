@@ -1,4 +1,4 @@
-import { Bell } from "lucide-react";
+import { Bell, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -64,6 +64,17 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
           <span className="text-muted-foreground">{session.email}</span>
         </p>
       </div>
+
+      <Link
+        href="/comunidades"
+        className="flex items-center gap-4 rounded-3xl bg-background p-5 shadow-sm ring-1 ring-border transition-colors hover:ring-ring"
+      >
+        <Users className="size-6 shrink-0 text-primary-text" aria-hidden="true" />
+        <span className="min-w-0">
+          <span className="block font-heading font-bold">{t("communitiesLink")}</span>
+          <span className="block text-sm text-muted-foreground">{t("communitiesLinkHelp")}</span>
+        </span>
+      </Link>
 
       <Link
         href="/avisos"

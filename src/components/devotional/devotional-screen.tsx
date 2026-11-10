@@ -18,10 +18,13 @@ export function DevotionalScreen({
   devotional,
   initialProgress,
   initialStats,
+  embedded = false,
 }: {
   devotional: TodayDevotional;
   initialProgress: DevotionalProgress | null;
   initialStats: DevotionalStats;
+  /** Dentro de una comunidad: título como h2 y sin racha (la racha es del devocional general). */
+  embedded?: boolean;
 }) {
   const t = useTranslations("Devotional");
   const [supabase] = useState(() => createClient());
@@ -66,16 +69,18 @@ export function DevotionalScreen({
 
   return (
     <article className="flex flex-col gap-6">
-      <header>
-        <h1 className="font-heading text-3xl font-extrabold">{t("title")}</h1>
-        <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5 font-semibold text-answered-foreground">
-            <Flame className="size-4" aria-hidden="true" />
-            {t("streak", { count: stats.streak })}
-          </span>
-          {stats.total_read > 0 ? <span>{t("total", { count: stats.total_read })}</span> : null}
-        </p>
-      </header>
+      {embedded ? null : (
+        <header>
+          <h1 className="font-heading text-3xl font-extrabold">{t("title")}</h1>
+          <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 font-semibold text-answered-foreground">
+              <Flame className="size-4" aria-hidden="true" />
+              {t("streak", { count: stats.streak })}
+            </span>
+            {stats.total_read > 0 ? <span>{t("total", { count: stats.total_read })}</span> : null}
+          </p>
+        </header>
+      )}
 
       <section aria-labelledby="devotional-passage" className="rounded-3xl bg-brand-dusk p-6 text-white shadow-sm">
         <h2 id="devotional-passage" className="flex items-center gap-2 font-heading text-lg font-extrabold">

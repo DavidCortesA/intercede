@@ -9,6 +9,7 @@ export const ROOM_ERROR_CODES = [
   "room_closed",
   "room_locked",
   "room_full",
+  "community_only",
   "too_many_rooms",
   "too_many_requests",
   "not_host",

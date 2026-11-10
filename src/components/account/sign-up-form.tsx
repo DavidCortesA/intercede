@@ -13,7 +13,7 @@ const INITIAL: AuthActionState = {};
  * Crear cuenta. Si la persona ya está orando como invitada no se le pide el nombre (ya lo tiene)
  * y su mismo usuario se convierte en cuenta: conserva su historial.
  */
-export function SignUpForm({ isGuest }: { isGuest: boolean }) {
+export function SignUpForm({ isGuest, next }: { isGuest: boolean; next?: string }) {
   const t = useTranslations("Auth");
   const locale = useLocale();
   const [state, formAction, pending] = useActionState(signUpAction, INITIAL);
@@ -34,6 +34,7 @@ export function SignUpForm({ isGuest }: { isGuest: boolean }) {
   return (
     <form action={formAction} className="flex flex-col gap-4" noValidate>
       <input type="hidden" name="locale" value={locale} />
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       {isGuest ? null : (
         <FormField id="signup-name" name="displayName" label={t("name")} autoComplete="given-name" autoCapitalize="words" maxLength={40} />
       )}

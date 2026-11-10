@@ -39,7 +39,7 @@ export default async function SignUpPage({ params, searchParams }: PageProps<"/[
       ) : null}
       <div className="mt-6 flex flex-col gap-4">
         <GoogleButton next={next} />
-        <SignUpForm isGuest={isGuest} />
+        <SignUpForm isGuest={isGuest} next={next} />
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">
         {t("signUp.haveAccount")}{" "}

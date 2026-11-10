@@ -1,26 +1,27 @@
 "use client";
 
-import { BookHeart, BookOpen, History, Mic, UserRound, type LucideIcon } from "lucide-react";
+import { BookHeart, BookOpen, History, Mic, UserRound, Users, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const TABS: { key: "pray" | "devotional" | "journal" | "rooms" | "profile"; href: string; icon: LucideIcon; accountOnly: boolean }[] = [
+const TABS: { key: "pray" | "devotional" | "journal" | "rooms" | "communities" | "profile"; href: string; icon: LucideIcon; accountOnly: boolean; needsCommunity?: boolean }[] = [
   { key: "pray", href: "/orar", icon: Mic, accountOnly: false },
   { key: "devotional", href: "/devocional", icon: BookOpen, accountOnly: true },
   { key: "journal", href: "/diario", icon: BookHeart, accountOnly: true },
   { key: "rooms", href: "/salas", icon: History, accountOnly: true },
+  { key: "communities", href: "/comunidades", icon: Users, accountOnly: true, needsCommunity: true },
   { key: "profile", href: "/perfil", icon: UserRound, accountOnly: false },
 ];
 
 /**
  * Navegación progresiva (CLAUDE.md §8.4): quien ora como invitado solo ve Orar y Perfil; Devocional,
- * Diario y Salas aparecen al crear una cuenta.
+ * Diario y Salas aparecen al crear una cuenta, y Comunidades al crear una o unirse a una.
  */
-export function AppTabs({ isGuest }: { isGuest: boolean }) {
+export function AppTabs({ isGuest, hasCommunities = false }: { isGuest: boolean; hasCommunities?: boolean }) {
   const t = useTranslations("Tabs");
   const pathname = usePathname();
-  const tabs = TABS.filter((tab) => !(isGuest && tab.accountOnly));
+  const tabs = TABS.filter((tab) => !(isGuest && tab.accountOnly) && !(tab.needsCommunity && !hasCommunities));
 
   return (
     <nav
@@ -29,7 +30,7 @@ export function AppTabs({ isGuest }: { isGuest: boolean }) {
     >
       <ul className="mx-auto flex max-w-2xl justify-around px-2">
         {tabs.map(({ key, href, icon: Icon }) => {
-          const active = pathname === href;
+          const active = pathname === href || (href !== "/orar" && pathname.startsWith(`${href}/`));
           return (
             <li key={key}>
               <Link

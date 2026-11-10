@@ -5,24 +5,8 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { Avatar } from "@/components/room/avatar";
 import { Button } from "@/components/ui/button";
+import { MAX_IMAGE_INPUT_BYTES, toSquareWebp } from "@/lib/image";
 import { createClient } from "@/lib/supabase/client";
-
-const SIZE = 256;
-const MAX_INPUT_BYTES = 15 * 1024 * 1024;
-
-/** Recorta al centro en cuadrado y reduce a 256 px (WEBP): la foto pesa poco y el origen se limpia. */
-async function toSquareWebp(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file);
-  const side = Math.min(bitmap.width, bitmap.height);
-  const canvas = document.createElement("canvas");
-  canvas.width = SIZE;
-  canvas.height = SIZE;
-  const context = canvas.getContext("2d");
-  if (!context) throw new Error("canvas");
-  context.drawImage(bitmap, (bitmap.width - side) / 2, (bitmap.height - side) / 2, side, side, 0, 0, SIZE, SIZE);
-  bitmap.close();
-  return new Promise((resolve, reject) => canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("blob"))), "image/webp", 0.85));
-}
 
 /**
  * Foto de perfil. Se sube a `avatars/<id>/…` (la base solo deja escribir en la carpeta propia y
@@ -47,7 +31,7 @@ export function AvatarUploader({ userId, name, avatarUrl }: { userId: string; na
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    if (!file.type.startsWith("image/") || file.size > MAX_INPUT_BYTES) return setError("invalid");
+    if (!file.type.startsWith("image/") || file.size > MAX_IMAGE_INPUT_BYTES) return setError("invalid");
 
     setBusy(true);
     setError(null);

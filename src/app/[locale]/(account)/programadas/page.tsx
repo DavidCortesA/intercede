@@ -36,10 +36,14 @@ export default async function SchedulesPage({ params }: PageProps<"/[locale]/pro
   const { data: schedules } = await supabase
     .from("room_schedules")
     .select(
-      "id, owner_id, name, timezone, recurrence, local_time, start_date, weekdays, reminder_minutes, is_active, next_occurrence_at, last_room_id, created_at",
+      "id, owner_id, name, timezone, recurrence, local_time, start_date, weekdays, reminder_minutes, is_active, next_occurrence_at, last_room_id, created_at, community_id",
     )
     .order("created_at", { ascending: false });
-  const rows = schedules ?? [];
+  // La base también deja ver las programaciones de tus comunidades; aquí solo las que sigues (o creaste, si no son de
+  // una comunidad: esas se administran dentro de la comunidad)
+  const { data: mySubs } = await supabase.from("schedule_subscriptions").select("schedule_id").eq("user_id", session.userId);
+  const followed = new Set((mySubs ?? []).map((sub) => sub.schedule_id));
+  const rows = (schedules ?? []).filter((row) => (row.owner_id === session.userId ? row.community_id === null : followed.has(row.id)));
   const ids = rows.map((row) => row.id);
   const roomIds = rows.flatMap((row) => (row.last_room_id ? [row.last_room_id] : []));
 

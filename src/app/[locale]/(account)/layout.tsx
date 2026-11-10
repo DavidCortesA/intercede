@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { AppTabs } from "@/components/account/app-tabs";
 import { Wordmark } from "@/components/marketing/wordmark";
 import { getCurrentSession } from "@/features/auth/queries";
+import { hasAnyCommunity } from "@/features/communities/queries";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
@@ -14,6 +15,7 @@ export default async function AccountLayout({ children, params }: { children: Re
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const session = await getCurrentSession();
+  const hasCommunities = session && !session.isAnonymous ? await hasAnyCommunity(session.userId) : false;
 
   return (
     <div className="light min-h-dvh bg-surface-warm pb-24 text-foreground">
@@ -25,7 +27,7 @@ export default async function AccountLayout({ children, params }: { children: Re
       <main id="contenido" className="mx-auto max-w-2xl px-5 py-6">
         {children}
       </main>
-      <AppTabs isGuest={Boolean(session?.isAnonymous)} />
+      <AppTabs isGuest={Boolean(session?.isAnonymous)} hasCommunities={hasCommunities} />
     </div>
   );
 }

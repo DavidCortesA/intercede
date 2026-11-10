@@ -8,6 +8,7 @@ import { CreateRoomForm } from "@/components/room/create-room-form";
 import { JoinByCodeForm } from "@/components/room/join-by-code-form";
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentSession } from "@/features/auth/queries";
+import { hasAnyCommunity } from "@/features/communities/queries";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
@@ -32,6 +33,7 @@ export default async function PrayPage({ params }: PageProps<"/[locale]/orar">) 
   setRequestLocale(locale);
   const t = await getTranslations("Pray");
   const session = await getCurrentSession();
+  const hasCommunities = session && !session.isAnonymous ? await hasAnyCommunity(session.userId) : false;
 
   return (
     <>
@@ -73,7 +75,7 @@ export default async function PrayPage({ params }: PageProps<"/[locale]/orar">) 
       {/* Quien ya tiene sesión ve su navegación (invitado: Orar y Perfil; con cuenta: también Diario y Salas) */}
       {session ? (
         <div className="dark">
-          <AppTabs isGuest={session.isAnonymous} />
+          <AppTabs isGuest={session.isAnonymous} hasCommunities={hasCommunities} />
         </div>
       ) : null}
     </>

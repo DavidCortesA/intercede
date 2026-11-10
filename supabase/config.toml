@@ -420,6 +420,11 @@ inspector_port = 8083
 # The Deno major version to use.
 deno_version = 2
 
+# El envío de avisos lo llama pg_cron (pg_net) con un secreto compartido, no con un JWT de persona.
+[functions.dispatch-notifications]
+enabled = true
+verify_jwt = false
+
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 

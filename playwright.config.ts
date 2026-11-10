@@ -18,6 +18,9 @@ export default defineConfig({
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL: `http://localhost:${PORT}`,
+    // Una acción que no encuentra su elemento debe fallar con un mensaje claro, no agotar la prueba entera
+    actionTimeout: 15_000,
+    navigationTimeout: 30_000,
     trace: "on-first-retry",
   },
   projects: [

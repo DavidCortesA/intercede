@@ -114,7 +114,7 @@ test.describe("SEO", () => {
 });
 
 test.describe("accesibilidad (axe, WCAG AA)", () => {
-  for (const path of ["/es", "/es/privacidad", "/es/terminos", "/es/orar", "/es/offline"]) {
+  for (const path of ["/es", "/es/privacidad", "/es/terminos", "/es/orar", "/es/offline", "/es/entrar", "/es/registro", "/es/recuperar", "/es/restablecer"]) {
     for (const scheme of ["light", "dark"] as const) {
       test(`${path} en modo ${scheme}`, async ({ page }) => {
         await page.emulateMedia({ colorScheme: scheme, reducedMotion: "reduce" });

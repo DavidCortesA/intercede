@@ -9,9 +9,9 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-# Servicios que se levantan del Supabase local. Se amplía al usar más (storage, edge functions…).
+# Servicios que NO se levantan del Supabase local (Mailpit y Storage sí: correos y avatares).
 env:
-  SUPABASE_EXCLUDE: studio,imgproxy,edge-runtime,logflare,vector,supavisor,mailpit,storage-api
+  SUPABASE_EXCLUDE: studio,imgproxy,edge-runtime,logflare,vector,supavisor
 
 jobs:
   check:

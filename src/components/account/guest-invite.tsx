@@ -3,7 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
 /** Invitación a crear cuenta para quien ora como invitado (diario, historial). */
-export async function GuestInvite({ kind }: { kind: "journal" | "history" }) {
+export async function GuestInvite({ kind }: { kind: "journal" | "history" | "devotional" | "schedules" | "notifications" }) {
   const t = await getTranslations("GuestInvite");
 
   return (

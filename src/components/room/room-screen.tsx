@@ -152,7 +152,7 @@ export function RoomScreen(props: Props) {
           />
         ) : null}
         {hostError ? (
-          <p role="alert" className="rounded-xl bg-destructive/15 px-4 py-3 text-sm text-destructive">
+          <p role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
             {audioText("errors.host_action")}
           </p>
         ) : null}
@@ -179,7 +179,7 @@ export function RoomScreen(props: Props) {
       <footer className="border-t border-border bg-background px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
         <div className="mx-auto w-full max-w-2xl">
           {error ? (
-            <p role="alert" className="mb-2 rounded-xl bg-destructive/15 px-4 py-2 text-sm text-destructive">
+            <p role="alert" className="mb-2 rounded-xl bg-destructive/10 px-4 py-2 text-sm text-destructive">
               {t(`errors.${error}`)}
             </p>
           ) : null}

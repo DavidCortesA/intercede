@@ -35,7 +35,7 @@ export function FormField({ id, name, label, hint, error, ...inputProps }: Props
 /** Aviso de error de un formulario (arriba del botón). */
 export function FormError({ id, children }: { id?: string; children: ReactNode }) {
   return (
-    <p id={id} role="alert" className="rounded-xl bg-destructive/15 px-4 py-3 text-sm text-destructive">
+    <p id={id} role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
       {children}
     </p>
   );

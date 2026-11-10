@@ -1,20 +1,21 @@
 "use client";
 
-import { BookHeart, History, Mic, UserRound, type LucideIcon } from "lucide-react";
+import { BookHeart, BookOpen, History, Mic, UserRound, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const TABS: { key: "pray" | "journal" | "rooms" | "profile"; href: string; icon: LucideIcon; accountOnly: boolean }[] = [
+const TABS: { key: "pray" | "devotional" | "journal" | "rooms" | "profile"; href: string; icon: LucideIcon; accountOnly: boolean }[] = [
   { key: "pray", href: "/orar", icon: Mic, accountOnly: false },
+  { key: "devotional", href: "/devocional", icon: BookOpen, accountOnly: true },
   { key: "journal", href: "/diario", icon: BookHeart, accountOnly: true },
   { key: "rooms", href: "/salas", icon: History, accountOnly: true },
   { key: "profile", href: "/perfil", icon: UserRound, accountOnly: false },
 ];
 
 /**
- * Navegación progresiva (CLAUDE.md §8.4): quien ora como invitado solo ve Orar y Perfil; Diario y
- * Salas aparecen al crear una cuenta.
+ * Navegación progresiva (CLAUDE.md §8.4): quien ora como invitado solo ve Orar y Perfil; Devocional,
+ * Diario y Salas aparecen al crear una cuenta.
  */
 export function AppTabs({ isGuest }: { isGuest: boolean }) {
   const t = useTranslations("Tabs");

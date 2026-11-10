@@ -41,7 +41,7 @@ export function CreateRoomForm({ initialName }: { initialName: string }) {
         </p>
       </div>
       {state.error ? (
-        <p id="create-error" role="alert" className="rounded-xl bg-destructive/15 px-4 py-3 text-sm text-destructive">
+        <p id="create-error" role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {errors(state.error)}
         </p>
       ) : null}

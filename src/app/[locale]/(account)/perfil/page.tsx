@@ -1,3 +1,4 @@
+import { Bell } from "lucide-react";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -63,6 +64,17 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
           <span className="text-muted-foreground">{session.email}</span>
         </p>
       </div>
+
+      <Link
+        href="/avisos"
+        className="flex items-center gap-4 rounded-3xl bg-background p-5 shadow-sm ring-1 ring-border transition-colors hover:ring-ring"
+      >
+        <Bell className="size-6 shrink-0 text-primary-text" aria-hidden="true" />
+        <span className="min-w-0">
+          <span className="block font-heading font-bold">{t("notificationsLink")}</span>
+          <span className="block text-sm text-muted-foreground">{t("notificationsLinkHelp")}</span>
+        </span>
+      </Link>
 
       <section aria-labelledby="password-title" className="flex flex-col gap-4 rounded-3xl bg-background p-6 shadow-sm ring-1 ring-border">
         <h2 id="password-title" className="font-heading text-lg font-extrabold">

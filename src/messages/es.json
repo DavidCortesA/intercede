@@ -15,7 +15,11 @@
     "profileTitle": "Tu perfil — INTERCEDE",
     "journalTitle": "Mi diario — INTERCEDE",
     "historyTitle": "Mis salas — INTERCEDE",
-    "roomTitle": "Sala de oración — INTERCEDE"
+    "roomTitle": "Sala de oración — INTERCEDE",
+    "devotionalTitle": "Devocional de hoy — INTERCEDE",
+    "notificationsTitle": "Avisos — INTERCEDE",
+    "schedulesTitle": "Salas programadas — INTERCEDE",
+    "inviteTitle": "Invitación a orar — INTERCEDE"
   },
   "Brand": {
     "name": "INTERCEDE",
@@ -359,7 +363,7 @@
         },
         "data": {
           "title": "Datos que guardamos",
-          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración y tu historial de salas."
+          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración, tu historial de salas, las notas de tus devocionales y tu progreso. Si activas los avisos, el dato técnico del navegador que el servicio de notificaciones necesita para entregártelos (puedes quitarlo cuando quieras)."
         },
         "providers": {
           "title": "Proveedores",
@@ -466,7 +470,8 @@
     "pray": "Orar",
     "journal": "Diario",
     "rooms": "Salas",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "devotional": "Devocional"
   },
   "Auth": {
     "email": "Correo electrónico",
@@ -573,7 +578,9 @@
       "title": "Cambiar contraseña",
       "submit": "Cambiar contraseña"
     },
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "notificationsLink": "Avisos y recordatorios",
+    "notificationsLinkHelp": "Elige cómo y cuándo te avisamos."
   },
   "Journal": {
     "title": "Mi diario de oración",
@@ -631,7 +638,9 @@
     "closed": "Cerrada",
     "host": "Anfitrión",
     "rejoin": "Volver a entrar",
-    "joined": "Entraste el {date}"
+    "joined": "Entraste el {date}",
+    "schedulesLink": "Salas programadas",
+    "schedulesLinkHelp": "Ora a la misma hora, a diario o cada semana."
   },
   "GuestInvite": {
     "cta": "Crear cuenta",
@@ -642,6 +651,18 @@
     "history": {
       "title": "Guarda tu historial",
       "body": "Crea una cuenta para que tus salas queden guardadas. Las que visites ahora se conservan."
+    },
+    "devotional": {
+      "title": "El devocional es para quienes tienen cuenta",
+      "body": "Crea una cuenta gratis para leer el devocional de cada día, guardar tus notas y llevar tu racha."
+    },
+    "schedules": {
+      "title": "Programa tus salas con una cuenta",
+      "body": "Crea una cuenta gratis para programar salas de oración a la misma hora y recibir avisos."
+    },
+    "notifications": {
+      "title": "Los avisos son para quienes tienen cuenta",
+      "body": "Crea una cuenta gratis para recibir recordatorios de tus salas y de tu devocional."
     }
   },
   "Offline": {
@@ -652,5 +673,161 @@
     "title": "No encontramos esta página",
     "description": "Revisa el enlace o vuelve al inicio.",
     "home": "Ir al inicio"
+  },
+  "Devotional": {
+    "title": "Devocional de hoy",
+    "subtitle": "Unos minutos con Dios.",
+    "empty": {
+      "title": "Hoy no hay devocional",
+      "body": "Todavía no se ha publicado el de hoy. Vuelve más tarde o ora con alguien ahora."
+    },
+    "pray": "Orar ahora",
+    "passage": "Pasaje",
+    "version": "Versión: {version}",
+    "reflection": "Reflexión",
+    "question": "Para pensar",
+    "prayer": "Oración sugerida",
+    "markRead": "Marcar como leído",
+    "marking": "Guardando…",
+    "read": "Leído",
+    "streak": "{count, plural, =0 {Empieza tu racha hoy} one {# día seguido} other {# días seguidos}}",
+    "total": "{count, plural, one {# devocional leído} other {# devocionales leídos}}",
+    "note": {
+      "label": "Mis notas",
+      "placeholder": "Escribe lo que Dios te mostró hoy…",
+      "save": "Guardar nota",
+      "saving": "Guardando…",
+      "saved": "Nota guardada",
+      "private": "Solo tú ves tus notas."
+    },
+    "errors": {
+      "generic": "No pudimos guardar. Inténtalo de nuevo."
+    }
+  },
+  "Notifications": {
+    "title": "Avisos",
+    "subtitle": "Elige cómo quieres que te avisemos.",
+    "push": {
+      "title": "Avisos en este dispositivo",
+      "help": "Te avisamos cuando empiece una sala que sigues o cuando sea hora de tu devocional.",
+      "enable": "Activar avisos",
+      "enabling": "Activando…",
+      "disable": "Desactivar en este dispositivo",
+      "enabled": "Los avisos están activados en este dispositivo.",
+      "denied": "Bloqueaste los avisos en este navegador. Actívalos desde la configuración del sitio y vuelve aquí.",
+      "unsupported": "Este navegador no permite recibir avisos.",
+      "unavailable": "Los avisos todavía no están disponibles en este servidor.",
+      "iosInstall": "En iPhone y iPad los avisos solo funcionan con la app instalada: toca Compartir → Añadir a pantalla de inicio y ábrela desde ahí."
+    },
+    "prefs": {
+      "title": "Preferencias",
+      "push": "Recibir avisos en mis dispositivos",
+      "email": "Recibirlos también por correo",
+      "schedules": "Avisarme de mis salas programadas",
+      "devotional": "Recordarme el devocional del día",
+      "devotionalTime": "Hora del recordatorio",
+      "save": "Guardar preferencias",
+      "saving": "Guardando…",
+      "saved": "Preferencias guardadas"
+    },
+    "recent": {
+      "title": "Recientes",
+      "empty": "Todavía no tienes avisos."
+    },
+    "errors": {
+      "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "too_many_devices": "Ya tienes 10 dispositivos con avisos. Quita uno e inténtalo de nuevo.",
+      "account_required": "Necesitas una cuenta para recibir avisos."
+    }
+  },
+  "Schedules": {
+    "title": "Salas programadas",
+    "subtitle": "Ora a la misma hora, una vez, a diario o cada semana.",
+    "new": {
+      "title": "Nueva sala programada",
+      "name": "Nombre",
+      "namePlaceholder": "Oración de la mañana",
+      "recurrence": "Frecuencia",
+      "once": "Una vez",
+      "daily": "Todos los días",
+      "weekly": "Cada semana",
+      "date": "Fecha",
+      "startDate": "Desde el",
+      "time": "Hora",
+      "days": "Días",
+      "timezone": "Zona horaria",
+      "timezoneHelp": "La hora se mantiene igual aunque cambie el horario de verano.",
+      "reminder": "Avisar antes",
+      "reminderOption": "{minutes, plural, =0 {Sin aviso} other {# min antes}}",
+      "submit": "Programar sala",
+      "submitting": "Programando…"
+    },
+    "weekdaysShort": {
+      "0": "Dom",
+      "1": "Lun",
+      "2": "Mar",
+      "3": "Mié",
+      "4": "Jue",
+      "5": "Vie",
+      "6": "Sáb"
+    },
+    "mine": {
+      "title": "Las que organizo",
+      "empty": "Aún no has programado ninguna."
+    },
+    "following": {
+      "title": "Las que sigo",
+      "empty": "Cuando alguien te invite a una sala programada, aparecerá aquí."
+    },
+    "card": {
+      "onceAt": "Una vez, a las {time}",
+      "dailyAt": "Todos los días a las {time}",
+      "weeklyAt": "{days} a las {time}",
+      "next": "Próxima: {date}",
+      "paused": "Pausada",
+      "ended": "Terminada",
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "remove": "Eliminar",
+      "confirmRemove": "¿Eliminar esta programación? Dejará de avisar a quienes la siguen.",
+      "cancel": "Cancelar",
+      "invite": "Enlace de invitación",
+      "copy": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "revoke": "Revocar y crear otro enlace",
+      "revoked": "Enlace nuevo creado. El anterior ya no sirve.",
+      "leave": "Dejar de seguir",
+      "followers": "{count, plural, one {# persona la sigue} other {# personas la siguen}}",
+      "openRoom": "Entrar a la sala abierta",
+      "zone": "Zona horaria: {zone}"
+    },
+    "errors": {
+      "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "invalid_name": "Escribe un nombre (hasta 60 letras).",
+      "invalid_timezone": "Esa zona horaria no es válida.",
+      "invalid_weekdays": "Elige al menos un día de la semana.",
+      "schedule_in_past": "Esa fecha y hora ya pasó.",
+      "too_many_schedules": "Ya tienes 10 programadas activas. Pausa o elimina una.",
+      "account_required": "Necesitas una cuenta para programar salas."
+    }
+  },
+  "Invite": {
+    "title": "Te invitaron a orar",
+    "recurrence": "Frecuencia",
+    "follow": "Seguir esta sala",
+    "following": "Siguiendo…",
+    "needAccount": "Para recibir los avisos de esta sala necesitas una cuenta gratuita.",
+    "createAccount": "Crear cuenta",
+    "signIn": "Ya tengo cuenta",
+    "done": "Listo, ya la sigues. Te avisaremos antes de cada sala.",
+    "seeAll": "Ver mis salas programadas",
+    "notFound": {
+      "title": "Este enlace ya no sirve",
+      "body": "Puede que lo hayan revocado o que la sala esté en pausa. Pide uno nuevo a quien te invitó."
+    },
+    "errors": {
+      "generic": "No pudimos suscribirte. Inténtalo de nuevo."
+    },
+    "pray": "Orar ahora"
   }
 }

@@ -31,7 +31,7 @@ export default async function SignInPage({ params, searchParams }: PageProps<"/[
     <>
       <h1 className="font-heading text-3xl font-extrabold">{t("signIn.title")}</h1>
       {linkError ? (
-        <p role="alert" className="mt-4 rounded-xl bg-destructive/15 px-4 py-3 text-sm text-destructive">
+        <p role="alert" className="mt-4 rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {t("linkError")}
         </p>
       ) : null}

@@ -42,7 +42,7 @@ export function JoinForm({ code, suggestedName }: { code: string; suggestedName:
         </p>
       </div>
       {state.error ? (
-        <p id="join-error" role="alert" className="rounded-xl bg-destructive/15 px-4 py-3 text-sm text-destructive">
+        <p id="join-error" role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {errors(state.error)}
         </p>
       ) : null}

@@ -130,7 +130,7 @@ export function JournalScreen({ initialEntries }: { initialEntries: JournalEntry
       </form>
 
       {error ? (
-        <p role="alert" className="rounded-xl bg-destructive/15 px-4 py-3 text-sm text-destructive">
+        <p role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {t(`errors.${error}`)}
         </p>
       ) : null}

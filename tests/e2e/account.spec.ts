@@ -353,3 +353,21 @@ test.describe("perfil", () => {
     }
   });
 });
+
+test.describe("Continuar con Google", () => {
+  test.skip(process.env.NEXT_PUBLIC_GOOGLE_AUTH !== "1", "requiere NEXT_PUBLIC_GOOGLE_AUTH=1");
+
+  test("el botón aparece al entrar y al crear cuenta, y conserva a dónde ibas", async ({ page }) => {
+    await page.goto("/es/entrar?next=%2Fprogramadas");
+    await expect(page.getByRole("button", { name: "Continuar con Google" })).toBeVisible();
+    await expect(page.locator("form").filter({ has: page.getByRole("button", { name: "Continuar con Google" }) }).locator("input[name=next]")).toHaveValue("/programadas");
+
+    await page.goto("/es/registro?next=%2Fp%2Fabc");
+    await expect(page.getByRole("button", { name: "Continuar con Google" })).toBeVisible();
+    await expect(page.locator("form").filter({ has: page.getByRole("button", { name: "Continuar con Google" }) }).locator("input[name=next]")).toHaveValue("/p/abc");
+
+    // Una ruta que no es interna se descarta (nada de redirecciones abiertas)
+    await page.goto("/es/registro?next=https%3A%2F%2Fevil.example");
+    await expect(page.locator("form").filter({ has: page.getByRole("button", { name: "Continuar con Google" }) }).locator("input[name=next]")).toHaveValue("/perfil");
+  });
+});

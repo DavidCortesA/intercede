@@ -22,6 +22,10 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 - **Envío**: cola `notifications` + pg_cron cada minuto + **Edge Function `dispatch-notifications`** (Web Push con VAPID
   y correo con Resend si hay remitente). Reintentos para fallos temporales, caducidad a la hora y baja automática de
   dispositivos que ya no existen. Service worker con `push` y `notificationclick`.
+- **Continuar con Google** activado (`NEXT_PUBLIC_GOOGLE_AUTH=1`; el proveedor ya está activo en Supabase): aparece al entrar
+  y al crear cuenta y **vuelve a donde ibas** (`?next=`, validado contra redirecciones abiertas). Verificado contra el
+  proyecto remoto: el botón lleva a `accounts.google.com` con la URI de redirección de Supabase. El consentimiento con
+  una cuenta de Google real no se automatiza (requiere credenciales de una persona).
 - Pestaña **Devocional** en la navegación de las cuentas; enlaces a *Avisos* desde Perfil y a *Programadas* desde Salas.
 - Base de datos: `devotionals`, `devotional_progress`, `notification_preferences`, `push_subscriptions`,
   `notifications`, `room_schedules`, `schedule_invites`, `schedule_subscriptions`, `rooms.schedule_id/scheduled_at`, y las
@@ -41,9 +45,16 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 - Los avisos de error usan un tinte más claro para cumplir el contraste AA sobre el fondo crema.
 - El CI usa una clave pública VAPID de prueba en el build y levanta `pg_cron`/`pg_net` del Supabase local.
 
+### Aplicado al proyecto remoto
+- Migración de la Fase 6 (con pg_cron y pg_net), Edge Function `dispatch-notifications` (con `verify_jwt = false`; sin secreto
+  responde 401) y sus secretos (`DISPATCH_SECRET` nuevo y aleatorio, VAPID), y los secretos de Vault `dispatcher_url` y
+  `dispatcher_secret`. Verificado con un usuario de prueba (borrado al terminar): programación creada con zona
+  `America/Mexico_City` (06:00 = 12:00 UTC), sala abierta por el cron, aviso enviado por la función hasta FCM (que
+  respondió que el dispositivo falso no existe y se borró) y programación avanzada al día siguiente.
+
 ### Pendiente
-- **Desplegar la función y los secretos en el remoto** y crear los secretos de Vault (`docs/operaciones/avisos.md`): hasta
-  entonces los avisos se generan pero **no se envían**.
+- Correo de los avisos: falta `RESEND_FROM` (dominio verificado) y `NEXT_PUBLIC_SITE_URL` de producción en la función; sin
+  ellos el canal correo queda `skipped`.
 - Probar en teléfonos reales (Android e iOS instalada) y el correo real (requiere dominio verificado en Resend).
 - Cargar el contenido de los devocionales (versión bíblica y licencia por decidir).
 

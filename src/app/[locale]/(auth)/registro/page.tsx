@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { GoogleButton } from "@/components/account/google-button";
 import { SignUpForm } from "@/components/account/sign-up-form";
+import { safeNextPath } from "@/features/auth/errors";
 import { getCurrentSession } from "@/features/auth/queries";
 import { Link, redirect } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -16,8 +17,10 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/registro
   return pageMetadata({ locale, path: "/registro", title: t("signUpTitle"), description: t("description"), noindex: true });
 }
 
-export default async function SignUpPage({ params }: PageProps<"/[locale]/registro">) {
+export default async function SignUpPage({ params, searchParams }: PageProps<"/[locale]/registro">) {
   const { locale } = await params;
+  const query = await searchParams;
+  const next = safeNextPath(typeof query.next === "string" ? query.next : null, "/perfil");
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const t = await getTranslations("Auth");
@@ -35,7 +38,7 @@ export default async function SignUpPage({ params }: PageProps<"/[locale]/regist
         <p className="mt-4 rounded-xl bg-muted px-4 py-3 text-sm leading-relaxed">{t("signUp.guestNote")}</p>
       ) : null}
       <div className="mt-6 flex flex-col gap-4">
-        <GoogleButton />
+        <GoogleButton next={next} />
         <SignUpForm isGuest={isGuest} />
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">

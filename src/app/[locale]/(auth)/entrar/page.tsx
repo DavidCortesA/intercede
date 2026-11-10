@@ -36,7 +36,7 @@ export default async function SignInPage({ params, searchParams }: PageProps<"/[
         </p>
       ) : null}
       <div className="mt-6 flex flex-col gap-4">
-        <GoogleButton />
+        <GoogleButton next={next} />
         <SignInForm next={next} showGuestWarning={Boolean(session?.isAnonymous)} />
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">

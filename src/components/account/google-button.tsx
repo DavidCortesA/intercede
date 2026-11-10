@@ -4,7 +4,7 @@ import { googleAction } from "@/features/auth/account-actions";
 import { GOOGLE_AUTH_ENABLED } from "@/config/site";
 
 /** "Continuar con Google": solo aparece si el proveedor está configurado (NEXT_PUBLIC_GOOGLE_AUTH=1). */
-export async function GoogleButton() {
+export async function GoogleButton({ next }: { next?: string }) {
   if (!GOOGLE_AUTH_ENABLED) return null;
   const t = await getTranslations("Auth");
   const locale = await getLocale();
@@ -13,6 +13,7 @@ export async function GoogleButton() {
     <>
       <form action={googleAction}>
         <input type="hidden" name="locale" value={locale} />
+        {next ? <input type="hidden" name="next" value={next} /> : null}
         <Button type="submit" variant="secondary" size="md" className="w-full">
           {t("google.continue")}
         </Button>

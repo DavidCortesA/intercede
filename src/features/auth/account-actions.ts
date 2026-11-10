@@ -125,7 +125,9 @@ export async function googleAction(formData: FormData) {
 
   const supabase = await createClient();
   const { data: current } = await supabase.auth.getUser();
-  const redirectTo = `${SITE_URL}/auth/callback?next=${encodeURIComponent(`/${locale}/perfil`)}`;
+  // Vuelve a donde iba (p. ej. una invitación); la ruta se valida igual que en el resto de la autenticación
+  const next = safeNextPath(text(formData, "next"), "/perfil");
+  const redirectTo = `${SITE_URL}/auth/callback?next=${encodeURIComponent(`/${locale}${next}`)}`;
 
   const result = current.user?.is_anonymous
     ? await supabase.auth.linkIdentity({ provider: "google", options: { redirectTo } })

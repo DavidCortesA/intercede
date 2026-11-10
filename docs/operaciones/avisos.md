@@ -13,9 +13,9 @@ Sin los pasos de abajo la app funciona igual: las salas programadas se abren y l
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Vercel (build) y secretos de la función | Pública por diseño |
 | `VAPID_PRIVATE_KEY` | Secretos de la función | **Solo servidor**. Nunca en `NEXT_PUBLIC_*` |
 | `VAPID_SUBJECT` | Secretos de la función | `mailto:…` o `https://…` |
-| `NEXT_PUBLIC_SITE_URL` | Vercel y secretos de la función | Para los enlaces del correo y los avisos |
+| `NEXT_PUBLIC_SITE_URL` | Vercel y secretos de la función | Solo para los enlaces del **correo** (sin ella el correo se omite; el push no la usa) |
 | `DISPATCH_SECRET` | Secretos de la función **y** Vault (`dispatcher_secret`) | Valor largo y aleatorio; el mismo en ambos |
-| `RESEND_API_KEY`, `RESEND_FROM` | Secretos de la función | Opcionales. `RESEND_FROM` = remitente de un **dominio verificado** en Resend (p. ej. `INTERCEDE <avisos@tudominio.com>`) |
+| `RESEND_API_KEY`, `RESEND_FROM` | Secretos de la función | Opcionales (con `NEXT_PUBLIC_SITE_URL`, activan el correo). `RESEND_FROM` = remitente de un **dominio verificado** en Resend (p. ej. `INTERCEDE <avisos@tudominio.com>`) |
 
 Genera un par VAPID nuevo con `npx web-push generate-vapid-keys` (no se versiona nada) y un secreto con
 `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"`.

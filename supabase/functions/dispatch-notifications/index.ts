@@ -9,8 +9,8 @@
 //   * Los endpoints push ya vienen filtrados por la base (solo servicios push de navegadores).
 //
 // Secretos de la función (supabase secrets set …): DISPATCH_SECRET, NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-// VAPID_PRIVATE_KEY, VAPID_SUBJECT, NEXT_PUBLIC_SITE_URL, y opcionalmente RESEND_API_KEY + RESEND_FROM
-// (sin ellas el correo se omite). SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY los inyecta la plataforma.
+// VAPID_PRIVATE_KEY, VAPID_SUBJECT, y opcionalmente NEXT_PUBLIC_SITE_URL + RESEND_API_KEY + RESEND_FROM
+// (sin alguna de las tres el correo se omite). SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY los inyecta la plataforma.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import webpush from "npm:web-push@3.6.7";
 import {
@@ -39,7 +39,7 @@ Deno.serve(async (request) => {
   const vapidPrivate = env("VAPID_PRIVATE_KEY");
   const vapidSubject = env("VAPID_SUBJECT");
   const siteUrl = env("NEXT_PUBLIC_SITE_URL").replace(/\/$/, "");
-  if (!vapidPublic || !vapidPrivate || !vapidSubject || !siteUrl) return json({ error: "server_misconfigured" }, 500);
+  if (!vapidPublic || !vapidPrivate || !vapidSubject) return json({ error: "server_misconfigured" }, 500);
   webpush.setVapidDetails(vapidSubject, vapidPublic, vapidPrivate);
 
   const supabase = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"), {
@@ -48,6 +48,8 @@ Deno.serve(async (request) => {
 
   const resendKey = env("RESEND_API_KEY");
   const resendFrom = env("RESEND_FROM");
+  // La URL del sitio solo hace falta para los enlaces del correo: sin ella el correo se omite
+  const emailEnabled = Boolean(resendKey && resendFrom && siteUrl);
 
   const deps: DispatchDeps = {
     siteUrl,
@@ -79,7 +81,7 @@ Deno.serve(async (request) => {
       }
     },
     sendEmail:
-      resendKey && resendFrom
+      emailEnabled
         ? async (message: EmailMessage) => {
             const response = await fetch("https://api.resend.com/emails", {
               method: "POST",

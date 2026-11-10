@@ -179,7 +179,8 @@ enable_signup = true
 # Allow/disallow anonymous sign-ins to your project.
 enable_anonymous_sign_ins = true
 # Allow/disallow testing manual linking of accounts
-enable_manual_linking = false
+# Necesario para "convertir invitado con Google" (linkIdentity)
+enable_manual_linking = true
 # Passwords shorter than this value will be rejected as weak. Minimum 6, recommended 8 or more.
 minimum_password_length = 8
 # Passwords that do not meet the following requirements will be rejected as weak. Supported values
@@ -249,6 +250,30 @@ otp_expiry = 3600
 # pass = "env(SENDGRID_API_KEY)"
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
+
+# Correos en español con enlaces que pasan por /auth/confirm (verifyOtp con token_hash): funcionan
+# aunque la persona abra el correo en otro dispositivo o navegador (el flujo PKCE no).
+# {{ .RedirectTo }} lo envía la app (p. ej. https://sitio/auth/confirm?next=/es/perfil).
+#
+# ¡OJO!: estas plantillas rigen en el Supabase LOCAL y en el CI. El proyecto REMOTO es de plan gratuito
+# con el SMTP por defecto, que NO permite plantillas propias: `supabase config push` falla con
+# "Email template modification is not available for free tier projects using the default email
+# provider". Para subirlas hay que configurar antes un SMTP propio (ver [auth.email.smtp] abajo, p. ej.
+# Resend con un dominio verificado). Mientras tanto, el remoto usa las plantillas por defecto y
+# /auth/confirm también acepta su enlace estándar (`?code=`).
+# Para subir lo demás sin las plantillas: copia este archivo sin estas secciones a una carpeta
+# temporal y ejecuta `supabase config push --remote --workdir <carpeta>`.
+[auth.email.template.confirmation]
+subject = "Confirma tu correo en INTERCEDE"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Restablece tu contraseña de INTERCEDE"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.email_change]
+subject = "Confirma tu correo en INTERCEDE"
+content_path = "./supabase/templates/email_change.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

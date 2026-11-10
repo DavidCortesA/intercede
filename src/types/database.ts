@@ -23,7 +23,27 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "prayer_requests": {
+            "prayer_journal_entries": {
+                  Row: {
+                    "answered_at": string | null,"category": string,"content": string,"created_at": string,"id": string,"source_request_id": string | null,"status": string,"testimony": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "answered_at"?: string | null,"category"?: string,"content": string,"created_at"?: string,"id"?: string,"source_request_id"?: string | null,"status"?: string,"testimony"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "answered_at"?: string | null,"category"?: string,"content"?: string,"created_at"?: string,"id"?: string,"source_request_id"?: string | null,"status"?: string,"testimony"?: string | null,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "prayer_journal_entries_source_request_id_fkey"
+      columns: ["source_request_id"]
+isOneToOne: false
+      referencedRelation: "prayer_requests"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"prayer_requests": {
                   Row: {
                     "answered_at": string | null,"author_id": string,"content": string,"created_at": string,"id": string,"is_answered": boolean,"room_id": string,"testimony": string | null
                   }
@@ -37,6 +57,32 @@ export type Database = {
                   Relationships: [
                     {
       foreignKeyName: "prayer_requests_room_id_fkey"
+      columns: ["room_id"]
+isOneToOne: false
+      referencedRelation: "rooms"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"prayer_support": {
+                  Row: {
+                    "created_at": string,"request_id": string,"room_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"request_id": string,"room_id": string,"user_id"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"request_id"?: string,"room_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "prayer_support_request_id_fkey"
+      columns: ["request_id"]
+isOneToOne: false
+      referencedRelation: "prayer_requests"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "prayer_support_room_id_fkey"
       columns: ["room_id"]
 isOneToOne: false
       referencedRelation: "rooms"
@@ -59,14 +105,14 @@ isOneToOne: false
                   ]
                 },"room_members": {
                   Row: {
-                    "display_name": string,"joined_at": string,"left_at": string | null,"removed_at": string | null,"role": string,"room_id": string,"user_id": string
+                    "avatar_url": string | null,"display_name": string,"joined_at": string,"left_at": string | null,"removed_at": string | null,"role": string,"room_id": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "display_name": string,"joined_at"?: string,"left_at"?: string | null,"removed_at"?: string | null,"role"?: string,"room_id": string,"user_id": string
+                    "avatar_url"?: string | null,"display_name": string,"joined_at"?: string,"left_at"?: string | null,"removed_at"?: string | null,"role"?: string,"room_id": string,"user_id": string
                   }
                   Update: {
-                    "display_name"?: string,"joined_at"?: string,"left_at"?: string | null,"removed_at"?: string | null,"role"?: string,"room_id"?: string,"user_id"?: string
+                    "avatar_url"?: string | null,"display_name"?: string,"joined_at"?: string,"left_at"?: string | null,"removed_at"?: string | null,"role"?: string,"room_id"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -110,6 +156,9 @@ isOneToOne: false
                            },
 "has_joined_room":
 { Args: { "p_room_id": string }; Returns: boolean
+                           },
+"is_permanent_user":
+{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "is_room_host":
 { Args: { "p_room_id": string }; Returns: boolean

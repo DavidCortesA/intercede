@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <body style="margin:0;padding:24px;background:#fbf5ea;font-family:Arial,Helvetica,sans-serif;color:#0a1240;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;margin:0 auto;background:#ffffff;border-radius:20px;overflow:hidden;">
+      <tr>
+        <td style="background:#0a1240;padding:24px 28px;color:#ffffff;font-size:20px;font-weight:bold;letter-spacing:1px;">INTERCEDE</td>
+      </tr>
+      <tr>
+        <td style="padding:28px;">
+          <h1 style="margin:0 0 12px;font-size:22px;">Confirma tu correo</h1>
+          <p style="margin:0 0 20px;font-size:16px;line-height:1.5;">
+            Vas a usar <strong>{{ .NewEmail }}</strong> como el correo de tu cuenta de INTERCEDE.
+            Confírmalo para terminar y conservar tu historial de oración.
+          </p>
+          <p style="margin:0 0 24px;">
+            <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email_change"
+               style="display:inline-block;background:#5b2ee6;color:#ffffff;text-decoration:none;font-weight:bold;padding:14px 28px;border-radius:999px;">
+              Confirmar mi correo
+            </a>
+          </p>
+          <p style="margin:0;font-size:13px;line-height:1.5;color:#5a6192;">
+            Si no fuiste tú, ignora este mensaje. El enlace caduca en una hora.
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="text-align:center;font-size:12px;color:#5a6192;margin-top:16px;">Ora · Conecta · Permanece</p>
+  </body>
+</html>

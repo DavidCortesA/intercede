@@ -6,6 +6,21 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.9.1] - 2026-11-10 — Despliegue en producción (Vercel)
+
+### Corregido
+- La analítica de Vercel pasaba una función (`beforeSend`) desde un Server Component y **rompía el build en Vercel** (en local la analítica está
+  apagada y no se notó). Ahora vive en un componente de cliente (`SiteAnalytics`). Se reproduce en local con `VERCEL=1 next build`.
+
+### Desplegado
+- Producción en **https://intercede-six.vercel.app** (proyecto `intercede`, sin conexión a GitHub: se despliega con `vercel --prod`). Se añadieron las variables
+  públicas `NEXT_PUBLIC_GOOGLE_AUTH=1` y `NEXT_PUBLIC_CONTACT_EMAIL`. Verificado en producción: cabeceras nuevas, crear una sala como invitado, **eliminar los datos
+  del invitado** y el botón de Google que redirige a `accounts.google.com`.
+
+### Pendiente (pasos de la propietaria/el propietario, ver `docs/operaciones/produccion.md`)
+- Supabase Auth: Site URL y URL de redirección con el dominio de Vercel; SMTP propio (Resend + dominio verificado).
+- Google Cloud: dominio autorizado. Firewall/limitador de Vercel. `SENTRY_DSN` y, si se quiere, Turnstile.
+
 ## [0.9.0] - 2026-11-10 — Fase 8: Moderación y producción
 
 ### Añadido

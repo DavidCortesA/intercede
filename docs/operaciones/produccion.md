@@ -1,5 +1,9 @@
 # Puesta en producción: lista de verificación
 
+> **Estado (2026-11-10):** desplegado en https://intercede-six.vercel.app (proyecto `intercede`, sin conexión a GitHub: `vercel --prod`).
+> Variables ya definidas en Vercel: Supabase, LiveKit, VAPID, Resend, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GOOGLE_AUTH`, `NEXT_PUBLIC_CONTACT_EMAIL`.
+> Faltan (opcionales): `SENTRY_DSN`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+
 Pasos y decisiones para publicar INTERCEDE (Vercel + Supabase + LiveKit). Lo que ya está hecho está marcado; el resto necesita datos
 o cuentas de quien opera el proyecto.
 

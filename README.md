@@ -67,7 +67,7 @@ no se registra en desarrollo. La primera vez: `npx playwright install chromium`.
 ## Producción
 
 Lista de verificación para publicar (Vercel, Supabase, CAPTCHA, Sentry, moderación): [`docs/operaciones/produccion.md`](docs/operaciones/produccion.md).
-Auditoría de seguridad de la base: `select * from public.security_audit()` (solo la service role; debe listar únicamente las vistas previas de invitación).
+Auditoría de seguridad de la base: `node scripts/security-audit.mjs` (local) o `--remote`; debe terminar con "Sin hallazgos".
 
 ## Fases y versiones
 

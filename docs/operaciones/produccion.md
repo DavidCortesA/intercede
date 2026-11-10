@@ -28,8 +28,8 @@ No definas `RESEND_*` ni `VAPID_PRIVATE_KEY` en Vercel: viven en los secretos de
 - [ ] **Authentication → Attack Protection**: activar CAPTCHA (Turnstile) si se usa; revisar los límites de la sección Rate Limits.
 - [ ] Google Cloud: agrega `https://<ref>.supabase.co/auth/v1/callback` (ya está) y el dominio público a los orígenes autorizados.
 - [ ] Función de avisos desplegada y secretos de Vault (ver `docs/operaciones/avisos.md`).
-- [ ] Ejecutar la auditoría y confirmar que solo aparecen las tres vistas previas:
-      `npx supabase db query --remote --read-only "select * from public.security_audit()"` (debe listar solo `peek_room`, `peek_schedule` y `peek_community`).
+- [x] Auditoría de seguridad del remoto (`node scripts/security-audit.mjs --remote`): sin hallazgos; solo `peek_room`, `peek_schedule` y `peek_community` son públicas.
+      Repítela después de cada migración.
 
 ## 3. CAPTCHA (Cloudflare Turnstile) — opcional
 

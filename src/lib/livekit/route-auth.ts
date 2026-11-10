@@ -17,6 +17,9 @@ export type ApiErrorCode =
   | "server_misconfigured"
   | "member_not_found"
   | "cannot_remove_self"
+  | "account_required"
+  | "too_many_devices"
+  | "invalid_endpoint"
   | "unexpected";
 
 /** Respuesta de error uniforme: `{ error: <código> }`, siempre sin caché. */

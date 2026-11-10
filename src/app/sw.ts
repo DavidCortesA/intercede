@@ -64,3 +64,56 @@ const serwist = new Serwist({
 });
 
 serwist.addEventListeners();
+
+/**
+ * Avisos push. El mensaje lo arma la Edge Function de envío (title, body, url con idioma) y llega
+ * cifrado de extremo a extremo; aquí solo se muestra. Siempre se muestra una notificación (los
+ * navegadores exigen que cada push sea visible) y nada de esto toca cachés.
+ */
+interface PushPayload {
+  title?: string;
+  body?: string;
+  url?: string;
+  tag?: string;
+}
+
+self.addEventListener("push", (event) => {
+  let payload: PushPayload = {};
+  try {
+    payload = (event.data?.json() ?? {}) as PushPayload;
+  } catch {
+    payload = { body: event.data?.text() };
+  }
+  const title = payload.title ?? "INTERCEDE";
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: payload.body ?? "",
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      tag: payload.tag,
+      data: { url: payload.url ?? "/es" },
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const data = event.notification.data as { url?: string } | undefined;
+  // Solo rutas de este sitio: un push no puede llevar a otro dominio
+  const target = new URL(data?.url ?? "/es", self.location.origin);
+  if (target.origin !== self.location.origin) return;
+
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const client of windows) {
+        if (new URL(client.url).origin === target.origin && "focus" in client) {
+          await client.focus();
+          if ("navigate" in client) await (client as WindowClient).navigate(target.href);
+          return;
+        }
+      }
+      await self.clients.openWindow(target.href);
+    })(),
+  );
+});

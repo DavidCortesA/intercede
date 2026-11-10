@@ -23,6 +23,8 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "test-results/**",
     "next-env.d.ts",
+    // Edge Functions: corren en Deno (imports npm:, global Deno); se revisan al desplegar
+    "supabase/functions/**/index.ts",
     // Service worker generado en build
     "public/sw*.js",
     "public/swe-worker*.js",

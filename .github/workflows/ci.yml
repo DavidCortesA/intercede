@@ -51,6 +51,11 @@ jobs:
     name: Build y pruebas e2e (con Supabase local)
     runs-on: ubuntu-latest
     needs: check
+    env:
+      # Clave pública VAPID de PRUEBA (se generó sin guardar la privada): solo hace que la pantalla de avisos
+      # ofrezca activar los avisos en el build y en las pruebas. Los avisos reales usan la clave de producción
+      # (Vercel y secretos de Supabase).
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: BB3ukmQOErJU2HBcLEgM5FbKtXHVvsjeVnSfmtf9SAPbUkueT42fxnyDsOmuR8X6JACs3VFleB1RW-5yeP85qvc
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -40,6 +40,7 @@ Requiere Docker. La app usa el proyecto remoto vía `.env.local`; las pruebas us
 | `npm run test:e2e:db` | E2E del flujo de salas con varios navegadores contra el Supabase local |
 | `npm run db:types` | Regenera `src/types/database.ts` desde el esquema local |
 | `npm run db:reset` | Recrea la base local desde las migraciones |
+| `npm run devotionals:import -- archivo.json` | Carga devocionales (ver `docs/operaciones/devocionales.md`) |
 | `npx supabase db push --remote` | Aplica migraciones al proyecto remoto (pide confirmación) |
 | `npx supabase config diff` | Compara `config.toml` con el remoto. Hazlo **antes** de cualquier `config push` |
 
@@ -55,7 +56,12 @@ Los scripts `test:db` y `test:e2e:db` reinician el contenedor de Auth antes de c
 tienen un tope de 30 por hora y por IP y se alcanza al repetir pruebas. Si algo falla con
 `rate_limited`, reinicia Auth (`docker restart supabase_auth_intercede`).
 
-Las pruebas de PWA (`tests/e2e/pwa.spec.ts`) requieren `npm run build` y `CI=1`, porque el service worker
+Los avisos (Fase 6): la lógica de envío se prueba con dobles (`tests/unit/dispatch-notifications.test.ts`) y la Edge Function
+corre en el runtime de Supabase con `npx supabase functions serve dispatch-notifications --env-file <archivo>` (necesita arrancar
+Supabase **sin** excluir `edge-runtime`). Cómo configurarlos en producción: `docs/operaciones/avisos.md`; qué falta probar en
+teléfonos: `docs/testing/avisos-dispositivos-reales.md`.
+
+Las pruebas de PWA (`tests/e2e/pwa.spec.ts`, `tests/e2e/push-sw.spec.ts`) requieren `npm run build` y `CI=1`, porque el service worker
 no se registra en desarrollo. La primera vez: `npx playwright install chromium`.
 
 ## Fases y versiones

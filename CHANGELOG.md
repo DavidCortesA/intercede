@@ -6,6 +6,47 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.7.0] - 2026-11-10 — Fase 6: Devocionales, programación y avisos
+
+### Añadido
+- **Devocional del día** (solo cuentas): pasaje, reflexión, pregunta y oración sugerida; marcar como leído, notas
+  privadas y **racha suave** (sin gamificación; hoy sin leer no la rompe). "Hoy" según la zona horaria del perfil.
+  **Sin contenido de fábrica** (decisión de la propietaria/el propietario): importador `npm run devotionals:import`
+  con archivo JSON validado con Zod (`docs/operaciones/devocionales.md`).
+- **Salas programadas** (una vez, a diario o cada semana) con zona horaria correcta y horario de verano:
+  crear, pausar, reanudar y eliminar; **enlace de invitación revocable** (`/p/<token>`) para que otras cuentas las
+  sigan. A la hora, **se abre la sala sola** y se avisa a quienes la siguen; la anfitriona entra con su rol.
+- **Avisos** (`/avisos`): preferencias (push, correo, salas programadas, recordatorio del devocional con hora),
+  activar/desactivar el dispositivo (el permiso se pide solo al tocar el botón; en iOS se explica la instalación) y
+  lista de avisos recientes. Registro de dispositivos por `/api/push/subscribe`.
+- **Envío**: cola `notifications` + pg_cron cada minuto + **Edge Function `dispatch-notifications`** (Web Push con VAPID
+  y correo con Resend si hay remitente). Reintentos para fallos temporales, caducidad a la hora y baja automática de
+  dispositivos que ya no existen. Service worker con `push` y `notificationclick`.
+- Pestaña **Devocional** en la navegación de las cuentas; enlaces a *Avisos* desde Perfil y a *Programadas* desde Salas.
+- Base de datos: `devotionals`, `devotional_progress`, `notification_preferences`, `push_subscriptions`,
+  `notifications`, `room_schedules`, `schedule_invites`, `schedule_subscriptions`, `rooms.schedule_id/scheduled_at`, y las
+  funciones `devotional_stats`, `create_schedule`, `process_scheduled_work`, `claim_notifications`… (todo con RLS).
+- Pruebas: 34 de base de datos (RLS, recurrencia y DST, apertura de salas, cola, SSRF), 29 unitarias (lógica de envío con
+  dobles, importador, validaciones) y 15 e2e (devocional, invitación y sala programada de punta a punta, preferencias,
+  dispositivo con `PushManager` simulado, push real entregado al service worker por CDP).
+- Documentación: ADR 0010, `docs/operaciones/avisos.md`, `docs/operaciones/devocionales.md`,
+  `docs/testing/avisos-dispositivos-reales.md`.
+
+### Seguridad
+- Los endpoints push solo pueden ser de los servicios de los navegadores (restricción en la base, no solo en la ruta):
+  el envío no sirve de pasarela hacia servidores internos (SSRF).
+- La función de envío falla cerrada: sin `DISPATCH_SECRET` no responde a nadie; el secreto se compara en tiempo constante.
+
+### Cambiado
+- Los avisos de error usan un tinte más claro para cumplir el contraste AA sobre el fondo crema.
+- El CI usa una clave pública VAPID de prueba en el build y levanta `pg_cron`/`pg_net` del Supabase local.
+
+### Pendiente
+- **Desplegar la función y los secretos en el remoto** y crear los secretos de Vault (`docs/operaciones/avisos.md`): hasta
+  entonces los avisos se generan pero **no se envían**.
+- Probar en teléfonos reales (Android e iOS instalada) y el correo real (requiere dominio verificado en Resend).
+- Cargar el contenido de los devocionales (versión bíblica y licencia por decidir).
+
 ## [0.6.0] - 2026-11-10 — Fase 5: Cuentas y vida de oración
 
 ### Añadido

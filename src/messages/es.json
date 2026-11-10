@@ -1,0 +1,26 @@
+{
+  "Metadata": {
+    "title": "INTERCEDE — Ora. Conecta. Permanece.",
+    "description": "Una comunidad que ora junta. Ora con otras personas por voz, comparte peticiones y permanece en oración."
+  },
+  "Brand": {
+    "name": "INTERCEDE",
+    "tagline": "Ora. Conecta. Permanece.",
+    "slogan": "Una comunidad que ora junta."
+  },
+  "A11y": {
+    "skipToContent": "Saltar al contenido"
+  },
+  "Home": {
+    "placeholder": "Estamos preparando la plataforma. Pronto podrás orar con otras personas desde aquí."
+  },
+  "Offline": {
+    "title": "Sin conexión",
+    "description": "No hay red en este momento. Cuando vuelvas a conectarte, podrás seguir orando."
+  },
+  "NotFound": {
+    "title": "No encontramos esta página",
+    "description": "Revisa el enlace o vuelve al inicio.",
+    "home": "Ir al inicio"
+  }
+}

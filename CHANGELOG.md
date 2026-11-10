@@ -6,6 +6,36 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.4.0] - 2026-11-10 — Fase 3: Salas y peticiones (sin audio)
+
+### Añadido
+- **Orar sin cuenta:** "Orar ahora" lleva a `/orar`, donde un nombre y un toque crean la sala y llevan a
+  `/r/<código>`. Para quien ya tiene un código o un enlace, un campo lo normaliza y lleva a la sala.
+- **Salas** (`/r/<código>`): vista previa para unirse con solo un nombre; sala en pantalla completa con
+  participantes, código, compartir enlace (hoja nativa o copiar), salir y estados claros (enlace inválido,
+  sala cerrada, bloqueada o llena).
+- **Peticiones en vivo** con Supabase Realtime: publicar (1–500 caracteres), marcar como respondida con
+  testimonio, quitar la marca y eliminar; las ven al instante quienes están en la sala.
+- **Controles del anfitrión:** bloquear/desbloquear la sala y cerrarla para todos.
+- Base de datos: tablas `rooms`, `room_members` y `prayer_requests` con RLS, RPC de ciclo de vida
+  (`create_room`, `join_room`, `leave_room`, `close_room`, `set_room_locked`, `peek_room`), aforo de 20,
+  límites anti-spam y publicación en Realtime. Tipos regenerados.
+- Aviso de sin conexión y reconexión; relectura automática al volver la red o la pestaña.
+- Pruebas: 24 de RPC/RLS/Realtime, e2e de tres personas con navegadores reales y accesibilidad (axe) de
+  la sala. `npm run test:e2e:db`; el CI levanta Supabase local para el build y el e2e.
+- ADR 0007.
+
+### Cambiado
+- `/orar` ya no es provisional: crea salas de verdad. Las salas no se indexan (`noindex` y `robots.txt`).
+- El job `db` del CI incluye Realtime.
+
+### Aplicado al proyecto remoto
+- Migración `rooms_and_prayer_requests`. Verificada con invitados de prueba (crear, unirse, publicar y
+  recibir en vivo, aislamiento entre salas, cierre) que se borraron al terminar.
+
+### Pendiente
+- Rate limit contra fuerza bruta de códigos de sala (Fase 8). Audio, silenciar y expulsar: Fase 4.
+
 ## [0.3.0] - 2026-11-10 — Fase 2: Supabase base
 
 ### Añadido

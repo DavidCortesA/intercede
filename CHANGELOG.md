@@ -33,6 +33,12 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 - El recorte de fotos a 256 px es una utilidad compartida (`src/lib/image.ts`).
 - Aviso de privacidad: nombre y foto visibles para la comunidad y publicaciones del muro.
 
+### Aplicado al proyecto remoto
+- Migración de comunidades. Verificado con usuarios de prueba (borrados al terminar): crear y unirse, una persona de fuera no ve la
+  comunidad, el muro del liderazgo, sala de comunidad (miembro rechazado, de fuera con `community_only`), evento con 20:00 de
+  México = 02:00 UTC, asistencia, programación de comunidad y personal (firma anterior), seguirla, logo (admin sube, miembro
+  denegado) y `process_scheduled_work`. La Edge Function de avisos no cambió.
+
 ### Límites
 - Sin tiempo real en el muro, sin edición de eventos, sin aprobación de solicitudes (el enlace es la llave) y sin
   reportes/bloqueos ni eliminación de cuenta (Fase 8).

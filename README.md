@@ -1,0 +1,43 @@
+# INTERCEDE
+
+**Ora. Conecta. Permanece.** — Una comunidad que ora junta.
+
+PWA de oración en línea (audio en vivo, peticiones, programación y comunidades) con landing pública.
+Contexto completo del producto y reglas de desarrollo: [`CLAUDE.md`](CLAUDE.md).
+Referencia visual de pantallas: [`docs/design/pantallas.html`](docs/design/pantallas.html).
+
+## Requisitos
+
+Node.js ≥ 22 (desarrollo en 24) y npm.
+
+## Puesta en marcha
+
+```bash
+npm install
+cp .env.example .env.local   # completa los valores; nunca versiones .env.local
+npm run dev                  # http://localhost:3000 → redirige a /es
+```
+
+## Scripts
+
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` / `build` / `start` | Desarrollo, build y servidor de producción |
+| `npm run typecheck` | `next typegen` + `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm test` | Vitest (unitarias e integración) |
+| `npm run test:e2e` | Playwright (móvil y escritorio). Con `CI=1` usa el build de producción |
+| `npm run check` | typecheck + lint + test |
+
+Las pruebas de PWA (`tests/e2e/pwa.spec.ts`) requieren `npm run build` y `CI=1`, porque el service worker
+no se registra en desarrollo. La primera vez: `npx playwright install chromium`.
+
+## Fases y versiones
+
+El avance se publica por fases con su tag y su entrada en [`CHANGELOG.md`](CHANGELOG.md)
+(ver [ADR 0004](docs/decisions/0004-versionado-changelog-y-tags.md)). Decisiones de arquitectura en
+[`docs/decisions/`](docs/decisions).
+
+## Pendiente de la propietaria/el propietario
+
+- Archivos oficiales del logo en `public/brand/` (hoy: texto temporal e íconos placeholder en `public/icons/`).

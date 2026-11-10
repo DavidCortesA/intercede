@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { routing } from "@/i18n/routing";
 import es from "@/messages/es.json";
@@ -10,8 +12,9 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-// Imagen social por defecto. Texto sobre el degradado de marca; cuando llegue el logo
-// oficial se reemplaza el wordmark por el SVG de public/brand/.
+// Imagen social por defecto: logo oficial (blanco) y lema sobre el degradado de marca.
+const LOGO_WHITE = `data:image/svg+xml;base64,${readFileSync(join(process.cwd(), "public/brand/logo-white.svg")).toString("base64")}`;
+
 export default function OpengraphImage() {
   return new ImageResponse(
     (
@@ -27,7 +30,8 @@ export default function OpengraphImage() {
           color: "#FBF5EA",
         }}
       >
-        <div style={{ fontSize: 34, fontWeight: 800, letterSpacing: 6, color: "#B9A8FF" }}>{es.Brand.name}</div>
+        {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse (satori) no usa next/image */}
+        <img src={LOGO_WHITE} width={520} height={94} alt="" />
         <div style={{ fontSize: 96, fontWeight: 800, lineHeight: 1.02, marginTop: 28, maxWidth: 980 }}>
           {es.Brand.slogan}
         </div>

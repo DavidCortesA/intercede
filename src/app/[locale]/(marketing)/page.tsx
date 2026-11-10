@@ -35,7 +35,13 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "Organization", "@id": `${SITE_URL}/#org`, name: "INTERCEDE", url: SITE_URL },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#org`,
+        name: "INTERCEDE",
+        url: SITE_URL,
+        logo: `${SITE_URL}/icons/icon-512.png`,
+      },
       {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#site`,

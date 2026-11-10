@@ -34,7 +34,7 @@ export default async function PrayPage({ params }: PageProps<"/[locale]/orar">) 
       id="contenido"
       className="dark flex min-h-dvh flex-col items-center justify-center gap-6 bg-brand-dusk px-6 text-center text-foreground"
     >
-      <Wordmark className="text-2xl" />
+      <Wordmark className="h-10" />
       <h1 className="max-w-xl font-heading text-4xl font-extrabold text-balance sm:text-5xl">{t("title")}</h1>
       <p className="max-w-md text-lg text-brand-cream/85">{t("body")}</p>
       <Link href="/" className={buttonVariants({ variant: "secondary", size: "md" })}>

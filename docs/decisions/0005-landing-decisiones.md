@@ -9,7 +9,7 @@
 - **Sin banner de cookies ni analítica por ahora.** La landing no instala cookies ni scripts de seguimiento, así que no hace falta banner. La analítica respetuosa (CLAUDE.md §3) se decide en la Fase 8; si implica cookies se añade el aviso en ese momento.
 - **Legales como borrador.** `/privacidad` y `/terminos` recogen solo los principios del producto (CLAUDE.md §5.4: sin grabaciones, peticiones privadas, eliminación de datos) y llevan la etiqueta "Borrador". Requieren revisión legal antes del lanzamiento.
 - **Contacto:** el enlace del pie solo aparece si se define `NEXT_PUBLIC_CONTACT_EMAIL`. No se inventan datos de contacto.
-- **Logo, favicon e íconos son placeholders** hasta recibir los archivos oficiales en `public/brand/`. El wordmark es texto.
+- **Logo:** en la Fase 1 el wordmark era texto y los íconos placeholders. Se reemplazaron por los SVG oficiales de `public/brand/` (ver CHANGELOG, sección Sin publicar).
 - **Open Graph:** imagen generada con `next/og` (texto sobre el degradado de marca). Se declara explícita en `pageMetadata()` porque Next no hereda la imagen del archivo de convención cuando la página define `openGraph`.
 - **Ruta 404 propia:** `[locale]/[...rest]/page.tsx` llama a `notFound()` para que las rutas inexistentes muestren la 404 de marca.
 - **Accesibilidad automatizada:** `@axe-core/playwright` audita WCAG 2.1 AA en claro y oscuro en todas las páginas públicas.

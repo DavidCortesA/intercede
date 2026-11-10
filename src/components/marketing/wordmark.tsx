@@ -1,11 +1,21 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * PLACEHOLDER temporal del logo: solo texto. Reemplazar por los archivos oficiales de
- * `public/brand/` cuando el propietario los entregue (no se redibuja ni se aproxima el logo).
+ * Logo horizontal oficial (símbolo + wordmark). `white` para fondos oscuros o fotografías;
+ * `color` para fondos claros. Archivos entregados por el propietario en `public/brand/`:
+ * no se redibujan ni se modifican (CLAUDE.md §8.1).
  */
-export function Wordmark({ className }: { className?: string }) {
+export function Wordmark({ variant = "white", className }: { variant?: "white" | "color"; className?: string }) {
   return (
-    <span className={cn("font-heading text-xl font-extrabold tracking-[0.04em]", className)}>INTERCEDE</span>
+    <Image
+      src={variant === "white" ? "/brand/logo-white.svg" : "/brand/logo.svg"}
+      alt="INTERCEDE"
+      width={1204}
+      height={218}
+      // Ya es un SVG vectorial: el optimizador de imágenes de Next no aporta nada.
+      unoptimized
+      className={cn("h-8 w-auto", className)}
+    />
   );
 }

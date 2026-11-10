@@ -16,4 +16,4 @@ Política de caché (CLAUDE.md §6):
 - El worker no se registra en `npm run dev`.
 
 ## Consecuencias
-Las pruebas de PWA requieren build de producción (`CI=1`). Los íconos actuales son placeholders (`scripts/generate-placeholder-icons.mjs`) hasta recibir los archivos de marca en `public/brand/`.
+Las pruebas de PWA requieren build de producción (`CI=1`). Los íconos de `public/icons/` se generan con `npm run icons` (`scripts/generate-icons.mjs`) a partir del logo oficial de `public/brand/`, sobre el degradado de marca (variante "a"); hay que regenerarlos si cambia el logo.

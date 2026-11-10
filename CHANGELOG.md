@@ -6,6 +6,16 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+### Añadido
+- Logo oficial en `public/brand/` (`logo.svg`, `logo-white.svg`, `logo-mark.svg`, `logo-mark-white.svg`).
+- `npm run icons`: genera favicons (32/48), íconos PWA (192/512/maskable) y apple-touch-icon desde el
+  símbolo oficial sobre el degradado de marca.
+
+### Cambiado
+- El wordmark de texto se reemplazó por el logo oficial en el encabezado, el pie, `/orar` y la imagen
+  Open Graph; el JSON-LD de la organización incluye su logo.
+- Favicon e íconos de la PWA ahora salen del logo oficial (antes eran placeholders).
+
 ## [0.2.0] - 2026-11-10 — Fase 1: Landing
 
 ### Añadido

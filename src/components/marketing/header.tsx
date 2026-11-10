@@ -20,7 +20,7 @@ export async function Header() {
     <header className="dark relative z-30 bg-brand-navy-900 text-foreground">
       <Container className="flex items-center justify-between py-4">
         <Link href="/" aria-label={a11y("home")} className="rounded-lg">
-          <Wordmark />
+          <Wordmark className="h-7 sm:h-8" />
         </Link>
         <nav aria-label={a11y("mainNav")} className="hidden items-center gap-7 text-sm lg:flex">
           {NAV.map(({ key, href }) => (

@@ -31,7 +31,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
     title: t("title"),
     description: t("description"),
     applicationName: BRAND.name,
-    icons: { apple: "/icons/apple-touch-icon.png" },
+    // PLACEHOLDER hasta recibir el logo oficial (ver scripts/generate-placeholder-icons.mjs)
+    icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
     appleWebApp: { capable: true, title: BRAND.name, statusBarStyle: "black-translucent" },
   };
 }

@@ -35,13 +35,17 @@ Requiere Docker. La app usa el proyecto remoto vía `.env.local`; las pruebas us
 
 | Comando | Qué hace |
 |---|---|
-| `npx supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,mailpit,storage-api` | Levanta Supabase local (aplica las migraciones; incluye Realtime) |
+| `npx supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor` | Levanta Supabase local (aplica las migraciones; incluye Realtime, Storage y Mailpit) |
 | `npm run test:db` | Pruebas de integración y RLS contra el Supabase local |
 | `npm run test:e2e:db` | E2E del flujo de salas con varios navegadores contra el Supabase local |
 | `npm run db:types` | Regenera `src/types/database.ts` desde el esquema local |
 | `npm run db:reset` | Recrea la base local desde las migraciones |
 | `npx supabase db push --remote` | Aplica migraciones al proyecto remoto (pide confirmación) |
 | `npx supabase config diff` | Compara `config.toml` con el remoto. Hazlo **antes** de cualquier `config push` |
+
+Los correos del Supabase local (confirmación, recuperación) caen en **Mailpit** (`http://127.0.0.1:54324`);
+las pruebas de cuentas los leen de ahí. En el proyecto remoto el correo depende de configurar un SMTP propio
+(ver `docs/decisions/0009-cuentas-diario-y-perfil.md`).
 
 Las pruebas de audio (`tests/e2e/audio.spec.ts`) usan **LiveKit Cloud real** con micrófonos simulados de
 Chromium y se saltan solas si no hay `LIVEKIT_*` en `.env.local`. Corren con `npm run test:e2e:db`. Lo

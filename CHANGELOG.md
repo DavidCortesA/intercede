@@ -6,6 +6,42 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.6.0] - 2026-11-10 — Fase 5: Cuentas y vida de oración
+
+### Añadido
+- **Cuentas:** crear cuenta con correo y contraseña, entrar, salir y recuperar la contraseña con un enlace
+  del correo. Un **invitado se convierte en cuenta conservando su historial** (mismo usuario). Botón
+  "Continuar con Google" (con `NEXT_PUBLIC_GOOGLE_AUTH=1`), también para vincular Google a un invitado.
+- Correos en español (confirmación, recuperación, cambio de correo) y rutas `/auth/confirm` y
+  `/auth/callback` con protección contra redirecciones abiertas.
+- **Perfil:** nombre, zona horaria, foto (recortada y guardada en Storage), correo y cambio de contraseña.
+  La foto se ve en las salas.
+- **Mis salas:** historial de las salas en las que has orado, con "volver a entrar".
+- **Diario de oración** privado (solo cuentas): categorías, en oración / respondida con testimonio, editar,
+  eliminar, filtros y guardar en el diario una petición de una sala.
+- **"Estoy orando por esto"** con contador en vivo en las peticiones ajenas; quien escribió la petición ve
+  cuántas personas oran por ella.
+- Navegación progresiva: invitado = Orar y Perfil; con cuenta, también Diario y Salas. Enlaces "Entrar" en
+  la landing y en `/orar`.
+- Base de datos: `prayer_journal_entries`, `prayer_support`, bucket `avatars`, `room_members.avatar_url`,
+  `is_permanent_user()` y las reglas de seguridad de cada una (RLS). `enable_manual_linking`.
+- Pruebas: 16 de base de datos, unitarias de Auth y 10 e2e con correo real (Mailpit) incluyendo axe.
+- ADR 0009.
+
+### Cambiado
+- El CI levanta Mailpit y Storage en el Supabase local.
+
+### Aplicado al proyecto remoto
+- Migración `account_life` y `enable_manual_linking`. Verificado con usuarios de prueba que se borraron al
+  terminar. Google ya estaba activo en el proyecto y redirige a `accounts.google.com`.
+
+### Pendiente
+- **SMTP propio para el correo del proyecto remoto** (p. ej. Resend con dominio verificado): el plan gratuito
+  con el SMTP por defecto no permite plantillas propias ni enviar a cualquier dirección; hasta entonces el
+  registro por correo en producción no es viable (ver ADR 0009).
+- Probar el inicio de sesión completo con Google (requiere consentimiento interactivo).
+- Eliminar cuenta y datos (Fase 8).
+
 ## [0.5.0] - 2026-11-10 — Fase 4: Audio con LiveKit
 
 ### Añadido

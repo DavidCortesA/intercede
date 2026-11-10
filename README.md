@@ -41,3 +41,5 @@ El avance se publica por fases con su tag y su entrada en [`CHANGELOG.md`](CHANG
 ## Pendiente de la propietaria/el propietario
 
 - Archivos oficiales del logo en `public/brand/` (hoy: texto temporal e íconos placeholder en `public/icons/`).
+- Correo de contacto real: `NEXT_PUBLIC_CONTACT_EMAIL` (si está vacío, el pie no muestra el enlace).
+- Revisión legal de `/privacidad` y `/terminos` (hoy son borradores).

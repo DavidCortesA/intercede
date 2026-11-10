@@ -6,6 +6,34 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.2.0] - 2026-11-10 — Fase 1: Landing
+
+### Añadido
+- Landing pública estática (SSG) en `/es` con las 8 secciones del CLAUDE.md §5.5: héroe con CTA doble
+  ("Orar ahora" e "Instalar la app"), el problema y la solución, cómo funciona en 3 pasos, funciones
+  (bento), iglesias y ministerios, privacidad y confianza, preguntas frecuentes y pie.
+- Dirección de arte propia: paisaje de montaña con cruz en SVG, ilustración de una sala de oración,
+  numerales escalonados, bento asimétrico y animaciones CSS (entrada y scroll reveal) sin JavaScript.
+- `InstallButton`: instalación nativa donde el navegador la ofrece y guía por plataforma (iOS Safari
+  "Añadir a pantalla de inicio", Android, escritorio, Safari en Mac).
+- CTA fija en móvil que aparece al pasar el héroe.
+- SEO: título y descripción únicos por página, canonical, Open Graph y Twitter con imagen generada,
+  JSON-LD (Organization, WebSite, SoftwareApplication, FAQPage), `sitemap.xml`, `robots.txt`.
+- Páginas `/privacidad` y `/terminos` (borrador pendiente de revisión legal), 404 de marca para rutas
+  inexistentes y página provisional `/orar` (`noindex`) a la que apunta el CTA hasta la Fase 3.
+- Componente `Button` (variantes primaria, secundaria y clara) y token `bg-brand-dusk`.
+- Pruebas e2e de la landing, SEO y accesibilidad con axe (WCAG 2.1 AA en modo claro y oscuro).
+- ADR 0005 con las decisiones de la fase.
+
+### Medido
+- Lighthouse (build de producción): móvil 95 / 100 / 100 / 100 y escritorio 100 / 100 / 100 / 100
+  (rendimiento, accesibilidad, buenas prácticas, SEO).
+
+### Pendiente
+- Logo oficial en `public/brand/`; el wordmark y el favicon siguen siendo placeholders.
+- Correo de contacto real (`NEXT_PUBLIC_CONTACT_EMAIL`) para mostrarlo en el pie.
+- Revisión legal de privacidad y términos; analítica y aviso de cookies se deciden en la Fase 8.
+
 ## [0.1.0] - 2026-11-10 — Fase 0: Fundación
 
 ### Añadido

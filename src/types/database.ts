@@ -23,7 +23,107 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "devotional_progress": {
+            "communities": {
+                  Row: {
+                    "created_at": string,"created_by": string | null,"description": string | null,"id": string,"kind": string,"logo_url": string | null,"name": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string | null,"description"?: string | null,"id"?: string,"kind"?: string,"logo_url"?: string | null,"name": string
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string | null,"description"?: string | null,"id"?: string,"kind"?: string,"logo_url"?: string | null,"name"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"community_invites": {
+                  Row: {
+                    "community_id": string,"created_at": string,"token": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "community_id": string,"created_at"?: string,"token"?: string
+                  }
+                  Update: {
+                    "community_id"?: string,"created_at"?: string,"token"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "community_invites_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: true
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"community_members": {
+                  Row: {
+                    "avatar_url": string | null,"community_id": string,"display_name": string,"joined_at": string,"role": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "avatar_url"?: string | null,"community_id": string,"display_name": string,"joined_at"?: string,"role"?: string,"user_id": string
+                  }
+                  Update: {
+                    "avatar_url"?: string | null,"community_id"?: string,"display_name"?: string,"joined_at"?: string,"role"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "community_members_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"community_request_support": {
+                  Row: {
+                    "community_id": string,"created_at": string,"request_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "community_id": string,"created_at"?: string,"request_id": string,"user_id"?: string
+                  }
+                  Update: {
+                    "community_id"?: string,"created_at"?: string,"request_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "community_request_support_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "community_request_support_request_id_fkey"
+      columns: ["request_id"]
+isOneToOne: false
+      referencedRelation: "community_requests"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"community_requests": {
+                  Row: {
+                    "answered_at": string | null,"author_id": string,"community_id": string,"content": string,"created_at": string,"id": string,"is_answered": boolean,"testimony": string | null,"visibility": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "answered_at"?: string | null,"author_id"?: string,"community_id": string,"content": string,"created_at"?: string,"id"?: string,"is_answered"?: boolean,"testimony"?: string | null,"visibility"?: string
+                  }
+                  Update: {
+                    "answered_at"?: string | null,"author_id"?: string,"community_id"?: string,"content"?: string,"created_at"?: string,"id"?: string,"is_answered"?: boolean,"testimony"?: string | null,"visibility"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "community_requests_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"devotional_progress": {
                   Row: {
                     "devotional_id": string,"note": string | null,"read_at": string | null,"updated_at": string,"user_id": string
                   }
@@ -55,7 +155,59 @@ isOneToOne: false
                     "bible_version"?: string,"community_id"?: string | null,"created_at"?: string,"devotional_date"?: string,"id"?: string,"passage_reference"?: string,"passage_text"?: string,"question"?: string,"reflection"?: string,"suggested_prayer"?: string | null
                   }
                   Relationships: [
-                    
+                    {
+      foreignKeyName: "devotionals_community_fk"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"event_rsvps": {
+                  Row: {
+                    "event_id": string,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "event_id": string,"status": string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Update: {
+                    "event_id"?: string,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "event_rsvps_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"events": {
+                  Row: {
+                    "community_id": string,"created_at": string,"created_by": string | null,"description": string | null,"ends_at": string,"id": string,"opens_room": boolean,"reminder_minutes": number,"room_id": string | null,"starts_at": string,"timezone": string,"title": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "community_id": string,"created_at"?: string,"created_by"?: string | null,"description"?: string | null,"ends_at": string,"id"?: string,"opens_room"?: boolean,"reminder_minutes"?: number,"room_id"?: string | null,"starts_at": string,"timezone": string,"title": string
+                  }
+                  Update: {
+                    "community_id"?: string,"created_at"?: string,"created_by"?: string | null,"description"?: string | null,"ends_at"?: string,"id"?: string,"opens_room"?: boolean,"reminder_minutes"?: number,"room_id"?: string | null,"starts_at"?: string,"timezone"?: string,"title"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "events_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "events_room_id_fkey"
+      columns: ["room_id"]
+isOneToOne: false
+      referencedRelation: "rooms"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"notification_preferences": {
                   Row: {
@@ -201,17 +353,23 @@ isOneToOne: false
                   ]
                 },"room_schedules": {
                   Row: {
-                    "created_at": string,"id": string,"is_active": boolean,"last_room_id": string | null,"local_time": string,"name": string,"next_occurrence_at": string | null,"owner_id": string,"recurrence": string,"reminder_minutes": number,"start_date": string,"timezone": string,"weekdays": (number)[]
+                    "community_id": string | null,"created_at": string,"id": string,"is_active": boolean,"last_room_id": string | null,"local_time": string,"name": string,"next_occurrence_at": string | null,"owner_id": string,"recurrence": string,"reminder_minutes": number,"start_date": string,"timezone": string,"weekdays": (number)[]
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"id"?: string,"is_active"?: boolean,"last_room_id"?: string | null,"local_time": string,"name": string,"next_occurrence_at"?: string | null,"owner_id": string,"recurrence": string,"reminder_minutes"?: number,"start_date": string,"timezone": string,"weekdays"?: (number)[]
+                    "community_id"?: string | null,"created_at"?: string,"id"?: string,"is_active"?: boolean,"last_room_id"?: string | null,"local_time": string,"name": string,"next_occurrence_at"?: string | null,"owner_id": string,"recurrence": string,"reminder_minutes"?: number,"start_date": string,"timezone": string,"weekdays"?: (number)[]
                   }
                   Update: {
-                    "created_at"?: string,"id"?: string,"is_active"?: boolean,"last_room_id"?: string | null,"local_time"?: string,"name"?: string,"next_occurrence_at"?: string | null,"owner_id"?: string,"recurrence"?: string,"reminder_minutes"?: number,"start_date"?: string,"timezone"?: string,"weekdays"?: (number)[]
+                    "community_id"?: string | null,"created_at"?: string,"id"?: string,"is_active"?: boolean,"last_room_id"?: string | null,"local_time"?: string,"name"?: string,"next_occurrence_at"?: string | null,"owner_id"?: string,"recurrence"?: string,"reminder_minutes"?: number,"start_date"?: string,"timezone"?: string,"weekdays"?: (number)[]
                   }
                   Relationships: [
                     {
+      foreignKeyName: "room_schedules_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    },{
       foreignKeyName: "room_schedules_last_room_id_fkey"
       columns: ["last_room_id"]
 isOneToOne: false
@@ -221,17 +379,23 @@ isOneToOne: false
                   ]
                 },"rooms": {
                   Row: {
-                    "closed_at": string | null,"code": string,"created_at": string,"host_id": string,"id": string,"is_locked": boolean,"name": string,"schedule_id": string | null,"scheduled_at": string | null,"status": string
+                    "closed_at": string | null,"code": string,"community_id": string | null,"created_at": string,"host_id": string,"id": string,"is_locked": boolean,"name": string,"schedule_id": string | null,"scheduled_at": string | null,"status": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "closed_at"?: string | null,"code": string,"created_at"?: string,"host_id": string,"id"?: string,"is_locked"?: boolean,"name": string,"schedule_id"?: string | null,"scheduled_at"?: string | null,"status"?: string
+                    "closed_at"?: string | null,"code": string,"community_id"?: string | null,"created_at"?: string,"host_id": string,"id"?: string,"is_locked"?: boolean,"name": string,"schedule_id"?: string | null,"scheduled_at"?: string | null,"status"?: string
                   }
                   Update: {
-                    "closed_at"?: string | null,"code"?: string,"created_at"?: string,"host_id"?: string,"id"?: string,"is_locked"?: boolean,"name"?: string,"schedule_id"?: string | null,"scheduled_at"?: string | null,"status"?: string
+                    "closed_at"?: string | null,"code"?: string,"community_id"?: string | null,"created_at"?: string,"host_id"?: string,"id"?: string,"is_locked"?: boolean,"name"?: string,"schedule_id"?: string | null,"scheduled_at"?: string | null,"status"?: string
                   }
                   Relationships: [
                     {
+      foreignKeyName: "rooms_community_id_fkey"
+      columns: ["community_id"]
+isOneToOne: false
+      referencedRelation: "communities"
+      referencedColumns: ["id"]
+    },{
       foreignKeyName: "rooms_schedule_id_fkey"
       columns: ["schedule_id"]
 isOneToOne: false
@@ -285,14 +449,31 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "claim_notifications":
+            "can_manage_schedule":
+{ Args: { "p_schedule_id": string }; Returns: boolean
+                           },
+"claim_notifications":
 { Args: { "p_limit"?: number }; Returns: Json
                            },
 "close_room":
 { Args: { "p_room_id": string }; Returns: undefined
                            },
+"community_role":
+{ Args: { "p_community_id": string }; Returns: string
+                           },
 "compute_next_occurrence":
 { Args: { "p_after": string,"p_local_time": string,"p_recurrence": string,"p_start_date": string,"p_timezone": string,"p_weekdays": (number)[] }; Returns: string
+                           },
+"create_community":
+{ Args: { "p_description"?: string,"p_kind"?: string,"p_name": string }; Returns: string
+                           },
+"create_community_room":
+{ Args: { "p_community_id": string,"p_display_name": string,"p_name": string }; Returns: {
+              "room_code": string,"room_id": string
+            }[]
+                           },
+"create_event":
+{ Args: { "p_community_id": string,"p_date": string,"p_description": string,"p_duration_minutes"?: number,"p_opens_room"?: boolean,"p_reminder_minutes"?: number,"p_time": string,"p_timezone": string,"p_title": string }; Returns: string
                            },
 "create_room":
 { Args: { "p_display_name": string,"p_name": string }; Returns: {
@@ -300,7 +481,7 @@ isOneToOne: false
             }[]
                            },
 "create_schedule":
-{ Args: { "p_local_time": string,"p_name": string,"p_recurrence": string,"p_reminder_minutes"?: number,"p_start_date": string,"p_timezone": string,"p_weekdays": (number)[] }; Returns: string
+{ Args: { "p_community_id"?: string,"p_local_time": string,"p_name": string,"p_recurrence": string,"p_reminder_minutes"?: number,"p_start_date": string,"p_timezone": string,"p_weekdays": (number)[] }; Returns: string
                            },
 "devotional_stats":
 { Args: Record<PropertyKey, never>; Returns: {
@@ -310,8 +491,14 @@ isOneToOne: false
 "finish_notification":
 { Args: { "p_dead_endpoints"?: (string)[],"p_email_state": string,"p_error"?: string,"p_id": string,"p_push_state": string }; Returns: undefined
                            },
+"follow_community_schedule":
+{ Args: { "p_schedule_id": string }; Returns: undefined
+                           },
 "generate_room_code":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"get_community_invite":
+{ Args: { "p_community_id": string }; Returns: string
                            },
 "get_schedule_invite":
 { Args: { "p_schedule_id": string }; Returns: string
@@ -324,6 +511,21 @@ isOneToOne: false
                            },
 "is_allowed_push_endpoint":
 { Args: { "p_endpoint": string }; Returns: boolean
+                           },
+"is_community_admin":
+{ Args: { "p_community_id": string }; Returns: boolean
+                           },
+"is_community_admin_folder":
+{ Args: { "p_folder": string }; Returns: boolean
+                           },
+"is_community_leader":
+{ Args: { "p_community_id": string }; Returns: boolean
+                           },
+"is_community_member":
+{ Args: { "p_community_id": string }; Returns: boolean
+                           },
+"is_event_member":
+{ Args: { "p_event_id": string }; Returns: boolean
                            },
 "is_permanent_user":
 { Args: Record<PropertyKey, never>; Returns: boolean
@@ -343,14 +545,25 @@ isOneToOne: false
 "is_schedule_subscriber":
 { Args: { "p_schedule_id": string }; Returns: boolean
                            },
+"join_community":
+{ Args: { "p_token": string }; Returns: string
+                           },
 "join_room":
 { Args: { "p_code": string,"p_display_name": string }; Returns: string
+                           },
+"leave_community":
+{ Args: { "p_community_id": string }; Returns: undefined
                            },
 "leave_room":
 { Args: { "p_room_id": string }; Returns: undefined
                            },
 "new_invite_token":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"peek_community":
+{ Args: { "p_token": string }; Returns: {
+              "description": string,"kind": string,"logo_url": string,"members": number,"name": string
+            }[]
                            },
 "peek_room":
 { Args: { "p_code": string }; Returns: {
@@ -365,14 +578,26 @@ isOneToOne: false
 "process_scheduled_work":
 { Args: { "p_now"?: string }; Returns: Json
                            },
+"regenerate_community_invite":
+{ Args: { "p_community_id": string }; Returns: string
+                           },
 "regenerate_schedule_invite":
 { Args: { "p_schedule_id": string }; Returns: string
+                           },
+"remove_community_member":
+{ Args: { "p_community_id": string,"p_user_id": string }; Returns: undefined
                            },
 "remove_member":
 { Args: { "p_room_id": string,"p_user_id": string }; Returns: undefined
                            },
+"set_member_role":
+{ Args: { "p_community_id": string,"p_role": string,"p_user_id": string }; Returns: undefined
+                           },
 "set_room_locked":
 { Args: { "p_locked": boolean,"p_room_id": string }; Returns: undefined
+                           },
+"set_rsvp":
+{ Args: { "p_event_id": string,"p_status": string }; Returns: undefined
                            },
 "set_schedule_active":
 { Args: { "p_active": boolean,"p_schedule_id": string }; Returns: undefined

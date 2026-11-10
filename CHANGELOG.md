@@ -6,6 +6,37 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.8.0] - 2026-11-10 — Fase 7: Comunidades y eventos
+
+### Añadido
+- **Comunidades** (iglesia, ministerio o grupo; capa 3, opcional): crear, perfil con **logo**, enlace de invitación
+  **revocable** (`/c/<token>`; vuelve a donde ibas tras crear cuenta o entrar), roles **admin / líder / miembro**, gestión de
+  miembros (cambiar roles, sacar, salir; nunca queda sin admin) y ajustes (editar, logo, eliminar). Pestaña *Comunidades* solo
+  cuando perteneces a una (navegación progresiva); entrada desde *Perfil*.
+- **Muro de oración** de la comunidad: visible para toda la comunidad o solo para el liderazgo, "estoy orando por esto" con
+  contador, respondida con testimonio, y moderación (el liderazgo puede borrar).
+- **Salas de la comunidad**: abrir una ahora (liderazgo; solo entran miembros) y **programadas/recurrentes** que los miembros
+  siguen con un botón para recibir avisos.
+- **Devocional de la comunidad**: el liderazgo publica y retira; los miembros lo leen y llevan sus notas.
+- **Eventos** con fecha y zona horaria, **confirmación de asistencia** (voy / tal vez / no voy), recordatorio por aviso, sala de
+  oración que se abre sola a la hora y **exportar a calendario (.ics)**.
+- Base de datos: `communities`, `community_members`, `community_invites`, `community_requests`,
+  `community_request_support`, `events`, `event_rsvps`, `rooms.community_id`, `room_schedules.community_id`, bucket
+  `community-logos` y las funciones que deciden cada permiso (todo con RLS). `create_schedule` gana un parámetro opcional.
+- Registro con `?next=` (la invitación sobrevive a crear cuenta con correo).
+- Pruebas: 21 de base de datos (RLS por rol), 13 unitarias y 11 e2e (más axe).
+- ADR 0011.
+
+### Cambiado
+- `join_room` rechaza con `community_only` a quien no es de la comunidad dueña de la sala (las salas normales no cambian).
+- La pantalla personal de *Programadas* solo muestra lo que sigues; lo creado dentro de una comunidad se administra allí.
+- El recorte de fotos a 256 px es una utilidad compartida (`src/lib/image.ts`).
+- Aviso de privacidad: nombre y foto visibles para la comunidad y publicaciones del muro.
+
+### Límites
+- Sin tiempo real en el muro, sin edición de eventos, sin aprobación de solicitudes (el enlace es la llave) y sin
+  reportes/bloqueos ni eliminación de cuenta (Fase 8).
+
 ## [0.7.0] - 2026-11-10 — Fase 6: Devocionales, programación y avisos
 
 ### Añadido

@@ -3,7 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { RoomShell } from "./room-shell";
 
-export type RoomMessageKind = "notFound" | "closed" | "locked" | "full" | "closedLive";
+export type RoomMessageKind = "notFound" | "closed" | "locked" | "full" | "closedLive" | "removed";
 
 /** Mensaje claro cuando no se puede entrar (enlace inválido, sala cerrada, bloqueada o llena). */
 export async function RoomMessage({ kind, roomName }: { kind: RoomMessageKind; roomName?: string }) {

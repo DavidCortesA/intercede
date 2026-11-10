@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { sendHostCommand } from "@/features/audio/api";
 import { createClient } from "@/lib/supabase/client";
 import { toRoomError, type RoomErrorCode } from "./errors";
 import type { PrayerRequest, Room, RoomMember } from "./types";
@@ -195,9 +196,16 @@ export function useRoomLive(initial: Initial) {
         return res !== null;
       },
       async closeRoom(): Promise<boolean> {
-        const res = await run(async () => ({ ...(await supabase.rpc("close_room", { p_room_id: roomId })), data: true }));
-        if (res) setRoom((r) => ({ ...r, status: "closed", closed_at: new Date().toISOString() }));
-        return res !== null;
+        // Pasa por el servidor: además de cerrar la sala en la base, desconecta a todas las
+        // personas del audio (un token vigente no se anula solo).
+        setError(null);
+        const res = await sendHostCommand({ action: "close", roomId });
+        if (!res.ok) {
+          setError(res.error === "network" ? "network" : res.error === "not_host" ? "not_host" : "generic");
+          return false;
+        }
+        setRoom((r) => ({ ...r, status: "closed", closed_at: new Date().toISOString() }));
+        return true;
       },
       async leave(): Promise<boolean> {
         const res = await run(async () => ({ ...(await supabase.rpc("leave_room", { p_room_id: roomId })), data: true }));

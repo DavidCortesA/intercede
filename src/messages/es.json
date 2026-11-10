@@ -259,6 +259,10 @@
         "title": "La sala se cerró",
         "body": "Gracias por orar juntos."
       },
+      "removed": {
+        "title": "El anfitrión te sacó de la sala",
+        "body": "Ya no puedes volver a entrar a esta sala. Puedes crear la tuya."
+      },
       "home": "Ir al inicio",
       "newRoom": "Crear mi propia sala"
     },
@@ -284,6 +288,7 @@
     },
     "host": {
       "title": "Anfitrión",
+      "muteAll": "Silenciar a todos",
       "lock": "Bloquear sala",
       "unlock": "Desbloquear sala",
       "locked": "Sala bloqueada: no entra nadie más",
@@ -308,6 +313,9 @@
       "too_many_rooms": "Ya tienes 5 salas abiertas. Cierra alguna para crear otra.",
       "too_many_requests": "Llegaste al máximo de 20 peticiones en esta sala.",
       "not_host": "Solo el anfitrión puede hacer eso.",
+      "removed": "El anfitrión te sacó de esta sala y no puedes volver a entrar.",
+      "member_not_found": "Esa persona ya no está en la sala.",
+      "cannot_remove_self": "No puedes sacarte a ti mismo de la sala.",
       "not_authenticated": "Tu sesión expiró. Recarga la página.",
       "rate_limited": "Demasiados intentos. Espera un momento y vuelve a probar.",
       "guests_disabled": "Entrar sin cuenta no está disponible ahora.",
@@ -376,6 +384,65 @@
           "body": "Podemos actualizar estos términos y publicaremos la fecha de la última actualización en esta página."
         }
       }
+    }
+  },
+  "Audio": {
+    "title": "Audio de la sala",
+    "hint": "Elige cómo quieres estar. Solo pedimos el micrófono si decides hablar.",
+    "join": {
+      "talk": "Orar con micrófono",
+      "listen": "Solo escuchar",
+      "connecting": "Conectando el audio…"
+    },
+    "controls": {
+      "mute": "Silenciar mi micrófono",
+      "unmute": "Activar mi micrófono",
+      "leave": "Salir del audio",
+      "enableSound": "Activar el sonido",
+      "soundBlocked": "Tu navegador bloqueó el sonido. Tócalo para escuchar."
+    },
+    "status": {
+      "connected": "Audio conectado",
+      "listening": "Escuchando",
+      "talking": "Micrófono activado",
+      "muted": "Micrófono silenciado",
+      "reconnecting": "Reconectando el audio…"
+    },
+    "speaker": {
+      "speaking": "Está orando",
+      "you": "Estás hablando",
+      "nobody": "Nadie está hablando ahora"
+    },
+    "participant": {
+      "speaking": "Hablando",
+      "micOn": "Micrófono activado",
+      "micOff": "Micrófono apagado",
+      "listening": "Escuchando",
+      "noAudio": "Sin audio"
+    },
+    "host": {
+      "mute": "Silenciar a {name}",
+      "remove": "Sacar a {name} de la sala",
+      "removeTitle": "¿Sacar a {name} de la sala?",
+      "removeBody": "Saldrá de la sala y no podrá volver a entrar con este enlace.",
+      "removeConfirm": "Sí, sacar",
+      "cancel": "Cancelar"
+    },
+    "errors": {
+      "mic_denied": "No tenemos permiso para usar tu micrófono. Actívalo en los ajustes del navegador (el candado junto a la dirección) y vuelve a intentarlo.",
+      "mic_missing": "No encontramos un micrófono en este dispositivo.",
+      "mic_busy": "Otra aplicación está usando tu micrófono. Ciérrala e inténtalo de nuevo.",
+      "mic_error": "No pudimos activar tu micrófono.",
+      "connect_failed": "No pudimos conectar el audio. Revisa tu internet e inténtalo de nuevo.",
+      "duplicate": "Entraste al audio desde otro dispositivo o pestaña, así que aquí se desconectó.",
+      "removed": "El anfitrión te sacó de la sala.",
+      "room_closed": "La sala ya se cerró.",
+      "not_a_member": "Ya no estás en esta sala.",
+      "unauthenticated": "Tu sesión expiró. Recarga la página.",
+      "livekit_unavailable": "El audio no está disponible por ahora. Las peticiones siguen funcionando.",
+      "server_misconfigured": "El audio no está configurado en este momento.",
+      "network": "No hay conexión. Revisa tu internet.",
+      "host_action": "No se pudo completar la acción. Inténtalo de nuevo."
     }
   },
   "Offline": {

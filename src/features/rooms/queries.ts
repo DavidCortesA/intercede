@@ -7,6 +7,7 @@ export type RoomSnapshot =
   | { kind: "not_found" }
   | { kind: "closed"; name: string }
   | { kind: "locked"; name: string }
+  | { kind: "removed"; name: string }
   | { kind: "join"; code: string; name: string; activeMembers: number; suggestedName: string }
   | {
       kind: "member";
@@ -43,6 +44,7 @@ export async function getRoomSnapshot(rawCode: string): Promise<RoomSnapshot> {
         supabase.from("prayer_requests").select("*").eq("room_id", room.id).order("created_at", { ascending: false }).limit(200),
       ]);
       const me = members?.find((m) => m.user_id === session.userId);
+      if (me?.removed_at) return { kind: "removed", name: preview.name };
       if (me && me.left_at === null) {
         return { kind: "member", room, meId: session.userId, members: members ?? [], requests: requests ?? [] };
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Lock, LockOpen, XCircle } from "lucide-react";
+import { Lock, LockOpen, MicOff, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,15 +9,21 @@ interface Props {
   isLocked: boolean;
   onSetLocked: (locked: boolean) => Promise<boolean>;
   onClose: () => Promise<boolean>;
+  /** Silenciar a todas las personas conectadas al audio (el anfitrión no se silencia). */
+  onMuteAll: () => void;
 }
 
-/** Controles del anfitrión de la Fase 3: bloquear la sala y cerrarla. (Silenciar y expulsar llegan con el audio, Fase 4.) */
-export function HostControls({ isLocked, onSetLocked, onClose }: Props) {
+/** Controles del anfitrión: silenciar a todos, bloquear la sala y cerrarla. Sacar o silenciar a alguien se hace desde su avatar. */
+export function HostControls({ isLocked, onSetLocked, onClose, onMuteAll }: Props) {
   const t = useTranslations("Room.host");
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   return (
     <section aria-label={t("title")} className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-surface p-3">
+      <Button size="sm" variant="secondary" onClick={onMuteAll}>
+        <MicOff className="size-4" aria-hidden="true" />
+        {t("muteAll")}
+      </Button>
       <Button size="sm" variant="secondary" onClick={() => onSetLocked(!isLocked)} aria-pressed={isLocked}>
         {isLocked ? <LockOpen className="size-4" aria-hidden="true" /> : <Lock className="size-4" aria-hidden="true" />}
         {isLocked ? t("unlock") : t("lock")}

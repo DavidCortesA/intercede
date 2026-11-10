@@ -31,6 +31,8 @@ export default async function RoomPage({ params }: PageProps<"/[locale]/r/[code]
       return <RoomMessage kind="closed" roomName={snapshot.name} />;
     case "locked":
       return <RoomMessage kind="locked" roomName={snapshot.name} />;
+    case "removed":
+      return <RoomMessage kind="removed" roomName={snapshot.name} />;
     case "join": {
       const t = await getTranslations("Room.join");
       return (

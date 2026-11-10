@@ -32,6 +32,11 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 - Las pruebas locales pasan la service role local a la app (`scripts/lib/local-supabase.mjs`).
 - Rendimiento (Lighthouse, producción local): móvil 91–93 / 100 / 100 / 100 y escritorio 100 / 100 / 100 / 100 (el SDK de Sentry se carga cuando la página está libre).
 
+### Aplicado al proyecto remoto
+- Migraciones de moderación y de la auditoría (esta última excluye la función de event trigger que instala la plataforma, hallazgo real de la primera
+  auditoría remota). Verificado con usuarios de prueba (borrados): reporte, duplicado, reporte propio, bloqueo y su efecto, visibilidad de reportes,
+  `security_audit` rechazada a usuarios, `prepare_account_deletion` y limpieza de invitados. Auditoría del remoto: **sin hallazgos**. Cron semanal de invitados creado.
+
 ### Límites
 - Bloquear no silencia el audio de una sala en curso. Sin limitador propio de intentos de códigos de sala (activar el firewall de Vercel).
 - Sin CSP con `script-src` (obligaría a renderizar la landing en el servidor). Sin mapas de fuentes de Sentry.

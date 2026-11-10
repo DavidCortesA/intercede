@@ -59,14 +59,14 @@ isOneToOne: false
                   ]
                 },"room_members": {
                   Row: {
-                    "display_name": string,"joined_at": string,"left_at": string | null,"role": string,"room_id": string,"user_id": string
+                    "display_name": string,"joined_at": string,"left_at": string | null,"removed_at": string | null,"role": string,"room_id": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "display_name": string,"joined_at"?: string,"left_at"?: string | null,"role"?: string,"room_id": string,"user_id": string
+                    "display_name": string,"joined_at"?: string,"left_at"?: string | null,"removed_at"?: string | null,"role"?: string,"room_id": string,"user_id": string
                   }
                   Update: {
-                    "display_name"?: string,"joined_at"?: string,"left_at"?: string | null,"role"?: string,"room_id"?: string,"user_id"?: string
+                    "display_name"?: string,"joined_at"?: string,"left_at"?: string | null,"removed_at"?: string | null,"role"?: string,"room_id"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -130,6 +130,9 @@ isOneToOne: false
 { Args: { "p_code": string }; Returns: {
               "active_members": number,"is_locked": boolean,"name": string,"status": string
             }[]
+                           },
+"remove_member":
+{ Args: { "p_room_id": string,"p_user_id": string }; Returns: undefined
                            },
 "set_room_locked":
 { Args: { "p_locked": boolean,"p_room_id": string }; Returns: undefined

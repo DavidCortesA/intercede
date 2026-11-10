@@ -1,27 +1,80 @@
+import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { Churches } from "@/components/marketing/churches";
+import { Faq } from "@/components/marketing/faq";
+import { Features } from "@/components/marketing/features";
+import { FinalCta } from "@/components/marketing/final-cta";
+import { Hero } from "@/components/marketing/hero";
+import { HowItWorks } from "@/components/marketing/how-it-works";
+import { JsonLd } from "@/components/marketing/json-ld";
+import { Problem } from "@/components/marketing/problem";
+import { Trust } from "@/components/marketing/trust";
+import { FAQ_KEYS } from "@/config/faq";
+import { SITE_URL } from "@/config/site";
 import { routing } from "@/i18n/routing";
+import { pageMetadata } from "@/lib/seo";
 
-// PLACEHOLDER de la Fase 0: la landing real se construye en la Fase 1.
-// El logo oficial llega en public/brand/ (no se redibuja ni se aproxima).
+export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  return pageMetadata({ locale, path: "", title: t("title"), description: t("description") });
+}
+
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const t = await getTranslations("Home");
-  const brand = await getTranslations("Brand");
+
+  const meta = await getTranslations("Metadata");
+  const faq = await getTranslations("Faq");
+  const url = `${SITE_URL}/${locale}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Organization", "@id": `${SITE_URL}/#org`, name: "INTERCEDE", url: SITE_URL },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#site`,
+        url,
+        name: "INTERCEDE",
+        inLanguage: locale,
+        publisher: { "@id": `${SITE_URL}/#org` },
+      },
+      {
+        "@type": "SoftwareApplication",
+        name: "INTERCEDE",
+        applicationCategory: "LifestyleApplication",
+        operatingSystem: "Web",
+        description: meta("description"),
+        url,
+        inLanguage: locale,
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: FAQ_KEYS.map((key) => ({
+          "@type": "Question",
+          name: faq(`items.${key}.q`),
+          acceptedAnswer: { "@type": "Answer", text: faq(`items.${key}.a`) },
+        })),
+      },
+    ],
+  };
 
   return (
-    <main
-      id="contenido"
-      className="dark flex min-h-dvh flex-col items-center justify-center gap-6 bg-background px-6 text-center text-foreground"
-    >
-      {/* Texto temporal en lugar del logo: reemplazar por /public/brand/logo-white.svg */}
-      <p className="font-heading text-3xl font-extrabold tracking-wide">{brand("name")}</p>
-      <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{brand("tagline")}</p>
-      <h1 className="max-w-xl font-heading text-4xl font-extrabold sm:text-5xl">{brand("slogan")}</h1>
-      <p className="max-w-md text-muted-foreground">{t("placeholder")}</p>
-    </main>
+    <>
+      <JsonLd data={jsonLd} />
+      <Hero />
+      <Problem />
+      <HowItWorks />
+      <Features />
+      <Churches />
+      <Trust />
+      <Faq />
+      <FinalCta />
+    </>
   );
 }

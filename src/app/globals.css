@@ -51,8 +51,10 @@
 }
 
 /* ───────────── Tokens semánticos: los componentes usan SOLO estos ─────────────
-   Modo claro (predeterminado). */
-:root {
+   Modo claro (predeterminado). `.light` permite forzar secciones claras dentro de un
+   documento en modo oscuro (y `.dark` lo contrario). */
+:root,
+.light {
   --background: #ffffff;
   --foreground: var(--color-brand-navy-900);
   --surface: var(--color-brand-violet-50);
@@ -156,6 +158,73 @@
 /* Degradado de marca (CTA principal, ícono de la app, héroes) */
 @utility bg-brand-gradient {
   background-image: linear-gradient(135deg, #5b2ee6 0%, #2563ff 100%);
+}
+
+/* Animaciones de entrada: solo CSS, sin JS (la landing es estática y debe ser rápida). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sticky-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+}
+@keyframes ring-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+@keyframes eq {
+  50% {
+    transform: scaleY(0.4);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--delay, 0s);
+  }
+  @supports (animation-timeline: scroll()) {
+    /* La CTA fija del móvil aparece al pasar el héroe (sin JS) */
+    .sticky-in {
+      animation: sticky-in linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 380px 560px;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    /* Aparece al entrar en pantalla (scroll reveal) */
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+/* Cielo al atardecer (bienvenida y héroe) */
+@utility bg-brand-dusk {
+  background-color: #0a1240;
+  background-image: linear-gradient(180deg, #0a1240 0%, #17167a 52%, #4b2fc4 100%);
 }
 
 @layer base {

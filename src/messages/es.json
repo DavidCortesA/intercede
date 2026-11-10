@@ -1,18 +1,268 @@
 {
   "Metadata": {
-    "title": "INTERCEDE — Ora. Conecta. Permanece.",
-    "description": "Una comunidad que ora junta. Ora con otras personas por voz, comparte peticiones y permanece en oración."
+    "title": "INTERCEDE — Una comunidad que ora junta",
+    "description": "Ora con otras personas por voz, comparte peticiones de oración y permanece. Sin cuenta, desde tu celular o computadora. Hecha para orar.",
+    "privacyTitle": "Política de privacidad — INTERCEDE",
+    "privacyDescription": "Cómo cuidamos tus oraciones y tus datos en INTERCEDE: sin grabaciones, sin transcripciones y con peticiones privadas por defecto.",
+    "termsTitle": "Términos de uso — INTERCEDE",
+    "termsDescription": "Reglas básicas para orar juntos en INTERCEDE con respeto y seguridad.",
+    "prayTitle": "Orar ahora — INTERCEDE",
+    "prayDescription": "Estamos terminando las salas de oración de INTERCEDE."
   },
   "Brand": {
     "name": "INTERCEDE",
     "tagline": "Ora. Conecta. Permanece.",
+    "taglineSpaced": "Ora · Conecta · Permanece",
     "slogan": "Una comunidad que ora junta."
   },
   "A11y": {
-    "skipToContent": "Saltar al contenido"
+    "skipToContent": "Saltar al contenido",
+    "mainNav": "Navegación principal",
+    "home": "INTERCEDE, ir al inicio",
+    "decorative": "Ilustración decorativa"
   },
-  "Home": {
-    "placeholder": "Estamos preparando la plataforma. Pronto podrás orar con otras personas desde aquí."
+  "Nav": {
+    "how": "Cómo funciona",
+    "features": "Funciones",
+    "churches": "Iglesias",
+    "trust": "Privacidad",
+    "faq": "Preguntas",
+    "cta": "Orar ahora"
+  },
+  "Hero": {
+    "eyebrow": "Ora · Conecta · Permanece",
+    "title": "Una comunidad que <hl>ora</hl> junta.",
+    "subtitle": "Ora con otras personas por voz, comparte tus peticiones y permanece en oración. Sin cuenta, sin configurar nada.",
+    "ctaPray": "Orar ahora",
+    "ctaInstall": "Instalar la app",
+    "note": "Funciona en el navegador de tu celular o computadora.",
+    "previewRoom": "Oración de la mañana",
+    "previewLive": "En vivo",
+    "previewSpeaking": "Está orando",
+    "previewRequest": "Por la salud de mi papá, que mañana tiene cirugía.",
+    "previewPraying": "4 personas orando por esto"
+  },
+  "Problem": {
+    "eyebrow": "El problema",
+    "title": "Una videollamada no fue hecha para orar.",
+    "body": "Las reuniones genéricas estorban: enlaces que hay que buscar, pantallas llenas de rostros, chats que se pierden y ninguna forma de acompañar una petición. Las apps de oración, por su parte, suelen ser listas de versículos sin comunidad.",
+    "solutionEyebrow": "La solución",
+    "solutionTitle": "INTERCEDE está hecha para orar.",
+    "solutionBody": "Entras, escuchas, oras. Las peticiones están a la vista y puedes decir “estoy orando por esto” con un toque.",
+    "points": {
+      "audio": "Audio primero, cámara opcional",
+      "requests": "Peticiones en vivo dentro de la sala",
+      "calm": "Pantalla sobria, sin distracciones"
+    }
+  },
+  "How": {
+    "eyebrow": "Cómo funciona",
+    "title": "Tres pasos. Ninguno requiere registro.",
+    "steps": {
+      "create": {
+        "title": "Crea una sala",
+        "body": "Un toque y tienes un enlace corto para compartir. Tú eres el anfitrión."
+      },
+      "invite": {
+        "title": "Invita",
+        "body": "Comparte el enlace o el código. Quien llega solo escribe su nombre y entra."
+      },
+      "pray": {
+        "title": "Oren juntos",
+        "body": "Audio en vivo, peticiones a la vista y modo oyente para quien prefiere escuchar."
+      }
+    }
+  },
+  "Features": {
+    "eyebrow": "Funciones",
+    "title": "Todo lo que necesita una vida de oración compartida.",
+    "items": {
+      "rooms": {
+        "title": "Salas de oración",
+        "body": "Audio en vivo para grupos pequeños. Se ve quién está orando, puedes silenciarte, escuchar en modo oyente y activar la cámara solo si quieres."
+      },
+      "requests": {
+        "title": "Peticiones",
+        "body": "Comparte lo que llevas en el corazón. Otros pueden decir “estoy orando por esto” y tú marcas cuándo fue respondida."
+      },
+      "reminders": {
+        "title": "Recordatorios",
+        "body": "Programa salas únicas o recurrentes, como “diario a las 6:00 a. m.”, y recibe un aviso a tu hora."
+      },
+      "devotionals": {
+        "title": "Devocionales",
+        "body": "Una lectura breve al día, con una pregunta para reflexionar. Una racha suave, sin presión."
+      },
+      "events": {
+        "title": "Eventos",
+        "body": "Vigilias, ayunos y retiros con confirmación de asistencia y exportación a tu calendario."
+      },
+      "communities": {
+        "title": "Comunidades",
+        "body": "Agrupa todo en torno a tu iglesia, ministerio o grupo. Es opcional."
+      }
+    }
+  },
+  "Churches": {
+    "eyebrow": "Para iglesias y ministerios",
+    "title": "Su comunidad, orando junta durante la semana.",
+    "body": "Creen una comunidad con su propio enlace de invitación y dejen salas recurrentes para la oración diaria, el muro de peticiones y los eventos. Se suma sin complicar a quien solo quiere orar.",
+    "points": {
+      "rooms": "Salas recurrentes y calendario",
+      "wall": "Muro de oración visible solo para la comunidad",
+      "roles": "Roles simples: administrador, líder y miembro",
+      "events": "Eventos con confirmación de asistencia y recordatorios"
+    },
+    "note": "Una persona puede pertenecer a varias comunidades y seguir orando sin cuenta cuando quiera."
+  },
+  "Trust": {
+    "eyebrow": "Privacidad y confianza",
+    "title": "Tu oración es tuya.",
+    "body": "Una oración es algo íntimo. Por eso lo diseñamos así desde el principio:",
+    "items": {
+      "noRecording": {
+        "title": "Sin grabaciones ni transcripciones",
+        "body": "El audio de las salas no se graba ni se convierte en texto."
+      },
+      "privateDefault": {
+        "title": "Privado por defecto",
+        "body": "Tus peticiones son privadas. Nada se hace público sin que tú lo decidas."
+      },
+      "delete": {
+        "title": "Tus datos, bajo tu control",
+        "body": "Podrás eliminar tu cuenta y tus datos cuando quieras."
+      },
+      "safe": {
+        "title": "Un espacio cuidado",
+        "body": "Puedes reportar y bloquear, y el anfitrión puede silenciar, expulsar o cerrar la sala."
+      }
+    },
+    "link": "Leer la política de privacidad"
+  },
+  "Faq": {
+    "eyebrow": "Preguntas frecuentes",
+    "title": "Lo que suelen preguntarnos.",
+    "items": {
+      "account": {
+        "q": "¿Necesito una cuenta para orar?",
+        "a": "No. Puedes crear o unirte a una sala escribiendo solo un nombre. Una cuenta es opcional y sirve para guardar tu diario de oración, tus recordatorios y tu historial."
+      },
+      "size": {
+        "q": "¿Cuántas personas caben en una sala?",
+        "a": "Las salas están pensadas para grupos de hasta 20 personas, para que se sienta como orar juntos y no como un auditorio."
+      },
+      "recording": {
+        "q": "¿Se graban las oraciones?",
+        "a": "No. No grabamos ni transcribimos el audio de las salas."
+      },
+      "ios": {
+        "q": "¿Funciona en iPhone?",
+        "a": "Sí, desde Safari. Para recibir avisos en iPhone (iOS 16.4 o superior) primero añade INTERCEDE a tu pantalla de inicio: toca Compartir y luego “Añadir a pantalla de inicio”."
+      },
+      "churches": {
+        "q": "¿Es solo para iglesias?",
+        "a": "No. Sirve igual para una pareja, una familia o un grupo de amigos. Las comunidades son una capa opcional para iglesias y ministerios."
+      },
+      "install": {
+        "q": "¿Tengo que descargarla de una tienda de apps?",
+        "a": "No. INTERCEDE es una aplicación web que puedes instalar desde el navegador, en celular o computadora, con el botón “Instalar la app”."
+      }
+    }
+  },
+  "FinalCta": {
+    "title": "Hoy es un buen día para orar juntos.",
+    "body": "Crea una sala, comparte el enlace y empiecen.",
+    "cta": "Orar ahora"
+  },
+  "Footer": {
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "contact": "Contacto",
+    "rights": "INTERCEDE. Todos los derechos reservados."
+  },
+  "Install": {
+    "button": "Instalar la app",
+    "dialogTitle": "Instala INTERCEDE",
+    "intro": "Tendrás un ícono en tu pantalla y se abrirá como una app, sin pasar por una tienda.",
+    "iosTitle": "iPhone o iPad (Safari)",
+    "ios1": "Toca el botón Compartir, en la barra inferior o superior.",
+    "ios2": "Elige “Añadir a pantalla de inicio”.",
+    "ios3": "Confirma con “Añadir”. Abre INTERCEDE desde el nuevo ícono.",
+    "androidTitle": "Android (Chrome)",
+    "android1": "Abre el menú de tres puntos.",
+    "android2": "Elige “Instalar app” o “Añadir a pantalla de inicio”.",
+    "desktopTitle": "Computadora (Chrome o Edge)",
+    "desktop1": "Busca el ícono de instalar en la barra de direcciones, o abre el menú del navegador.",
+    "desktop2": "Elige “Instalar INTERCEDE”.",
+    "safariTitle": "Safari en Mac",
+    "safari1": "En el menú Archivo, elige “Añadir al Dock”.",
+    "close": "Entendido"
+  },
+  "Pray": {
+    "title": "Estamos terminando las salas de oración.",
+    "body": "Muy pronto podrás crear una sala y orar con otras personas desde aquí. Gracias por tu paciencia.",
+    "back": "Volver al inicio"
+  },
+  "Legal": {
+    "draft": "Borrador: este texto se revisará antes del lanzamiento público.",
+    "updated": "Última actualización: 10 de noviembre de 2026",
+    "back": "Volver al inicio",
+    "privacy": {
+      "title": "Política de privacidad",
+      "intro": "En INTERCEDE cuidamos lo que compartes en oración. Esto es lo que hacemos y lo que no.",
+      "sections": {
+        "audio": {
+          "title": "Audio y oraciones",
+          "body": "No grabamos ni transcribimos el audio de las salas de oración."
+        },
+        "requests": {
+          "title": "Peticiones de oración",
+          "body": "Tus peticiones son privadas por defecto. Solo se comparten con una sala o una comunidad cuando tú lo decides."
+        },
+        "data": {
+          "title": "Datos que guardamos",
+          "body": "Si entras como invitado, el nombre que elijas. Si creas una cuenta, tu correo, tu nombre, tu idioma, tu zona horaria y tus preferencias de notificaciones. Si lo usas, también tu diario de oración y tu historial de salas."
+        },
+        "providers": {
+          "title": "Proveedores",
+          "body": "Usamos servicios de terceros para operar la plataforma: Supabase (base de datos y autenticación), LiveKit (audio en tiempo real) y Vercel (alojamiento). Ninguno recibe tus oraciones en forma de grabación."
+        },
+        "analytics": {
+          "title": "Analítica",
+          "body": "Si medimos el uso, será con herramientas respetuosas de la privacidad y nunca analizaremos el contenido de tus oraciones o peticiones."
+        },
+        "deletion": {
+          "title": "Eliminar tu cuenta y tus datos",
+          "body": "Podrás eliminar tu cuenta y los datos asociados desde la aplicación."
+        }
+      }
+    },
+    "terms": {
+      "title": "Términos de uso",
+      "intro": "Estas reglas ayudan a que INTERCEDE sea un lugar seguro y respetuoso para orar.",
+      "sections": {
+        "respect": {
+          "title": "Respeto",
+          "body": "Ora y comparte con respeto. No se permite el acoso, el odio, el contenido ofensivo ni el uso de las salas para fines ajenos a la oración."
+        },
+        "moderation": {
+          "title": "Moderación",
+          "body": "Puedes reportar salas, peticiones y personas, y bloquear a otros usuarios. Quien es anfitrión de una sala puede silenciar, expulsar, bloquear o cerrar la sala."
+        },
+        "content": {
+          "title": "Tu contenido",
+          "body": "Eres responsable de lo que escribes y dices. No compartas datos sensibles de otras personas sin su permiso."
+        },
+        "service": {
+          "title": "El servicio",
+          "body": "INTERCEDE se ofrece tal cual y puede cambiar o tener interrupciones. No sustituye la atención profesional médica, psicológica o de emergencia."
+        },
+        "changes": {
+          "title": "Cambios",
+          "body": "Podemos actualizar estos términos y publicaremos la fecha de la última actualización en esta página."
+        }
+      }
+    }
   },
   "Offline": {
     "title": "Sin conexión",

@@ -9,6 +9,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Servicios que se levantan del Supabase local. Se amplía al usar más (storage, edge functions…).
+env:
+  SUPABASE_EXCLUDE: studio,imgproxy,edge-runtime,logflare,vector,supavisor,mailpit,storage-api
+
 jobs:
   check:
     name: Typecheck, lint y pruebas
@@ -25,7 +29,7 @@ jobs:
       - run: npm test
 
   db:
-    name: Base de datos (migraciones, tipos y RLS)
+    name: Base de datos (migraciones, tipos, RLS y Realtime)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,8 +38,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      # Supabase local con solo los servicios necesarios (se amplía al usarlos: realtime, storage…)
-      - run: npx supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,mailpit,storage-api,realtime
+      - run: npx supabase start -x $SUPABASE_EXCLUDE
       - name: Los tipos generados están al día
         run: |
           npm run db:types
@@ -45,7 +48,7 @@ jobs:
         if: always()
 
   e2e:
-    name: Build y pruebas e2e
+    name: Build y pruebas e2e (con Supabase local)
     runs-on: ubuntu-latest
     needs: check
     steps:
@@ -56,8 +59,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npx supabase start -x $SUPABASE_EXCLUDE
+      # Exporta la URL y las claves del Supabase local (enmascaradas) para el build y las pruebas
+      - run: node scripts/lib/local-supabase.mjs --github-env
       - run: npm run build
       - run: npm run test:e2e
+      - run: npx supabase stop
+        if: always()
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

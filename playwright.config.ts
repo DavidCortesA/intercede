@@ -7,6 +7,8 @@ export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
   forbidOnly: isCI,
+  // El servidor de desarrollo compila cada ruta en su primera visita: margen para eso.
+  expect: { timeout: 10_000 },
   retries: isCI ? 2 : 0,
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
@@ -20,6 +22,7 @@ export default defineConfig({
   ],
   webServer: {
     // En CI se ejecuta el build de producción (el job de CI hace `npm run build` antes).
+    // Con NEXT_PUBLIC_SUPABASE_* en el entorno (Supabase local) la app habla con él y no con el remoto.
     command: isCI ? "npm run start" : "npm run dev",
     url: `http://localhost:${PORT}/es`,
     reuseExistingServer: !isCI,

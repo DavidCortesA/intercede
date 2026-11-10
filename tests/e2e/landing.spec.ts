@@ -49,11 +49,13 @@ test.describe("landing", () => {
     expect(overflow).toBeLessThanOrEqual(0);
   });
 
-  test("el CTA lleva a la página provisional de oración", async ({ page }) => {
+  test("el CTA lleva a crear una sala sin cuenta (un campo y un botón)", async ({ page }) => {
     await page.goto("/es");
     await page.locator("section").first().getByRole("link", { name: "Orar ahora" }).click();
     await expect(page).toHaveURL(/\/es\/orar$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Estamos terminando las salas de oración");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Orar ahora");
+    await expect(page.getByLabel("¿Cómo te llamas?")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Crear sala de oración" })).toBeVisible();
   });
 });
 

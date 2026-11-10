@@ -23,7 +23,27 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "profiles": {
+            "prayer_requests": {
+                  Row: {
+                    "answered_at": string | null,"author_id": string,"content": string,"created_at": string,"id": string,"is_answered": boolean,"room_id": string,"testimony": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "answered_at"?: string | null,"author_id"?: string,"content": string,"created_at"?: string,"id"?: string,"is_answered"?: boolean,"room_id": string,"testimony"?: string | null
+                  }
+                  Update: {
+                    "answered_at"?: string | null,"author_id"?: string,"content"?: string,"created_at"?: string,"id"?: string,"is_answered"?: boolean,"room_id"?: string,"testimony"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "prayer_requests_room_id_fkey"
+      columns: ["room_id"]
+isOneToOne: false
+      referencedRelation: "rooms"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"profiles": {
                   Row: {
                     "avatar_url": string | null,"created_at": string,"display_name": string | null,"id": string,"locale": string,"timezone": string,"updated_at": string
                   }
@@ -37,13 +57,83 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"room_members": {
+                  Row: {
+                    "display_name": string,"joined_at": string,"left_at": string | null,"role": string,"room_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "display_name": string,"joined_at"?: string,"left_at"?: string | null,"role"?: string,"room_id": string,"user_id": string
+                  }
+                  Update: {
+                    "display_name"?: string,"joined_at"?: string,"left_at"?: string | null,"role"?: string,"room_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "room_members_room_id_fkey"
+      columns: ["room_id"]
+isOneToOne: false
+      referencedRelation: "rooms"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"rooms": {
+                  Row: {
+                    "closed_at": string | null,"code": string,"created_at": string,"host_id": string,"id": string,"is_locked": boolean,"name": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "closed_at"?: string | null,"code": string,"created_at"?: string,"host_id": string,"id"?: string,"is_locked"?: boolean,"name": string,"status"?: string
+                  }
+                  Update: {
+                    "closed_at"?: string | null,"code"?: string,"created_at"?: string,"host_id"?: string,"id"?: string,"is_locked"?: boolean,"name"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 }
           }
           Views: {
             [_ in never]: never
           }
           Functions: {
-            [_ in never]: never
+            "close_room":
+{ Args: { "p_room_id": string }; Returns: undefined
+                           },
+"create_room":
+{ Args: { "p_display_name": string,"p_name": string }; Returns: {
+              "room_code": string,"room_id": string
+            }[]
+                           },
+"generate_room_code":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"has_joined_room":
+{ Args: { "p_room_id": string }; Returns: boolean
+                           },
+"is_room_host":
+{ Args: { "p_room_id": string }; Returns: boolean
+                           },
+"is_room_member":
+{ Args: { "p_room_id": string }; Returns: boolean
+                           },
+"is_room_open":
+{ Args: { "p_room_id": string }; Returns: boolean
+                           },
+"join_room":
+{ Args: { "p_code": string,"p_display_name": string }; Returns: string
+                           },
+"leave_room":
+{ Args: { "p_room_id": string }; Returns: undefined
+                           },
+"peek_room":
+{ Args: { "p_code": string }; Returns: {
+              "active_members": number,"is_locked": boolean,"name": string,"status": string
+            }[]
+                           },
+"set_room_locked":
+{ Args: { "p_locked": boolean,"p_room_id": string }; Returns: undefined
+                           }
           }
           Enums: {
             [_ in never]: never

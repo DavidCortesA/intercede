@@ -76,6 +76,8 @@ Guías de oración, pantalla de proyección y estadísticas (Fase 10): [`docs/op
 
 Grupos pequeños (Fase 11): [ADR 0015](docs/decisions/0015-grupos-pequenos.md). Marca de la iglesia: [ADR 0016](docs/decisions/0016-marca-de-la-iglesia.md). Compañero de oración: [ADR 0017](docs/decisions/0017-companero-de-oracion.md).
 
+Sincronización con Google Calendar (Fase 11): [`docs/operaciones/google-calendar.md`](docs/operaciones/google-calendar.md) y [ADR 0018](docs/decisions/0018-google-calendar-sincronizacion.md).
+
 ## Fases y versiones
 
 El avance se publica por fases con su tag y su entrada en [`CHANGELOG.md`](CHANGELOG.md)

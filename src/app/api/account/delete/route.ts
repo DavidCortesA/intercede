@@ -1,5 +1,7 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { deleteAccountSchema } from "@/features/moderation/schemas";
+import { getCalendarDeps } from "@/features/calendar/config";
+import { disconnectGoogleCalendar } from "@/features/calendar/sync";
 import { getSupabasePublicEnv } from "@/lib/env";
 import { getRoomService } from "@/lib/livekit/server";
 import { apiError, apiOk, parseJson } from "@/lib/livekit/route-auth";
@@ -59,6 +61,10 @@ export async function POST(request: Request) {
     removeFolder(admin, "avatars", user.id),
     ...(plan?.deleted_communities ?? []).map((communityId) => removeFolder(admin, "community-logos", communityId)),
   ]);
+
+  // Google Calendar: se revoca el permiso en Google antes de borrar la cuenta (los eventos ya creados quedan en el calendario "INTERCEDE" de la persona)
+  const calendar = getCalendarDeps();
+  if (calendar) await disconnectGoogleCalendar(calendar, user.id).catch(() => undefined);
 
   const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
   if (deleteError) return apiError("deletion_failed", 500);

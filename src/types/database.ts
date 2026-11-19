@@ -186,6 +186,114 @@ export type Database = {
           },
         ];
       };
+      calendar_connections: {
+        Row: {
+          calendar_id: string | null;
+          connected_at: string;
+          last_error: string | null;
+          provider: string;
+          refresh_token_encrypted: string;
+          scope: string;
+          status: string;
+          sync_events: boolean;
+          sync_schedules: boolean;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          calendar_id?: string | null;
+          connected_at?: string;
+          last_error?: string | null;
+          provider?: string;
+          refresh_token_encrypted: string;
+          scope: string;
+          status?: string;
+          sync_events?: boolean;
+          sync_schedules?: boolean;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          calendar_id?: string | null;
+          connected_at?: string;
+          last_error?: string | null;
+          provider?: string;
+          refresh_token_encrypted?: string;
+          scope?: string;
+          status?: string;
+          sync_events?: boolean;
+          sync_schedules?: boolean;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      calendar_event_links: {
+        Row: {
+          google_event_id: string;
+          source_id: string;
+          source_type: string;
+          status: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          google_event_id: string;
+          source_id: string;
+          source_type: string;
+          status?: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          google_event_id?: string;
+          source_id?: string;
+          source_type?: string;
+          status?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      calendar_sync_jobs: {
+        Row: {
+          attempts: number;
+          claimed_until: string | null;
+          created_at: string;
+          id: string;
+          last_error: string | null;
+          run_after: string;
+          source_id: string;
+          source_type: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          attempts?: number;
+          claimed_until?: string | null;
+          created_at?: string;
+          id?: string;
+          last_error?: string | null;
+          run_after?: string;
+          source_id: string;
+          source_type: string;
+          user_id: string;
+        };
+        Update: {
+          attempts?: number;
+          claimed_until?: string | null;
+          created_at?: string;
+          id?: string;
+          last_error?: string | null;
+          run_after?: string;
+          source_id?: string;
+          source_type?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       communities: {
         Row: {
           created_at: string;
@@ -1931,9 +2039,33 @@ export type Database = {
       breakout_group_rooms: { Args: { p_room_id: string }; Returns: string[] };
       breakout_main_room: { Args: { p_livekit_room: string }; Returns: string };
       breakout_room: { Args: { p_breakout_id: string }; Returns: string };
+      calendar_backfill: {
+        Args: { p_type?: string; p_user_id: string };
+        Returns: number;
+      };
       can_manage_schedule: {
         Args: { p_schedule_id: string };
         Returns: boolean;
+      };
+      claim_calendar_jobs: {
+        Args: { p_limit?: number };
+        Returns: {
+          attempts: number;
+          claimed_until: string | null;
+          created_at: string;
+          id: string;
+          last_error: string | null;
+          run_after: string;
+          source_id: string;
+          source_type: string;
+          user_id: string;
+        }[];
+        SetofOptions: {
+          from: "*";
+          to: "calendar_sync_jobs";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
       };
       claim_notifications: { Args: { p_limit?: number }; Returns: Json };
       clear_community_brand: {
@@ -2077,12 +2209,22 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: string[];
       };
+      enqueue_calendar_sync: {
+        Args: {
+          p_force?: boolean;
+          p_source_id: string;
+          p_type: string;
+          p_user_id: string;
+        };
+        Returns: undefined;
+      };
       entitlements_for: { Args: { p_community_id?: string }; Returns: Json };
       expire_passes: { Args: Record<PropertyKey, never>; Returns: undefined };
       fail_order: {
         Args: { p_order_id: string; p_status: string };
         Returns: undefined;
       };
+      finish_calendar_job: { Args: { p_id: string }; Returns: undefined };
       finish_notification: {
         Args: {
           p_dead_endpoints?: string[];
@@ -2129,6 +2271,10 @@ export type Database = {
       hex_luminance: { Args: { p_hex: string }; Returns: number };
       in_breakout_group: { Args: { p_group_id: string }; Returns: boolean };
       in_partner_pair: { Args: { p_pair_id: string }; Returns: boolean };
+      invoke_calendar_sync: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
       invoke_dispatcher: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
@@ -2285,6 +2431,10 @@ export type Database = {
         Args: { p_report_id: string; p_status: string };
         Returns: undefined;
       };
+      retry_calendar_job: {
+        Args: { p_delay_seconds: number; p_error: string; p_id: string };
+        Returns: undefined;
+      };
       revoke_display_link: { Args: { p_room_id: string }; Returns: undefined };
       rooms_over_limit: { Args: Record<PropertyKey, never>; Returns: string[] };
       run_partner_pairing: { Args: { p_week?: string }; Returns: number };
@@ -2295,6 +2445,10 @@ export type Database = {
           detail: string;
           object_name: string;
         }[];
+      };
+      set_calendar_preferences: {
+        Args: { p_sync_events: boolean; p_sync_schedules: boolean };
+        Returns: undefined;
       };
       set_community_brand: {
         Args: {

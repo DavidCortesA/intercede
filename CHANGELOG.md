@@ -6,6 +6,25 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.15.0] - 2026-11-21 — Fase 11 (lote 4): Sincronización con Google Calendar
+
+> **C6 nivel 2 con el permiso mínimo**, como decidiste: INTERCEDE crea un calendario aparte llamado "INTERCEDE" en la cuenta de Google y solo escribe ahí (permiso `calendar.app.created`); no lee tu calendario principal ni ningún otro. Ver `docs/decisions/0018-google-calendar-sincronizacion.md`.
+> **Sin probar contra Google real**: falta crear el permiso en Google Cloud (guía en `docs/operaciones/google-calendar.md`). La opción queda **oculta** hasta activar `NEXT_PUBLIC_GOOGLE_CALENDAR=1`.
+
+### Añadido
+- **Conectar Google Calendar** en el perfil (cuentas permanentes): autorización aparte del inicio de sesión, `state` en cookie httpOnly, rechazo (y revocación) si Google concede otro permiso o no da token duradero.
+- **Sincronización de un solo sentido** (INTERCEDE → Google): asistencias confirmadas a eventos y salas programadas que sigues (con `RRULE`, hora de pared y zona horaria), con enlace y recordatorio de 10 minutos. Eliges qué se sincroniza.
+- **Token cifrado** (AES-256-GCM, atado a tu cuenta) que el navegador nunca puede leer.
+- **Cola con reconciliación idempotente** (pg_cron cada minuto): reintentos con espera creciente; un evento que borras en Google **no reaparece**; si borras el calendario se recrea; si quitas el permiso se marca desconectado y se te avisa.
+- **Desconectar** revoca el permiso en Google y borra lo guardado; igual al eliminar la cuenta.
+- Sección en el aviso de privacidad; documentos: ADR 0018 y guía de operación.
+
+### Pruebas
+- Integración con un Google simulado (23 casos), unitarias (14) y e2e de la pantalla del perfil. La auditoría de seguridad sigue sin hallazgos.
+
+### No incluido / pendiente
+- Prueba real con Google (requiere tu configuración en Google Cloud y, para abrirlo a cualquiera, la verificación de la app), sincronización de vuelta y turnos de cadena (esperan B1).
+
 ## [0.14.0] - 2026-11-21 — Fase 11 (lote 3): Compañero de oración y mayoría de edad
 
 > **B7 solo para personas adultas**, como decidiste. Ver `docs/decisions/0017-companero-de-oracion.md`. Queda pendiente solo **C6 nivel 2** (permiso de Google).

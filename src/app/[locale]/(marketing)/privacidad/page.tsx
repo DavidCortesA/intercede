@@ -6,7 +6,7 @@ import { LegalDocument } from "@/components/marketing/legal-document";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
 
-const SECTIONS = ["audio", "requests", "data", "providers", "payments", "partners", "analytics", "deletion"] as const;
+const SECTIONS = ["audio", "requests", "data", "providers", "payments", "partners", "calendar", "analytics", "deletion"] as const;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/privacidad">): Promise<Metadata> {
   const { locale } = await params;

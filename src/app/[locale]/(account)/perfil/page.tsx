@@ -6,9 +6,12 @@ import { notFound } from "next/navigation";
 import { AvatarUploader } from "@/components/account/avatar-uploader";
 import { PasswordForm } from "@/components/account/password-form";
 import { ProfileForm } from "@/components/account/profile-form";
+import { CalendarConnection, type CalendarState } from "@/components/account/calendar-connection";
 import { BlockedList, type BlockedPerson } from "@/components/moderation/blocked-list";
 import { DeleteAccountForm } from "@/components/moderation/delete-account-form";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { GOOGLE_CALENDAR_ENABLED } from "@/config/site";
+import { toCalendarResult } from "@/features/calendar/results";
 import { signOutAction } from "@/features/auth/account-actions";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -28,7 +31,7 @@ function timeZones(): string[] {
   return zones.includes("UTC") ? zones : ["UTC", ...zones];
 }
 
-export default async function ProfilePage({ params }: PageProps<"/[locale]/perfil">) {
+export default async function ProfilePage({ params, searchParams }: PageProps<"/[locale]/perfil">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
@@ -70,6 +73,13 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
     : [{ data: [] }, { data: [] }];
   const known = new Map([...(fromRooms ?? []), ...(fromCommunities ?? [])].map((row) => [row.user_id, row]));
   const blockedPeople: BlockedPerson[] = blockedIds.map((id) => ({ id, name: known.get(id)?.display_name ?? null, avatarUrl: known.get(id)?.avatar_url ?? null }));
+  // Google Calendar (nivel 2): solo el estado de la conexión; el token cifrado no se concede a la persona
+  const calendarQuery = await searchParams;
+  let calendarState: CalendarState | null = null;
+  if (GOOGLE_CALENDAR_ENABLED) {
+    const { data: connection } = await supabase.from("calendar_connections").select("status, sync_events, sync_schedules").maybeSingle();
+    if (connection) calendarState = { status: connection.status as CalendarState["status"], syncEvents: connection.sync_events, syncSchedules: connection.sync_schedules };
+  }
   const hasPassword = Boolean(session.email) && (userData.user?.app_metadata?.providers ?? []).includes("email");
 
   const profile = session.profile;
@@ -120,6 +130,8 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
           <span className="block text-sm text-muted-foreground">{t("notificationsLinkHelp")}</span>
         </span>
       </Link>
+
+      {GOOGLE_CALENDAR_ENABLED ? <CalendarConnection state={calendarState} result={toCalendarResult(typeof calendarQuery.calendario === "string" ? calendarQuery.calendario : undefined)} /> : null}
 
       <section aria-labelledby="password-title" className="flex flex-col gap-4 rounded-3xl bg-background p-6 shadow-sm ring-1 ring-border">
         <h2 id="password-title" className="font-heading text-lg font-extrabold">

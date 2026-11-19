@@ -475,6 +475,10 @@
         "deletion": {
           "title": "Eliminar tu cuenta y tus datos",
           "body": "Puedes eliminar tu cuenta y todos los datos asociados cuando quieras desde Perfil → Eliminar mi cuenta (también si entraste como invitado). Las personas que entraron como invitadas y no vuelven en 90 días se borran solas. Si reportas algo, el reporte se conserva sin tu identidad."
+        },
+        "calendar": {
+          "title": "Google Calendar (opcional)",
+          "body": "Si conectas Google Calendar, usamos un permiso acotado: INTERCEDE crea un calendario aparte llamado \"INTERCEDE\" en tu cuenta y solo escribe ahí los eventos a los que confirmaste asistencia y las salas programadas que sigues. No leemos tu calendario principal ni ningún otro. Guardamos tu acceso cifrado; al desconectar lo revocamos en Google y lo borramos."
         }
       }
     },
@@ -1746,6 +1750,34 @@
       },
       "note": "Una nota para tu compañero (opcional)",
       "partnerCheckin": "{name} dice: {status}"
+    }
+  },
+  "CalendarSync": {
+    "title": "Google Calendar",
+    "intro": "Pon en tu Google Calendar, sin hacer nada, los eventos a los que vas y las salas programadas que sigues.",
+    "point1": "INTERCEDE crea un calendario aparte llamado \"INTERCEDE\" y solo escribe ahí. No lee tu calendario principal ni ningún otro.",
+    "point2": "Es en un solo sentido: lo de INTERCEDE aparece en Google; lo que cambies en Google no cambia en INTERCEDE.",
+    "point3": "Puedes desconectarlo cuando quieras: revocamos el permiso en Google y borramos lo que guardamos.",
+    "connect": "Conectar Google Calendar",
+    "reconnect": "Volver a conectar",
+    "connected": "Conectado a Google Calendar.",
+    "disconnected": "Google Calendar se desconectó (quitaste el permiso o venció). Vuelve a conectarlo para seguir sincronizando.",
+    "whatSyncs": "Qué se sincroniza",
+    "events": "Eventos de comunidades a los que confirmo asistencia",
+    "schedules": "Salas programadas que sigo",
+    "deletedNote": "Si borras un evento en Google, no lo volveremos a crear. Al desconectar, los eventos ya creados quedan en tu calendario \"INTERCEDE\" (puedes borrarlo desde Google).",
+    "disconnect": "Desconectar",
+    "disconnectConfirm": "¿Desconectar Google Calendar?",
+    "disconnectYes": "Sí, desconectar",
+    "cancel": "Cancelar",
+    "error": "No pudimos hacer el cambio. Inténtalo de nuevo.",
+    "results": {
+      "ok": "Listo: conectamos tu Google Calendar. Tus eventos y salas aparecerán en unos minutos.",
+      "cancelado": "No diste el permiso en Google, así que no se conectó nada.",
+      "error": "No pudimos conectar con Google. Inténtalo de nuevo.",
+      "sin_token": "Google no nos dio un acceso duradero. Quita el acceso de INTERCEDE en tu cuenta de Google e inténtalo otra vez.",
+      "permiso": "Google concedió un permiso distinto al que pedimos, así que no lo guardamos. Inténtalo de nuevo.",
+      "no_disponible": "La conexión con Google Calendar todavía no está disponible."
     }
   }
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import { CalendarClock, Check, Copy, Link2, Pause, Play, Trash2 } from "lucide-react";
+import { CalendarClock, CalendarPlus, Check, Copy, Link2, Pause, Play, Trash2 } from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useState, useSyncExternalStore } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ScheduleForm } from "@/components/schedules/schedule-form";
+import { googleCalendarUrl } from "@/features/events/ics";
 import { toScheduleErrorKey, type ScheduleErrorKey } from "@/features/schedules/schemas";
 import type { ScheduleView } from "@/features/schedules/types";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -168,6 +169,26 @@ export function ScheduleCard({ schedule, isOwner, community }: { schedule: Sched
             date: format.dateTime(new Date(schedule.next_occurrence_at), { dateStyle: "full", timeStyle: "short", timeZone: schedule.timezone }),
           })}
         </p>
+      ) : null}
+
+      {schedule.is_active && schedule.next_occurrence_at ? (
+        <a
+          href={googleCalendarUrl({
+            title: schedule.name,
+            startsAt: schedule.next_occurrence_at,
+            endsAt: new Date(new Date(schedule.next_occurrence_at).getTime() + 60 * 60_000),
+            timezone: schedule.timezone,
+            url: origin ? new URL(`/${locale}/programadas`, origin).href : undefined,
+            recurrence:
+              schedule.recurrence === "daily" ? { freq: "daily" } : schedule.recurrence === "weekly" ? { freq: "weekly", weekdays: schedule.weekdays } : undefined,
+          })}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={buttonVariants({ size: "sm", variant: "secondary" }) + " self-start text-foreground"}
+        >
+          <CalendarPlus className="size-4" aria-hidden="true" />
+          {t("card.addToGoogle")}
+        </a>
       ) : null}
 
       {isOwner || community ? <p className="text-xs text-muted-foreground">{t("card.followers", { count: schedule.followers })}</p> : null}

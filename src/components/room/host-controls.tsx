@@ -4,6 +4,7 @@ import { Lock, LockOpen, MicOff, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { DisplayLink } from "./display-link";
 
 interface Props {
   isLocked: boolean;
@@ -11,10 +12,12 @@ interface Props {
   onClose: () => Promise<boolean>;
   /** Silenciar a todas las personas conectadas al audio (el anfitrión no se silencia). */
   onMuteAll: () => void;
+  roomId: string;
+  roomCode: string;
 }
 
 /** Controles del anfitrión: silenciar a todos, bloquear la sala y cerrarla. Sacar o silenciar a alguien se hace desde su avatar. */
-export function HostControls({ isLocked, onSetLocked, onClose, onMuteAll }: Props) {
+export function HostControls({ isLocked, onSetLocked, onClose, onMuteAll, roomId, roomCode }: Props) {
   const t = useTranslations("Room.host");
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -28,6 +31,7 @@ export function HostControls({ isLocked, onSetLocked, onClose, onMuteAll }: Prop
         {isLocked ? <LockOpen className="size-4" aria-hidden="true" /> : <Lock className="size-4" aria-hidden="true" />}
         {isLocked ? t("unlock") : t("lock")}
       </Button>
+      <DisplayLink roomId={roomId} roomCode={roomCode} />
       <Button size="sm" variant="secondary" onClick={() => dialogRef.current?.showModal()}>
         <XCircle className="size-4" aria-hidden="true" />
         {t("close")}

@@ -17,9 +17,9 @@ export function CommunityNav({ communityId, isAdmin, isLeader = isAdmin }: { com
   const t = useTranslations("Communities.nav");
   const pathname = usePathname();
   const base = `/comunidades/${communityId}`;
-  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "billing" | "settings"; path: string }[] = [
+  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "guides" | "stats" | "billing" | "settings"; path: string }[] = [
     ...SECTIONS,
-    ...(isLeader ? [{ key: "reports" as const, path: "/reportes" }] : []),
+    ...(isLeader ? [{ key: "guides" as const, path: "/guias" }, { key: "stats" as const, path: "/estadisticas" }, { key: "reports" as const, path: "/reportes" }] : []),
     ...(isAdmin ? [{ key: "billing" as const, path: "/facturacion" }, { key: "settings" as const, path: "/ajustes" }] : []),
   ];
 

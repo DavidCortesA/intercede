@@ -753,6 +753,51 @@ export type Database = {
         };
         Relationships: [];
       };
+      prayer_guides: {
+        Row: {
+          community_id: string | null;
+          created_at: string;
+          created_by: string | null;
+          description: string | null;
+          id: string;
+          is_system: boolean;
+          language: string;
+          segments: NonNullable<Json>;
+          title: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          community_id?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          id?: string;
+          is_system?: boolean;
+          language?: string;
+          segments: NonNullable<Json>;
+          title: string;
+        };
+        Update: {
+          community_id?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          id?: string;
+          is_system?: boolean;
+          language?: string;
+          segments?: NonNullable<Json>;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "prayer_guides_community_id_fkey";
+            columns: ["community_id"];
+            isOneToOne: false;
+            referencedRelation: "communities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       prayer_journal_entries: {
         Row: {
           answered_at: string | null;
@@ -1033,6 +1078,85 @@ export type Database = {
           },
         ];
       };
+      room_display_links: {
+        Row: {
+          created_at: string;
+          room_id: string;
+          token: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          room_id: string;
+          token?: string;
+        };
+        Update: {
+          created_at?: string;
+          room_id?: string;
+          token?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "room_display_links_room_id_fkey";
+            columns: ["room_id"];
+            isOneToOne: true;
+            referencedRelation: "rooms";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      room_guide_runs: {
+        Row: {
+          base_elapsed_ms: number;
+          extra_ms: number[];
+          guide_id: string | null;
+          room_id: string;
+          running_since: string | null;
+          segments: NonNullable<Json>;
+          started_at: string;
+          status: string;
+          title: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          base_elapsed_ms?: number;
+          extra_ms: number[];
+          guide_id?: string | null;
+          room_id: string;
+          running_since?: string | null;
+          segments: NonNullable<Json>;
+          started_at?: string;
+          status: string;
+          title: string;
+        };
+        Update: {
+          base_elapsed_ms?: number;
+          extra_ms?: number[];
+          guide_id?: string | null;
+          room_id?: string;
+          running_since?: string | null;
+          segments?: NonNullable<Json>;
+          started_at?: string;
+          status?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "room_guide_runs_guide_id_fkey";
+            columns: ["guide_id"];
+            isOneToOne: false;
+            referencedRelation: "prayer_guides";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "room_guide_runs_room_id_fkey";
+            columns: ["room_id"];
+            isOneToOne: true;
+            referencedRelation: "rooms";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       room_members: {
         Row: {
           avatar_url: string | null;
@@ -1149,6 +1273,7 @@ export type Database = {
           community_id: string | null;
           created_at: string;
           ends_at: string;
+          focus_request_id: string | null;
           host_id: string;
           id: string;
           is_locked: boolean;
@@ -1165,6 +1290,7 @@ export type Database = {
           community_id?: string | null;
           created_at?: string;
           ends_at: string;
+          focus_request_id?: string | null;
           host_id: string;
           id?: string;
           is_locked?: boolean;
@@ -1180,6 +1306,7 @@ export type Database = {
           community_id?: string | null;
           created_at?: string;
           ends_at?: string;
+          focus_request_id?: string | null;
           host_id?: string;
           id?: string;
           is_locked?: boolean;
@@ -1195,6 +1322,13 @@ export type Database = {
             columns: ["community_id"];
             isOneToOne: false;
             referencedRelation: "communities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "rooms_focus_request_id_fkey";
+            columns: ["focus_request_id"];
+            isOneToOne: false;
+            referencedRelation: "prayer_requests";
             referencedColumns: ["id"];
           },
           {
@@ -1427,15 +1561,12 @@ export type Database = {
         Args: { p_schedule_id: string };
         Returns: boolean;
       };
-      cancel_subscription: {
-        Args: { p_community_id: string };
-        Returns: undefined;
-      };
       claim_notifications: { Args: { p_limit?: number }; Returns: Json };
       close_room: { Args: { p_room_id: string }; Returns: undefined };
       close_room_system: { Args: { p_room_id: string }; Returns: undefined };
       community_billing: { Args: { p_community_id: string }; Returns: Json };
       community_role: { Args: { p_community_id: string }; Returns: string };
+      community_stats: { Args: { p_community_id: string }; Returns: Json };
       compute_next_occurrence: {
         Args: {
           p_after: string;
@@ -1446,6 +1577,10 @@ export type Database = {
           p_weekdays: number[];
         };
         Returns: string;
+      };
+      control_guide: {
+        Args: { p_action: string; p_room_id: string };
+        Returns: undefined;
       };
       create_community: {
         Args: { p_description?: string; p_kind?: string; p_name: string };
@@ -1462,6 +1597,7 @@ export type Database = {
           room_id: string;
         }[];
       };
+      create_display_link: { Args: { p_room_id: string }; Returns: string };
       create_event: {
         Args: {
           p_community_id: string;
@@ -1472,6 +1608,15 @@ export type Database = {
           p_reminder_minutes?: number;
           p_time: string;
           p_timezone: string;
+          p_title: string;
+        };
+        Returns: string;
+      };
+      create_guide: {
+        Args: {
+          p_community_id: string;
+          p_description: string;
+          p_segments: Json;
           p_title: string;
         };
         Returns: string;
@@ -1521,6 +1666,7 @@ export type Database = {
         };
         Returns: string;
       };
+      delete_guide: { Args: { p_guide_id: string }; Returns: undefined };
       devotional_stats: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1528,6 +1674,10 @@ export type Database = {
           streak: number;
           total_read: number;
         }[];
+      };
+      display_state: {
+        Args: { p_code: string; p_token: string };
+        Returns: Json;
       };
       entitlements_for: { Args: { p_community_id?: string }; Returns: Json };
       expire_passes: { Args: Record<PropertyKey, never>; Returns: undefined };
@@ -1561,6 +1711,15 @@ export type Database = {
       };
       get_entitlements: { Args: { p_community_id?: string }; Returns: Json };
       get_schedule_invite: { Args: { p_schedule_id: string }; Returns: string };
+      get_server_time: { Args: Record<PropertyKey, never>; Returns: string };
+      guide_segment_at: {
+        Args: { p_extra: number[]; p_pos: number; p_segments: Json };
+        Returns: {
+          idx: number;
+          seg_end: number;
+          seg_start: number;
+        }[];
+      };
       has_joined_room: { Args: { p_room_id: string }; Returns: boolean };
       invoke_dispatcher: {
         Args: Record<PropertyKey, never>;
@@ -1685,6 +1844,7 @@ export type Database = {
         Args: { p_report_id: string; p_status: string };
         Returns: undefined;
       };
+      revoke_display_link: { Args: { p_room_id: string }; Returns: undefined };
       rooms_over_limit: { Args: Record<PropertyKey, never>; Returns: string[] };
       security_audit: {
         Args: Record<PropertyKey, never>;
@@ -1696,6 +1856,10 @@ export type Database = {
       };
       set_member_role: {
         Args: { p_community_id: string; p_role: string; p_user_id: string };
+        Returns: undefined;
+      };
+      set_room_focus: {
+        Args: { p_request_id: string; p_room_id: string };
         Returns: undefined;
       };
       set_room_locked: {
@@ -1711,6 +1875,10 @@ export type Database = {
         Returns: undefined;
       };
       shares_context_with: { Args: { p_user_id: string }; Returns: boolean };
+      start_guide: {
+        Args: { p_guide_id: string; p_room_id: string };
+        Returns: undefined;
+      };
       subscribe_to_schedule: { Args: { p_token: string }; Returns: string };
       upsert_push_subscription: {
         Args: {
@@ -1721,6 +1889,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      valid_guide_segments: { Args: { p_segments: Json }; Returns: boolean };
     };
     Enums: {
       [_ in never]: never;

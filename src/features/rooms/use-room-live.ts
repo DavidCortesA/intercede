@@ -243,6 +243,16 @@ export function useRoomLive(initial: Initial) {
         }
         return true;
       },
+      async setFocus(requestId: string | null): Promise<boolean> {
+        // La base valida que sea quien anfitriona; el cambio llega a todos por la fila de la sala (Realtime)
+        const { error: failure } = await supabase.rpc("set_room_focus", { p_room_id: roomId, p_request_id: requestId as string });
+        if (failure) {
+          setError(toRoomError(failure));
+          return false;
+        }
+        setRoom((current) => ({ ...current, focus_request_id: requestId }));
+        return true;
+      },
       async setLocked(locked: boolean): Promise<boolean> {
         const res = await run(async () => ({ ...(await supabase.rpc("set_room_locked", { p_room_id: roomId, p_locked: locked })), data: true }));
         if (res) setRoom((r) => ({ ...r, is_locked: locked }));

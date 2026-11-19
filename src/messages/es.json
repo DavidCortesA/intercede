@@ -309,7 +309,12 @@
         "count": "{count, plural, =0 {Nadie ha dicho que ora por esto} one {# persona ora por esto} other {# personas oran por esto}}"
       },
       "saveToJournal": "Guardar en mi diario",
-      "savedToJournal": "Guardada en tu diario"
+      "savedToJournal": "Guardada en tu diario",
+      "focus": {
+        "now": "Orando ahora",
+        "set": "Orar por esta",
+        "clear": "Quitar del foco"
+      }
     },
     "host": {
       "title": "Anfitrión",
@@ -372,6 +377,36 @@
       "errors": {
         "generic": "No pudimos ampliar la sala. Inténtalo de nuevo."
       }
+    },
+    "share": {
+      "button": "Compartir",
+      "title": "Compartir la sala",
+      "messageLabel": "Mensaje",
+      "privacyNote": "El mensaje solo lleva la invitación y el enlace; nunca las peticiones de la sala.",
+      "native": "Compartir…",
+      "whatsapp": "WhatsApp",
+      "copy": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "qr": "Código QR",
+      "qrLabel": "Código QR con el enlace de la sala",
+      "qrHelp": "Quien lo escanee con la cámara del celular entra a la sala.",
+      "fullscreen": "Pantalla completa",
+      "close": "Cerrar"
+    },
+    "display": {
+      "button": "Pantalla",
+      "title": "Pantalla para proyectar",
+      "body": "Un enlace para proyectar la sala en el templo: muestra en grande la petición en foco, la guía y el código para entrar. No usa audio ni entra a la sala.",
+      "loading": "Cargando…",
+      "generate": "Crear enlace de pantalla",
+      "copy": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "open": "Abrir pantalla",
+      "renew": "Crear uno nuevo",
+      "revoke": "Desactivar",
+      "privacy": "Cualquiera con este enlace ve la petición en foco y las que siguen (sin nombres). Crear uno nuevo o desactivarlo deja sin efecto el anterior.",
+      "error": "No pudimos hacer el cambio. Inténtalo de nuevo.",
+      "close": "Cerrar"
     }
   },
   "Legal": {
@@ -844,7 +879,8 @@
       "followers": "{count, plural, one {# persona la sigue} other {# personas la siguen}}",
       "openRoom": "Entrar a la sala abierta",
       "zone": "Zona horaria: {zone}",
-      "follow": "Seguir"
+      "follow": "Seguir",
+      "addToGoogle": "Google Calendar"
     },
     "errors": {
       "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
@@ -918,7 +954,9 @@
       "settings": "Ajustes",
       "back": "Mis comunidades",
       "reports": "Reportes",
-      "billing": "Facturación"
+      "billing": "Facturación",
+      "guides": "Guías",
+      "stats": "Estadísticas"
     },
     "members": {
       "title": "Miembros",
@@ -1114,7 +1152,8 @@
         "delete": "Eliminar",
         "confirmDelete": "¿Eliminar este evento?",
         "confirmYes": "Sí, eliminar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "addToGoogle": "Google Calendar"
       }
     },
     "reports": {
@@ -1397,5 +1436,124 @@
         "refunded": "Reembolsado"
       }
     }
+  },
+  "Guides": {
+    "errors": {
+      "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "not_leader": "Solo el liderazgo de la comunidad puede hacer esto.",
+      "plan_required": "Las guías propias son de comunidades con plan Plus o Pro.",
+      "invalid_title": "Escribe un título (hasta 80 letras).",
+      "invalid_segments": "Revisa los momentos: cada uno necesita un título y de 1 a 60 minutos (hasta 20 momentos).",
+      "too_many_guides": "Tu comunidad ya tiene 30 guías, el máximo por ahora.",
+      "guide_not_found": "No encontramos esa guía."
+    },
+    "room": {
+      "title": "Guía de oración",
+      "start": "Iniciar una guía",
+      "choose": "Elige una guía para orar con tiempos.",
+      "loading": "Cargando guías…",
+      "system": "Guía de INTERCEDE",
+      "community": "De tu comunidad",
+      "totalMinutes": "{count} min",
+      "begin": "Comenzar",
+      "cancel": "Cancelar",
+      "segmentOf": "Momento {current} de {total}",
+      "paused": "En pausa",
+      "finished": "La guía terminó. Gracias por orar juntos.",
+      "finishedShort": "Terminó",
+      "remaining": "Quedan {time}",
+      "progress": "Avance de la guía",
+      "minutes": "{count} min",
+      "announce": "Ahora: {title}",
+      "controls": "Controles de la guía",
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "next": "Siguiente",
+      "addMinute": "+1 minuto",
+      "stop": "Terminar guía",
+      "bellOn": "Campana activada",
+      "bellOff": "Activar campana",
+      "error": "No pudimos hacer eso. Inténtalo de nuevo."
+    },
+    "manager": {
+      "metaTitle": "Guías de oración",
+      "intro": "Crea guías con momentos y tiempos para las salas de tu comunidad. Las guías de INTERCEDE ya están disponibles para todas las salas.",
+      "planRequired": "Las guías propias son de comunidades con plan Plus o Pro.",
+      "new": "Nueva guía",
+      "titleLabel": "Título",
+      "descriptionLabel": "Descripción (opcional)",
+      "segments": "Momentos",
+      "segmentTitle": "Título del momento {number}",
+      "minutes": "Minutos",
+      "instruction": "Indicación para quien ora (opcional)",
+      "removeSegment": "Quitar el momento {number}",
+      "addSegment": "Agregar un momento",
+      "total": "{count, plural, one {# minuto en total} other {# minutos en total}}",
+      "save": "Guardar guía",
+      "saving": "Guardando…",
+      "cancel": "Cancelar",
+      "listTitle": "Guías de la comunidad",
+      "empty": "Todavía no hay guías propias.",
+      "segmentsCount": "{count, plural, one {# momento} other {# momentos}}",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar esta guía?",
+      "confirmYes": "Sí, eliminar"
+    }
+  },
+  "Display": {
+    "metaTitle": "Pantalla de la sala",
+    "loading": "Cargando…",
+    "invalidTitle": "Este enlace ya no sirve",
+    "invalidBody": "Quien anfitriona la sala puede crear un enlace nuevo de pantalla desde los controles de la sala.",
+    "closedTitle": "{name} terminó",
+    "closedBody": "Gracias por orar juntos.",
+    "reconnecting": "Reconectando…",
+    "fullscreen": "Pantalla completa",
+    "guideFinished": "La guía terminó",
+    "paused": "En pausa",
+    "now": "Orando ahora",
+    "noFocus": "En un momento oraremos por las peticiones.",
+    "next": "Sigue",
+    "joinTitle": "Entra a orar",
+    "qrLabel": "Código QR para entrar a la sala"
+  },
+  "Stats": {
+    "metaTitle": "Estadísticas",
+    "introRecent": "Cómo ora tu comunidad en las últimas semanas. El plan Pro agrega el histórico y las comparativas.",
+    "introHistory": "Cómo ha crecido la oración de tu comunidad, semana a semana, y cómo va contra el periodo anterior.",
+    "privacy": "Solo se muestran totales de la comunidad: nunca el tiempo de una persona. Lo que involucra a menos de 5 personas aparece oculto.",
+    "csv": "Descargar CSV",
+    "hidden": "Oculto",
+    "hiddenHint": "Menos de 5 personas: se oculta para proteger la privacidad.",
+    "kpi": {
+      "hours": "Horas de oración",
+      "rooms": "Salas realizadas",
+      "requestsNew": "Peticiones nuevas",
+      "requestsAnswered": "Peticiones respondidas",
+      "devotionals": "Devocionales leídos",
+      "members": "Miembros",
+      "membersGrowth": "{count, plural, =0 {Sin cambios en el periodo} one {# persona más en el periodo} other {# personas más en el periodo}}"
+    },
+    "compare": {
+      "title": "Comparativa",
+      "body": "Las últimas 4 semanas contra las 4 anteriores.",
+      "metric": "Indicador",
+      "current": "Últimas 4",
+      "previous": "Anteriores 4",
+      "change": "Cambio",
+      "vsPrevious": "frente al periodo anterior"
+    },
+    "weeks": {
+      "title": "Semana por semana",
+      "caption": "Indicadores agregados por semana de la comunidad",
+      "week": "Semana del",
+      "avg": "Personas por sala",
+      "requests": "Peticiones (nuevas / respondidas)",
+      "note": "Las semanas empiezan el lunes (hora UTC). Las horas y la participación vienen de la conexión a las salas; sin el aviso de LiveKit configurado quedan en cero."
+    },
+    "lockedTitle": "Las estadísticas son de los planes Plus y Pro",
+    "lockedBody": "Con Plus ves las últimas semanas; con Pro, el histórico y las comparativas. Siempre solo totales de la comunidad.",
+    "lockedCta": "Ver planes",
+    "error": "No pudimos cargar las estadísticas. Inténtalo de nuevo."
   }
 }

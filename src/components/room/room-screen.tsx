@@ -15,6 +15,7 @@ import { ActiveSpeaker } from "./active-speaker";
 import { AudioPanel } from "./audio-panel";
 import { ConnectionBanner } from "./connection-banner";
 import { ModerationMenu } from "@/components/moderation/moderation-menu";
+import { GuidePanel } from "@/components/guides/guide-panel";
 import { HostControls } from "./host-controls";
 import { RoomLimit } from "./room-limit";
 import { Participants } from "./participants";
@@ -137,6 +138,8 @@ export function RoomScreen(props: Props) {
         <AudioPanel audio={audio} />
         {audioActive ? <ActiveSpeaker presence={audio.presence} members={members} meId={meId} /> : null}
 
+        <GuidePanel roomId={room.id} isHost={isHost} />
+
         <Participants
           members={members}
           meId={meId}
@@ -155,6 +158,8 @@ export function RoomScreen(props: Props) {
             onSetLocked={actions.setLocked}
             onClose={actions.closeRoom}
             onMuteAll={() => void hostCommand({ action: "mute_all", roomId: room.id })}
+            roomId={room.id}
+            roomCode={room.code}
           />
         ) : null}
         {hostError ? (
@@ -178,6 +183,8 @@ export function RoomScreen(props: Props) {
             onRemove={actions.removeRequest}
             onToggleSupport={(requestId, on) => actions.toggleSupport(requestId, meId, on)}
             onSaveToJournal={actions.saveToJournal}
+            focusId={room.focus_request_id}
+            onSetFocus={isHost ? actions.setFocus : null}
           />
         </section>
       </main>

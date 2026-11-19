@@ -1,6 +1,6 @@
 "use client";
 
-import { BookmarkPlus, CheckCircle2, Heart, HandHeart, Trash2 } from "lucide-react";
+import { BookmarkPlus, CheckCircle2, Flame, Heart, HandHeart, Trash2 } from "lucide-react";
 import { useFormatter, useNow, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,12 @@ interface Props {
   onRemove: (id: string) => Promise<boolean>;
   onToggleSupport: (requestId: string, on: boolean) => Promise<boolean>;
   onSaveToJournal: (request: PrayerRequest) => Promise<boolean>;
+  /** Petición en foco ("Orando ahora") y, solo para quien anfitriona, cómo cambiarla. */
+  focusId: string | null;
+  onSetFocus: ((id: string | null) => Promise<boolean>) | null;
 }
 
-export function RequestList({ requests, members, meId, isHost, support, canSaveToJournal, onSetAnswered, onRemove, onToggleSupport, onSaveToJournal }: Props) {
+export function RequestList({ requests, members, meId, isHost, support, canSaveToJournal, onSetAnswered, onRemove, onToggleSupport, onSaveToJournal, focusId, onSetFocus }: Props) {
   const t = useTranslations("Room.requests");
   const people = new Map(members.map((m) => [m.user_id, m]));
   // Quien bloqueas desaparece al instante (la base ya no te las envía en la próxima lectura). La anfitriona no oculta
@@ -56,6 +59,8 @@ export function RequestList({ requests, members, meId, isHost, support, canSaveT
           canDelete={request.author_id === meId || isHost}
           onSetAnswered={onSetAnswered}
           onRemove={onRemove}
+          focused={focusId === request.id}
+          onSetFocus={onSetFocus}
         />
       ))}
     </ul>
@@ -76,9 +81,11 @@ interface ItemProps {
   onSetAnswered: Props["onSetAnswered"];
   onRemove: Props["onRemove"];
   onBlocked: (userId: string) => void;
+  focused: boolean;
+  onSetFocus: Props["onSetFocus"];
 }
 
-function RequestItem({ onBlocked, request, authorName, authorAvatar, supporters, meId, canSaveToJournal, onToggleSupport, onSaveToJournal, canEdit, canDelete, onSetAnswered, onRemove }: ItemProps) {
+function RequestItem({ onBlocked, request, authorName, authorAvatar, supporters, meId, canSaveToJournal, onToggleSupport, onSaveToJournal, canEdit, canDelete, onSetAnswered, onRemove, focused, onSetFocus }: ItemProps) {
   const t = useTranslations("Room.requests");
   const format = useFormatter();
   // "hace 2 min" se actualiza solo cada minuto
@@ -101,6 +108,7 @@ function RequestItem({ onBlocked, request, authorName, authorAvatar, supporters,
       className={cn(
         "rounded-2xl border border-border bg-surface p-4",
         request.is_answered && "border-l-[3px] border-l-answered",
+        focused && "ring-2 ring-brand-gold",
       )}
     >
       <div className="flex items-center gap-3">
@@ -115,6 +123,12 @@ function RequestItem({ onBlocked, request, authorName, authorAvatar, supporters,
             {format.relativeTime(new Date(request.created_at), now)}
           </time>
         </div>
+        {focused && !request.is_answered ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-gold/20 px-2.5 py-1 text-xs font-bold">
+            <Flame className="size-3.5 text-brand-gold" aria-hidden="true" />
+            {t("focus.now")}
+          </span>
+        ) : null}
         {request.is_answered ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-answered-surface px-2.5 py-1 text-xs font-bold text-answered-foreground">
             <CheckCircle2 className="size-3.5" aria-hidden="true" />
@@ -132,6 +146,12 @@ function RequestItem({ onBlocked, request, authorName, authorAvatar, supporters,
       ) : null}
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
+        {onSetFocus && !request.is_answered ? (
+          <Button size="sm" variant={focused ? "secondary" : "primary"} disabled={busy} aria-pressed={focused} onClick={() => void onSetFocus(focused ? null : request.id)}>
+            <Flame className="size-4" aria-hidden="true" />
+            {focused ? t("focus.clear") : t("focus.set")}
+          </Button>
+        ) : null}
         {request.author_id === meId ? (
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Heart className="size-4 text-brand-gold" aria-hidden="true" />

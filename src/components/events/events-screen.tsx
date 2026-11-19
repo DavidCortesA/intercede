@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
 import { toCommunityError, type CommunityErrorKey } from "@/features/communities/schemas";
+import { googleCalendarUrl } from "@/features/events/ics";
 import { EVENT_DURATIONS, EVENT_REMINDERS, type EventView, type RsvpStatus } from "@/features/events/types";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -282,6 +283,15 @@ function EventCard({ event, isLeader, ended = false }: { event: EventView; isLea
         <a href={`/api/events/${event.id}/ics`} download className={buttonVariants({ size: "sm", variant: "secondary" }) + " text-foreground"}>
           <CalendarPlus className="size-4" aria-hidden="true" />
           {t("card.addToCalendar")}
+        </a>
+        <a
+          href={googleCalendarUrl({ title: event.title, description: event.description, startsAt: event.starts_at, endsAt: event.ends_at, timezone: event.timezone })}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={buttonVariants({ size: "sm", variant: "secondary" }) + " text-foreground"}
+        >
+          <CalendarPlus className="size-4" aria-hidden="true" />
+          {t("card.addToGoogle")}
         </a>
         {isLeader ? (
           confirming ? (

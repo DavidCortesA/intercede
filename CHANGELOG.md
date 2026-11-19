@@ -6,6 +6,31 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.11.0] - 2026-11-19 — Fase 10 (lote 1): Guías, pantalla, estadísticas y compartir
+
+> Alcance elegido: B3, B4, B5, A1 y C6 nivel 1 (CLAUDE.md §16). **No** incluye B2, B6, B7, C6 nivel 2 ni A6 (esperan tus decisiones de §16.5), ni lo asignado a
+> las fases 3–7 que no se construyó (A2, A3, A4, A5, A7, B1). Ver `docs/decisions/0014-guias-pantalla-estadisticas-y-compartir.md`.
+
+### Añadido
+- **Guías de oración con temporizador (B3)**: 4 guías de INTERCEDE (adoración-confesión-gratitud-súplica, por la nación, silencio y escucha, Padre Nuestro guiado) y guías propias
+  de la comunidad (Plus/Pro, *Comunidades → Guías*). La anfitriona inicia, pausa, salta, suma un minuto y termina; todos ven el momento actual y la **cuenta regresiva con la hora
+  del servidor** (coincide entre dispositivos y sobrevive a reconectar). Campana suave opcional.
+- **Modo pantalla (B4)**: enlace secreto y revocable (`/r/<código>/display`) para proyectar la sala sin sesión ni audio: **petición en foco** en grande, las que siguen, la guía
+  con su cuenta regresiva y el QR para entrar; nunca nombres. La anfitriona elige la petición en foco ("Orar por esta"; todos la ven como "Orando ahora").
+- **Estadísticas para líderes (B5)** (*Comunidades → Estadísticas*, Plus: últimas 5 semanas; Pro: hasta 52 semanas y comparativa) y **CSV**: solo agregados, con la **regla de 5 personas**
+  (lo que involucra a menos se oculta y los totales no se deducen por resta).
+- **Compartir (A1)**: diálogo con hoja nativa, **WhatsApp** (mensaje editable, sin peticiones ni datos personales), copiar enlace y **código QR** a pantalla completa.
+- **Google Calendar (C6 nivel 1)** en eventos y salas programadas (con zona horaria y recurrencia), sin permisos; el .ics sigue disponible.
+- Documentos: ADR 0014 y `docs/operaciones/guias-pantalla-estadisticas.md`.
+
+### Dependencias
+- `qrcode` (+ `@types/qrcode`): QR generado en el navegador, sin servicios externos (ver ADR 0014).
+
+### Notas
+- B5 se calcula en vivo (no con vistas materializadas como sugiere §16): a este volumen es más simple y sin datos viejos; ver ADR 0014.
+- Pendiente: probar sonido y pantalla completa en dispositivos reales; "avanzar por la cola de peticiones" de las guías depende de §15; sin límite de intentos propio en `/api/display`.
+
+
 ## [0.10.0] - 2026-11-19 — Fase 9: Planes, límites y cobros
 
 > Alcance: CLAUDE.md §14. Las peticiones de la iglesia en la sala, la importación CSV/Excel y las vistas de cámara (§15) quedan para una fase aparte.

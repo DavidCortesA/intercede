@@ -72,6 +72,8 @@ Auditoría de seguridad de la base: `node scripts/security-audit.mjs` (local) o 
 Planes, límites y cobros (Fase 9): [`docs/operaciones/facturacion.md`](docs/operaciones/facturacion.md) y [ADR 0013](docs/decisions/0013-planes-limites-y-cobros.md).
 Los límites del plan gratuito se aplican siempre; los cobros con Conekta necesitan su llave y su webhook.
 
+Guías de oración, pantalla de proyección y estadísticas (Fase 10): [`docs/operaciones/guias-pantalla-estadisticas.md`](docs/operaciones/guias-pantalla-estadisticas.md) y [ADR 0014](docs/decisions/0014-guias-pantalla-estadisticas-y-compartir.md).
+
 ## Fases y versiones
 
 El avance se publica por fases con su tag y su entrada en [`CHANGELOG.md`](CHANGELOG.md)

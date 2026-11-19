@@ -22,6 +22,9 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 ### Pruebas
 - Integración con un Google simulado (23 casos), unitarias (14) y e2e de la pantalla del perfil. La auditoría de seguridad sigue sin hallazgos.
 
+### Aplicado y desplegado (2026-11-21)
+- Migración `20261121200000` aplicada al Supabase remoto (auditoría sin hallazgos) y app desplegada. La opción sigue **oculta** (sin `NEXT_PUBLIC_GOOGLE_CALENDAR`) y sin secretos de Vault ni variables nuevas: falta tu configuración de Google Cloud (`docs/operaciones/google-calendar.md`).
+
 ### No incluido / pendiente
 - Prueba real con Google (requiere tu configuración en Google Cloud y, para abrirlo a cualquiera, la verificación de la app), sincronización de vuelta y turnos de cadena (esperan B1).
 

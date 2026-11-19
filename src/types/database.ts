@@ -109,6 +109,83 @@ export type Database = {
         };
         Relationships: [];
       };
+      breakout_assignments: {
+        Row: {
+          breakout_id: string;
+          group_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          breakout_id: string;
+          group_id: string;
+          user_id: string;
+        };
+        Update: {
+          breakout_id?: string;
+          group_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "breakout_assignments_breakout_id_fkey";
+            columns: ["breakout_id"];
+            isOneToOne: false;
+            referencedRelation: "room_breakouts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "breakout_assignments_group_id_fkey";
+            columns: ["group_id"];
+            isOneToOne: false;
+            referencedRelation: "breakout_groups";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      breakout_groups: {
+        Row: {
+          breakout_id: string;
+          id: string;
+          livekit_room: string;
+          name: string;
+          position: number;
+          request_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          breakout_id: string;
+          id?: string;
+          livekit_room: string;
+          name: string;
+          position: number;
+          request_id?: string | null;
+        };
+        Update: {
+          breakout_id?: string;
+          id?: string;
+          livekit_room?: string;
+          name?: string;
+          position?: number;
+          request_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "breakout_groups_breakout_id_fkey";
+            columns: ["breakout_id"];
+            isOneToOne: false;
+            referencedRelation: "room_breakouts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "breakout_groups_request_id_fkey";
+            columns: ["request_id"];
+            isOneToOne: false;
+            referencedRelation: "prayer_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       communities: {
         Row: {
           created_at: string;
@@ -1078,6 +1155,54 @@ export type Database = {
           },
         ];
       };
+      room_breakouts: {
+        Row: {
+          announced_at: string | null;
+          announcement: string | null;
+          ended_at: string | null;
+          ends_at: string;
+          id: string;
+          minutes: number;
+          room_id: string;
+          started_at: string;
+          started_by: string | null;
+          status: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          announced_at?: string | null;
+          announcement?: string | null;
+          ended_at?: string | null;
+          ends_at: string;
+          id?: string;
+          minutes: number;
+          room_id: string;
+          started_at?: string;
+          started_by?: string | null;
+          status?: string;
+        };
+        Update: {
+          announced_at?: string | null;
+          announcement?: string | null;
+          ended_at?: string | null;
+          ends_at?: string;
+          id?: string;
+          minutes?: number;
+          room_id?: string;
+          started_at?: string;
+          started_by?: string | null;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "room_breakouts_room_id_fkey";
+            columns: ["room_id"];
+            isOneToOne: false;
+            referencedRelation: "rooms";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       room_display_links: {
         Row: {
           created_at: string;
@@ -1539,6 +1664,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      announce_breakout: {
+        Args: { p_message: string; p_room_id: string };
+        Returns: undefined;
+      };
       apply_pass: {
         Args: { p_pass_id: string; p_room_id: string };
         Returns: undefined;
@@ -1557,6 +1686,9 @@ export type Database = {
         Returns: undefined;
       };
       block_user: { Args: { p_user_id: string }; Returns: undefined };
+      breakout_group_rooms: { Args: { p_room_id: string }; Returns: string[] };
+      breakout_main_room: { Args: { p_livekit_room: string }; Returns: string };
+      breakout_room: { Args: { p_breakout_id: string }; Returns: string };
       can_manage_schedule: {
         Args: { p_schedule_id: string };
         Returns: boolean;
@@ -1679,6 +1811,11 @@ export type Database = {
         Args: { p_code: string; p_token: string };
         Returns: Json;
       };
+      end_breakout: { Args: { p_room_id: string }; Returns: string[] };
+      end_expired_breakouts: {
+        Args: Record<PropertyKey, never>;
+        Returns: string[];
+      };
       entitlements_for: { Args: { p_community_id?: string }; Returns: Json };
       expire_passes: { Args: Record<PropertyKey, never>; Returns: undefined };
       fail_order: {
@@ -1705,6 +1842,13 @@ export type Database = {
       };
       fulfill_order: { Args: { p_order_id: string }; Returns: Json };
       generate_room_code: { Args: Record<PropertyKey, never>; Returns: string };
+      get_breakout_access: {
+        Args: { p_group_id: string; p_room_id: string };
+        Returns: {
+          ends_at: string;
+          livekit_room: string;
+        }[];
+      };
       get_community_invite: {
         Args: { p_community_id: string };
         Returns: string;
@@ -1721,6 +1865,7 @@ export type Database = {
         }[];
       };
       has_joined_room: { Args: { p_room_id: string }; Returns: boolean };
+      in_breakout_group: { Args: { p_group_id: string }; Returns: boolean };
       invoke_dispatcher: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
@@ -1875,6 +2020,16 @@ export type Database = {
         Returns: undefined;
       };
       shares_context_with: { Args: { p_user_id: string }; Returns: boolean };
+      start_breakout: {
+        Args: {
+          p_assignments?: Json;
+          p_group_count: number;
+          p_minutes: number;
+          p_requests?: string[];
+          p_room_id: string;
+        };
+        Returns: string;
+      };
       start_guide: {
         Args: { p_guide_id: string; p_room_id: string };
         Returns: undefined;

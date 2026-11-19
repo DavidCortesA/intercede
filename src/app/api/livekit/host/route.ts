@@ -2,6 +2,7 @@ import { TrackType } from "livekit-server-sdk";
 import { z } from "zod";
 import { toRoomError } from "@/features/rooms/errors";
 import { getRoomService } from "@/lib/livekit/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { apiError, apiOk, authorizeRoomRequest, parseJson, type ApiErrorCode } from "@/lib/livekit/route-auth";
 
 const bodySchema = z.discriminatedUnion("action", [
@@ -9,6 +10,7 @@ const bodySchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("mute"), roomId: z.uuid(), identity: z.uuid() }),
   z.object({ action: z.literal("remove"), roomId: z.uuid(), identity: z.uuid() }),
   z.object({ action: z.literal("close"), roomId: z.uuid() }),
+  z.object({ action: z.literal("end_breakout"), roomId: z.uuid() }),
 ]);
 
 /** ¿El error de LiveKit es "no existe" (persona o sala ya no están conectadas)? */
@@ -84,19 +86,33 @@ export async function POST(request: Request) {
           if (code === "cannot_remove_self") return apiError("cannot_remove_self", 400);
           return apiError("unexpected", 500);
         }
+        // Quien está en un grupo pequeño también se saca de su sala de audio
+        const groupRooms = await breakoutRooms(room.id);
+        for (const name of groupRooms) await livekit.removeParticipant(name, command.identity).catch(() => undefined);
         await withRetry(() => livekit.removeParticipant(room.id, command.identity)).catch((livekitError: unknown) => {
           if (!isNotFound(livekitError)) throw livekitError; // si no estaba conectada, ya está fuera
         });
         return apiOk({ removed: true });
       }
 
+      case "end_breakout": {
+        // Primero la base (todos vuelven a la sala principal); luego se cierran las salas de audio de los grupos
+        const { data: groupRooms, error } = await supabase.rpc("end_breakout", { p_room_id: room.id });
+        if (error) return apiError(error.message === "no_breakout" ? "no_breakout" : "not_host", error.message === "no_breakout" ? 404 : 403);
+        for (const name of groupRooms ?? []) await livekit.deleteRoom(name).catch(() => undefined);
+        return apiOk({ ended: true });
+      }
+
       case "close": {
+        // Las salas de los grupos se leen ANTES de cerrar (cerrar la sala termina el reparto)
+        const groupRooms = await breakoutRooms(room.id);
         const { error } = await supabase.rpc("close_room", { p_room_id: room.id });
         if (error) return apiError(toRoomError(error) === "not_host" ? "not_host" : "unexpected", error ? 403 : 500);
         // Desconecta a todas las personas del audio (ya no pueden volver: la sala está cerrada)
         await withRetry(() => livekit.deleteRoom(room.id)).catch((livekitError: unknown) => {
           if (!isNotFound(livekitError)) throw livekitError;
         });
+        for (const name of groupRooms) await livekit.deleteRoom(name).catch(() => undefined);
         return apiOk({ closed: true });
       }
     }
@@ -119,4 +135,14 @@ async function muteAudioTracks(
     }
   }
   return muted;
+}
+
+/** Salas de audio de los grupos pequeños activos de una sala (lectura de servidor; la autorización ya se hizo). */
+async function breakoutRooms(roomId: string): Promise<string[]> {
+  try {
+    const { data } = await createAdminClient().rpc("breakout_group_rooms", { p_room_id: roomId });
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }

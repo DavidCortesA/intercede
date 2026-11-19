@@ -6,6 +6,26 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.12.0] - 2026-11-20 — Fase 11 (lote 1): Grupos pequeños
+
+> Alcance elegido: el resto de la Fase 10, **de uno en uno**. Este lote es **B2**. B6 (marca de la iglesia), B7 (compañero de oración) y C6 nivel 2 esperan tus
+> decisiones de §16.5. Ver `docs/decisions/0015-grupos-pequenos.md`.
+
+### Añadido
+- **Grupos pequeños (B2)**: la anfitriona divide la sala en 2 a 10 grupos (Plus) o hasta 20 (Pro) por tamaño o por número, con reparto **aleatorio y parejo** o **manual**, duración con
+  cuenta regresiva y, si quiere, **una petición por grupo**. Cada grupo ora en su **propia sala de audio**; el servidor solo da el token del grupo a quien la base tiene asignada. Puede
+  **avisar a todos** ("Regresamos en 2 minutos"), **visitar** un grupo y **terminar** para que todos vuelvan.
+- **Regreso sin quedar atrapados**: cada dispositivo vuelve solo a la sala principal al terminar el tiempo (hora del servidor), aunque la anfitriona se haya desconectado; el servidor, además,
+  cierra los grupos vencidos y corta su audio (pg_cron). El micrófono y su permiso se conservan al cambiar de sala.
+- Los minutos de un grupo cuentan **una sola vez**, en la sala principal (horas-persona de la comunidad); las salas de grupo no cuentan como salas simultáneas.
+
+### Corregido durante la fase
+- Las pruebas de rutas detectaron que el token de un grupo se firmaba para la sala principal; corregido antes de publicar.
+
+### No incluido / pendiente
+- Solo comunidades con plan Plus o Pro (las salas personales no tienen grupos). Silenciar a uno o a todos actúa sobre la sala principal. Sin prueba en dispositivos reales.
+
+
 ## [0.11.0] - 2026-11-19 — Fase 10 (lote 1): Guías, pantalla, estadísticas y compartir
 
 > Alcance elegido: B3, B4, B5, A1 y C6 nivel 1 (CLAUDE.md §16). **No** incluye B2, B6, B7, C6 nivel 2 ni A6 (esperan tus decisiones de §16.5), ni lo asignado a

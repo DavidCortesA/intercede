@@ -12,6 +12,8 @@ export type ApiErrorCode =
   | "removed"
   | "room_closed"
   | "room_expired"
+  | "not_assigned"
+  | "no_breakout"
   | "not_host"
   | "participant_not_connected"
   | "livekit_unavailable"

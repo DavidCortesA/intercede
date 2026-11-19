@@ -31,7 +31,11 @@ export async function POST(request: Request) {
 
   if (event.event !== "participant_left" || !event.participant || !event.room) return NextResponse.json({ ignored: true });
 
-  const roomId = idSchema.safeParse(event.room.name);
+  const admin = createAdminClient();
+  // Una sala de audio de un grupo pequeño (`bg-<id>`) cuenta en su sala principal: una persona está en una sola sala a la vez
+  const isGroup = event.room.name.startsWith("bg-");
+  const groupMain = isGroup ? (await admin.rpc("breakout_main_room", { p_livekit_room: event.room.name })).data : null;
+  const roomId = idSchema.safeParse(isGroup ? groupMain : event.room.name);
   const userId = idSchema.safeParse(event.participant.identity);
   if (!roomId.success || !userId.success || !event.id) return NextResponse.json({ ignored: true });
 
@@ -39,7 +43,7 @@ export async function POST(request: Request) {
   const joinedSeconds = Number(event.participant.joinedAt);
   const joinedAt = joinedSeconds > 0 ? new Date(joinedSeconds * 1000) : leftAt;
 
-  const { error } = await createAdminClient().rpc("record_usage", {
+  const { error } = await admin.rpc("record_usage", {
     p_event_id: event.id,
     p_room_id: roomId.data,
     p_user_id: userId.data,

@@ -39,6 +39,19 @@ export interface Presence {
 /** Intentos de reconexión con un token nuevo cuando LiveKit se da por vencido (espera en ms). */
 const RECONNECT_DELAYS = [1000, 3000, 6000, 10000];
 
+/**
+ * Token de la sala de audio que toca. Si el grupo ya no sirve (terminó el reparto o ya no estás asignada) se vuelve a la sala
+ * principal en el acto: nadie se queda sin audio por un grupo que ya no existe.
+ */
+async function tokenFor(roomId: string, groupRef: { current: string | null }) {
+  const first = await fetchAudioToken(roomId, groupRef.current);
+  if (!first.ok && first.error === "not_assigned" && groupRef.current) {
+    groupRef.current = null;
+    return fetchAudioToken(roomId, null);
+  }
+  return first;
+}
+
 /** Errores del servidor que no se arreglan reintentando. */
 const FATAL_API_ERRORS: Partial<Record<AudioApiError, AudioErrorCode>> = {
   removed: "removed",
@@ -85,11 +98,14 @@ function disconnectError(reason: DisconnectReason | undefined): AudioErrorCode |
  *    nuevo y se reconecta (un token vencido no debe dejar a nadie fuera de una sala abierta);
  *  - errores del micrófono con causas distintas (permiso, sin micrófono, en uso).
  */
-export function useLiveAudio(roomId: string) {
+export function useLiveAudio(roomId: string, groupId: string | null = null) {
   const roomRef = useRef<Room | null>(null);
   const attachedRef = useRef(new Set<HTMLMediaElement>());
   const leavingRef = useRef(false);
   const wantMicRef = useRef(false);
+  // Sala de audio a la que toca conectarse: la principal (null) o la de un grupo pequeño
+  const groupRef = useRef<string | null>(groupId);
+  const switchRef = useRef<((next: string | null) => Promise<void>) | null>(null);
 
   const [status, setStatus] = useState<AudioStatus>("idle");
   const [mode, setMode] = useState<AudioMode | null>(null);
@@ -150,7 +166,7 @@ export function useLiveAudio(roomId: string) {
         await new Promise((resolve) => setTimeout(resolve, delay));
         if (leavingRef.current || roomRef.current !== room) return;
 
-        const token = await fetchAudioToken(roomId);
+        const token = await tokenFor(roomId, groupRef);
         if (!token.ok) {
           const fatal = FATAL_API_ERRORS[token.error];
           if (fatal) return reset(fatal);
@@ -189,7 +205,7 @@ export function useLiveAudio(roomId: string) {
       setStatus("connecting");
       setMode(nextMode);
 
-      const token = await fetchAudioToken(roomId);
+      const token = await tokenFor(roomId, groupRef);
       if (!token.ok) return reset(FATAL_API_ERRORS[token.error] ?? (token.error === "network" ? "network" : "connect_failed"));
 
       const room = new Room({
@@ -237,6 +253,11 @@ export function useLiveAudio(roomId: string) {
       room.on(RoomEvent.Disconnected, (reason?: DisconnectReason) => {
         if (leavingRef.current || roomRef.current !== room) return;
         detachAll();
+        // La sala de audio de un grupo se corta al terminar el reparto: se vuelve a la sala principal, no es "sala cerrada"
+        if (groupRef.current && (reason === DisconnectReason.ROOM_DELETED || reason === DisconnectReason.ROOM_CLOSED)) {
+          void switchRef.current?.(null);
+          return;
+        }
         const fatal = disconnectError(reason);
         if (fatal) return reset(fatal);
         void reconnect(room);
@@ -260,6 +281,34 @@ export function useLiveAudio(roomId: string) {
     },
     [roomId, reset, refresh, detachAll, reconnect, enableMic],
   );
+
+  /**
+   * Cambia a la sala de audio de un grupo (o vuelve a la principal) SIN pedir nada de nuevo: el permiso del micrófono ya se dio
+   * y se conserva su estado. Si todavía no hay audio conectado, solo se recuerda a cuál sala toca la próxima vez.
+   */
+  const switchTo = useCallback(
+    async (next: string | null) => {
+      groupRef.current = next;
+      const room = roomRef.current;
+      if (!room) return;
+      const wantsTalk = wantMicRef.current;
+      roomRef.current = null;
+      room.removeAllListeners();
+      detachAll();
+      await room.disconnect().catch(() => undefined);
+      await join(wantsTalk ? "talk" : "listen");
+    },
+    [detachAll, join],
+  );
+
+  useEffect(() => {
+    switchRef.current = switchTo;
+  }, [switchTo]);
+
+  // Cuando cambia la sala de audio que toca (empieza o termina un reparto), se cambia sola
+  useEffect(() => {
+    if (groupRef.current !== groupId) void switchTo(groupId);
+  }, [groupId, switchTo]);
 
   const toggleMic = useCallback(async () => {
     const room = roomRef.current;

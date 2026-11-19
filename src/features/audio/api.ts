@@ -6,6 +6,7 @@ export type AudioApiError =
   | "unauthenticated"
   | "not_a_member"
   | "removed"
+  | "not_assigned"
   | "room_closed"
   | "not_host"
   | "participant_not_connected"
@@ -40,12 +41,15 @@ export interface TokenResponse {
   identity: string;
 }
 
-export const fetchAudioToken = (roomId: string) => post<TokenResponse>("/api/livekit/token", { roomId });
+/** Con `groupId`, el token es de la sala de audio de ese grupo pequeño (el servidor comprueba que la persona esté asignada). */
+export const fetchAudioToken = (roomId: string, groupId?: string | null) =>
+  post<TokenResponse>("/api/livekit/token", groupId ? { roomId, groupId } : { roomId });
 
 export type HostCommand =
   | { action: "mute_all"; roomId: string }
   | { action: "mute"; roomId: string; identity: string }
   | { action: "remove"; roomId: string; identity: string }
-  | { action: "close"; roomId: string };
+  | { action: "close"; roomId: string }
+  | { action: "end_breakout"; roomId: string };
 
 export const sendHostCommand = (command: HostCommand) => post<Record<string, unknown>>("/api/livekit/host", command);

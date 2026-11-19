@@ -6,7 +6,12 @@ import { useEffect, useState } from "react";
 import { Wordmark } from "@/components/marketing/wordmark";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { sendHostCommand, type HostCommand } from "@/features/audio/api";
+import { BreakoutBanner } from "@/components/breakouts/breakout-banner";
+import { BreakoutHost } from "@/components/breakouts/breakout-host";
 import { useLiveAudio } from "@/features/audio/use-live-audio";
+import { activeGroupId } from "@/features/breakouts/logic";
+import { useBreakout } from "@/features/breakouts/use-breakout";
+import { useServerNow } from "@/features/breakouts/use-server-now";
 import { useWakeLock } from "@/features/audio/use-wake-lock";
 import type { PrayerRequest, PrayerSupport, Room, RoomMember } from "@/features/rooms/types";
 import { useRoomLive } from "@/features/rooms/use-room-live";
@@ -67,12 +72,21 @@ export function RoomScreen(props: Props) {
     requests: props.requests,
     support: props.support,
   });
-  const audio = useLiveAudio(props.room.id);
+  const breakoutState = useBreakout(props.room.id);
+  const serverNowMs = useServerNow();
+  const [visitedGroup, setVisitedGroup] = useState<string | null>(null);
+  const myGroup = breakoutState.assignments.find((assignment) => assignment.user_id === props.meId)?.group_id ?? null;
+  // La anfitriona visita un grupo mientras el reparto siga activo; el resto vuelve sola a la sala principal al terminar el tiempo
+  const visiting = breakoutState.breakout?.status === "active" ? visitedGroup : null;
+  const audioGroup = visiting ?? activeGroupId(breakoutState.breakout, myGroup, serverNowMs);
+  const audio = useLiveAudio(props.room.id, audioGroup);
   const [hostError, setHostError] = useState(false);
 
   const meId = props.meId;
   const isHost = room.host_id === meId;
   const presentCount = members.filter((m) => m.left_at === null).length;
+  const groupMates = audioGroup ? new Set(breakoutState.assignments.filter((assignment) => assignment.group_id === audioGroup).map((assignment) => assignment.user_id)) : null;
+  const roomMembers = groupMates ? members.filter((m) => groupMates.has(m.user_id) || m.user_id === room.host_id) : members;
   const removed = Boolean(members.find((m) => m.user_id === meId)?.removed_at);
   const ended = room.status === "closed" || removed;
 
@@ -132,16 +146,17 @@ export function RoomScreen(props: Props) {
       </header>
 
       <RoomLimit room={room} isHost={isHost} isAnonymous={props.isAnonymous} />
+      <BreakoutBanner state={breakoutState} meId={meId} isHost={isHost} members={members} requests={requests} serverNowMs={serverNowMs} />
       <ConnectionBanner online={online} connection={connection} />
 
       <main id="contenido" className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 overflow-y-auto px-4 py-5">
         <AudioPanel audio={audio} />
-        {audioActive ? <ActiveSpeaker presence={audio.presence} members={members} meId={meId} /> : null}
+        {audioActive ? <ActiveSpeaker presence={audio.presence} members={roomMembers} meId={meId} /> : null}
 
         <GuidePanel roomId={room.id} isHost={isHost} />
 
         <Participants
-          members={members}
+          members={roomMembers}
           meId={meId}
           presence={audio.presence}
           audioActive={audioActive}
@@ -153,6 +168,19 @@ export function RoomScreen(props: Props) {
         {isHost ? null : <ModerationMenu className="self-start" target={{ type: "room", id: room.id }} label={moderation("room.report")} />}
 
         {isHost ? (
+          <>
+          <BreakoutHost
+            roomId={room.id}
+            communityId={room.community_id}
+            hostId={room.host_id}
+            members={members}
+            requests={requests}
+            state={breakoutState}
+            serverNowMs={serverNowMs}
+            visitGroupId={visiting}
+            onVisit={setVisitedGroup}
+            audioConnected={audioActive}
+          />
           <HostControls
             isLocked={room.is_locked}
             onSetLocked={actions.setLocked}
@@ -161,6 +189,7 @@ export function RoomScreen(props: Props) {
             roomId={room.id}
             roomCode={room.code}
           />
+          </>
         ) : null}
         {hostError ? (
           <p role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive">

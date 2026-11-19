@@ -28,6 +28,9 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 ### Cambiado
 - Las pruebas de integración corren **en serie** (comparten una base y llaman a funciones globales; en paralelo se pisaban).
 
+### Aplicado al remoto (2026-11-19)
+- Migración `20261119100000` aplicada al proyecto de Supabase; auditoría de seguridad remota sin hallazgos; catálogo (3 planes, 7 productos) y límites gratuitos verificados. **La app en Vercel aún no se desplegó con este código.**
+
 ### No incluido / pendiente
 - Cámaras simultáneas (límite guardado, sin aplicar), avisos por push/correo de límites y vencimientos, renovación automática y cancelación de suscripciones, plan "Red", CFDI.
 - Aplicar la migración al remoto, configurar Conekta (llave con `orders:write`, webhook), Vault (`enforcer_*`) y el webhook de LiveKit: ver `docs/operaciones/facturacion.md`.

@@ -26,6 +26,9 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 ### Dependencias
 - `qrcode` (+ `@types/qrcode`): QR generado en el navegador, sin servicios externos (ver ADR 0014).
 
+### Aplicado y desplegado (2026-11-19)
+- Migración `20261119200000` aplicada al Supabase remoto (auditoría sin hallazgos) y app desplegada en https://intercede-six.vercel.app. Verificado en producción: 4 guías del sistema, iniciar una guía, enlace de pantalla (200 con el token, 404 con uno falso y tras revocarlo, sin nombres en la respuesta).
+
 ### Notas
 - B5 se calcula en vivo (no con vistas materializadas como sugiere §16): a este volumen es más simple y sin datos viejos; ver ADR 0014.
 - Pendiente: probar sonido y pantalla completa en dispositivos reales; "avanzar por la cola de peticiones" de las guías depende de §15; sin límite de intentos propio en `/api/display`.

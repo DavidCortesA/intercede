@@ -464,6 +464,10 @@
           "title": "Pagos",
           "body": "Orar es gratis y no pedimos pago para entrar a una sala. Si compras un plan o un pase, el pago se hace en la página segura de Conekta (tarjeta, OXXO o transferencia): INTERCEDE nunca ve ni guarda los datos de tu tarjeta. Guardamos el registro de la compra (qué, cuánto y cuándo) para activarla y por obligaciones contables; al borrar tu cuenta, ese registro se conserva sin tu identidad. Para medir las horas de uso de una comunidad contamos los minutos conectados por sala, y la comunidad solo ve el total, nunca el tiempo de una persona."
         },
+        "partners": {
+          "title": "Compañero de oración y mayoría de edad",
+          "body": "Al crear tu cuenta declaras que eres mayor de edad; guardamos solo la fecha de esa declaración. Si te anotas al compañero de oración de una comunidad, tu pareja de la semana ve únicamente tu nombre y las peticiones que escribas para ella; no compartimos tu correo ni tu teléfono. Si sales del programa, de la comunidad o borras tu cuenta, se borran esas peticiones. El liderazgo de la comunidad ve solo totales, nunca quién está anotado ni lo que escribe."
+        },
         "analytics": {
           "title": "Analítica",
           "body": "Medimos visitas con una herramienta sin cookies y sin rastrearte entre sitios; las direcciones de salas e invitaciones se generalizan antes de registrarse. Nunca analizamos el contenido de tus oraciones o peticiones."
@@ -642,8 +646,10 @@
       "invalid_name": "Escribe un nombre de hasta 40 caracteres.",
       "invalid_timezone": "Elige una zona horaria válida.",
       "generic": "Algo salió mal. Inténtalo de nuevo.",
-      "captcha_failed": "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo."
-    }
+      "captcha_failed": "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo.",
+      "adult_required": "Para crear tu cuenta confirma que eres mayor de edad."
+    },
+    "adult": "Confirmo que soy mayor de edad (18 años o más)."
   },
   "Account": {
     "title": "Tu perfil",
@@ -983,7 +989,8 @@
       "reports": "Reportes",
       "billing": "Facturación",
       "guides": "Guías",
-      "stats": "Estadísticas"
+      "stats": "Estadísticas",
+      "partner": "Compañero"
     },
     "members": {
       "title": "Miembros",
@@ -1651,6 +1658,94 @@
       "hostActive": "Hay grupos pequeños en curso.",
       "stayMain": "Hay grupos pequeños en curso. Tú sigues en la sala principal.",
       "announcement": "Aviso de la anfitriona: {message}"
+    }
+  },
+  "Partners": {
+    "metaTitle": "Compañero de oración",
+    "intro": "Cada semana te emparejamos con otra persona de la comunidad para orar una por la otra. Es opcional, solo para personas adultas, y de tu compañero solo ves el nombre.",
+    "closed": "El programa todavía no está abierto en tu comunidad.",
+    "noPair": "Todavía no tienes compañero esta semana. Las parejas se arman cada lunes con quienes están anotadas.",
+    "errors": {
+      "generic": "No pudimos hacer eso. Inténtalo de nuevo.",
+      "not_leader": "Solo el liderazgo de la comunidad puede hacer esto.",
+      "not_member": "Esto es solo para las personas de la comunidad.",
+      "account_required": "Necesitas una cuenta para anotarte.",
+      "adult_required": "Para anotarte confirma que eres mayor de edad.",
+      "program_inactive": "El programa no está abierto ahora.",
+      "invalid_label": "Elige uno de los grupos de la lista.",
+      "invalid_mode": "Elige cómo se arman las parejas.",
+      "invalid_labels": "Revisa los grupos: hasta 20, de 1 a 30 letras cada uno.",
+      "labels_required": "Para armar parejas por grupo escribe al menos un grupo.",
+      "not_in_pair": "Esa pareja no es tuya.",
+      "pair_ended": "Esa pareja ya terminó.",
+      "invalid_request": "Escribe una petición de hasta 200 letras.",
+      "too_many_requests": "Ya escribiste 3 peticiones para esta semana.",
+      "request_not_found": "No encontramos esa petición.",
+      "invalid_status": "Elige cómo te fue."
+    },
+    "leader": {
+      "title": "Programa de la comunidad",
+      "help": "Tú decides si el programa está abierto y cómo se arman las parejas. Las parejas se hacen cada lunes; si abres el programa a mitad de semana, puedes emparejar ahora.",
+      "active": "Programa abierto (la gente puede anotarse)",
+      "mode": "Cómo se arman las parejas",
+      "random": "Al azar entre todas las personas anotadas",
+      "byGroup": "Dentro de un mismo grupo o célula",
+      "labels": "Grupos o células (uno por línea)",
+      "labelsPlaceholder": "Célula Norte\nJóvenes\nMatrimonios",
+      "labelsHelp": "Cada persona elige uno al anotarse. Solo se emparejan personas del mismo grupo.",
+      "save": "Guardar programa",
+      "saved": "Programa guardado.",
+      "pairNow": "Emparejar ahora",
+      "pairedResult": "{count, plural, =0 {No se armaron parejas nuevas: ya se emparejó esta semana o no hay suficientes personas.} one {Se armó # pareja.} other {Se armaron # parejas.}}",
+      "stats": "{signups, plural, one {# persona anotada} other {# personas anotadas}} · {paused} en pausa · {pairs, plural, one {# pareja} other {# parejas}} esta semana",
+      "privacy": "Solo ves totales, nunca quiénes están anotadas ni sus peticiones."
+    },
+    "join": {
+      "title": "Anótate",
+      "how": "Cada lunes te toca una persona de la comunidad. Durante la semana escribes hasta 3 peticiones para ella, ves las suyas y pueden avisarse \"Estoy orando por ti\".",
+      "safety1": "Solo ves su nombre: nunca teléfono ni correo.",
+      "safety2": "Puedes pausar o salir cuando quieras; al salir se borran las peticiones que escribiste para tu compañero.",
+      "safety3": "Si algo no te hace sentir bien, puedes reportar o bloquear a tu compañero. Nunca volverán a emparejarse.",
+      "groupLabel": "Tu grupo",
+      "adult": "Confirmo que soy mayor de edad (18 años o más). El programa es solo para personas adultas.",
+      "submit": "Anotarme"
+    },
+    "status": {
+      "signedUp": "Estás anotada/o",
+      "signedUpHelp": "Cada lunes se arma tu pareja de la semana.",
+      "paused": "Estás en pausa",
+      "pausedHelp": "No te emparejaremos mientras estés en pausa.",
+      "group": "Grupo: {label}",
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "leave": "Salir del programa",
+      "leaveConfirm": "¿Salir? Se borrarán tus peticiones para tu compañero.",
+      "leaveYes": "Sí, salir",
+      "cancel": "Cancelar"
+    },
+    "pair": {
+      "title": "Tu compañero esta semana: {name}",
+      "week": "Semana del {date}",
+      "reportOrBlock": "Reportar o bloquear",
+      "ended": "Esta pareja terminó. Las parejas nuevas se arman cada lunes.",
+      "theirRequests": "Peticiones de {name}",
+      "noTheirRequests": "Todavía no escribió peticiones.",
+      "iPray": "Estoy orando por ti",
+      "iPrayOn": "Le avisé que estoy orando",
+      "partnerPrays": "{name} está orando por ti.",
+      "myRequests": "Tus peticiones para esta persona",
+      "myRequestsHelp": "Hasta {max}. Solo las ve tu compañero.",
+      "deleteRequest": "Borrar esta petición",
+      "newRequest": "Nueva petición",
+      "addRequest": "Agregar",
+      "checkinTitle": "¿Cómo te fue esta semana?",
+      "checkin": {
+        "good": "Bien",
+        "ok": "Más o menos",
+        "hard": "Difícil"
+      },
+      "note": "Una nota para tu compañero (opcional)",
+      "partnerCheckin": "{name} dice: {status}"
     }
   }
 }

@@ -8,6 +8,7 @@ import { getCommunityBrand } from "@/features/brand/queries";
 import { getCommunityContext } from "@/features/communities/queries";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { createClient } from "@/lib/supabase/server";
 import { requireSession } from "@/lib/auth-guard";
 
 /** Cabecera común de una comunidad (logo, nombre, tu rol) y sus secciones. Solo para miembros (404 si no). */
@@ -17,6 +18,8 @@ export default async function CommunityLayout({ children, params }: LayoutProps<
   setRequestLocale(locale);
   await requireSession(locale, `/comunidades/${id}`);
   const [ctx, t, brand, brandText] = await Promise.all([getCommunityContext(id), getTranslations("Communities"), getCommunityBrand(id), getTranslations("Brand")]);
+  // El compañero de oración aparece para todas las personas solo si el programa está abierto (el liderazgo siempre lo ve, para abrirlo)
+  const { data: program } = await (await createClient()).from("partner_programs").select("active").eq("community_id", id).maybeSingle();
   const { community } = ctx;
 
   return (
@@ -34,7 +37,7 @@ export default async function CommunityLayout({ children, params }: LayoutProps<
         </div>
       </header>
       {community.description ? <p className="text-muted-foreground">{community.description}</p> : null}
-      <CommunityNav communityId={community.id} isAdmin={ctx.isAdmin} isLeader={ctx.isLeader} />
+      <CommunityNav communityId={community.id} isAdmin={ctx.isAdmin} isLeader={ctx.isLeader} showPartner={program?.active ?? false} />
       <div>{children}</div>
       {brand ? <PoweredBy label={brandText("poweredBy")} className="pt-4" /> : null}
     </BrandScope>

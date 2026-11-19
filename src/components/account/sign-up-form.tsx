@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { Turnstile } from "@/components/shared/turnstile";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { FormError, FormField } from "@/components/ui/form-field";
@@ -18,6 +18,8 @@ export function SignUpForm({ isGuest, next }: { isGuest: boolean; next?: string 
   const t = useTranslations("Auth");
   const locale = useLocale();
   const [state, formAction, pending] = useActionState(signUpAction, INITIAL);
+  // Sin confirmar la mayoría de edad no se envía nada: así React no vacía el correo ni la contraseña que ya se escribieron
+  const [adultMissing, setAdultMissing] = useState(false);
 
   if (state.done === "check_email") {
     return (
@@ -33,7 +35,18 @@ export function SignUpForm({ isGuest, next }: { isGuest: boolean; next?: string 
   }
 
   return (
-    <form action={formAction} className="flex flex-col gap-4" noValidate>
+    <form
+      action={formAction}
+      className="flex flex-col gap-4"
+      noValidate
+      onSubmit={(event) => {
+        const adult = event.currentTarget.elements.namedItem("adult") as HTMLInputElement | null;
+        if (!adult?.checked) {
+          event.preventDefault();
+          setAdultMissing(true);
+        }
+      }}
+    >
       <input type="hidden" name="locale" value={locale} />
       {next ? <input type="hidden" name="next" value={next} /> : null}
       {isGuest ? null : (
@@ -58,8 +71,14 @@ export function SignUpForm({ isGuest, next }: { isGuest: boolean; next?: string 
         minLength={8}
         required
       />
+      <div className="flex items-start gap-3">
+        <input id="signup-adult" name="adult" type="checkbox" onChange={(event) => event.target.checked && setAdultMissing(false)} className="mt-1 size-5 shrink-0 accent-[var(--color-brand-violet)]" />
+        <label htmlFor="signup-adult" className="text-sm leading-snug">
+          {t("adult")}
+        </label>
+      </div>
       {isGuest ? null : <Turnstile resetKey={state} />}
-      {state.error ? <FormError>{t(`errors.${state.error}`)}</FormError> : null}
+      {adultMissing ? <FormError>{t("errors.adult_required")}</FormError> : state.error ? <FormError>{t(`errors.${state.error}`)}</FormError> : null}
       <Button type="submit" size="lg" disabled={pending} aria-busy={pending}>
         {pending ? t("signUp.submitting") : t("signUp.submit")}
       </Button>

@@ -13,12 +13,13 @@ const SECTIONS = [
 ] as const;
 
 /** Secciones de una comunidad. `Ajustes` solo aparece para la administración. */
-export function CommunityNav({ communityId, isAdmin, isLeader = isAdmin }: { communityId: string; isAdmin: boolean; isLeader?: boolean }) {
+export function CommunityNav({ communityId, isAdmin, isLeader = isAdmin, showPartner = false }: { communityId: string; isAdmin: boolean; isLeader?: boolean; showPartner?: boolean }) {
   const t = useTranslations("Communities.nav");
   const pathname = usePathname();
   const base = `/comunidades/${communityId}`;
-  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "guides" | "stats" | "billing" | "settings"; path: string }[] = [
+  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "guides" | "stats" | "partner" | "billing" | "settings"; path: string }[] = [
     ...SECTIONS,
+    ...(showPartner || isLeader ? [{ key: "partner" as const, path: "/companero" }] : []),
     ...(isLeader ? [{ key: "guides" as const, path: "/guias" }, { key: "stats" as const, path: "/estadisticas" }, { key: "reports" as const, path: "/reportes" }] : []),
     ...(isAdmin ? [{ key: "billing" as const, path: "/facturacion" }, { key: "settings" as const, path: "/ajustes" }] : []),
   ];

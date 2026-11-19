@@ -13,6 +13,7 @@ export const AUTH_ERROR_CODES = [
   "link_expired",
   "not_authenticated",
   "invalid_name",
+  "adult_required",
   "invalid_timezone",
   "generic",
 ] as const;

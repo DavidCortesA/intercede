@@ -723,6 +723,210 @@ export type Database = {
           },
         ];
       };
+      partner_checkins: {
+        Row: {
+          created_at: string;
+          note: string | null;
+          pair_id: string;
+          status: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          note?: string | null;
+          pair_id: string;
+          status: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          note?: string | null;
+          pair_id?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "partner_checkins_pair_id_fkey";
+            columns: ["pair_id"];
+            isOneToOne: false;
+            referencedRelation: "partner_pairs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      partner_pairs: {
+        Row: {
+          community_id: string;
+          created_at: string;
+          ended_at: string | null;
+          id: string;
+          user_a: string;
+          user_b: string;
+          week_start: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          community_id: string;
+          created_at?: string;
+          ended_at?: string | null;
+          id?: string;
+          user_a: string;
+          user_b: string;
+          week_start: string;
+        };
+        Update: {
+          community_id?: string;
+          created_at?: string;
+          ended_at?: string | null;
+          id?: string;
+          user_a?: string;
+          user_b?: string;
+          week_start?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "partner_pairs_community_id_fkey";
+            columns: ["community_id"];
+            isOneToOne: false;
+            referencedRelation: "communities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      partner_prayers: {
+        Row: {
+          pair_id: string;
+          prayed_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          pair_id: string;
+          prayed_at?: string;
+          user_id: string;
+        };
+        Update: {
+          pair_id?: string;
+          prayed_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "partner_prayers_pair_id_fkey";
+            columns: ["pair_id"];
+            isOneToOne: false;
+            referencedRelation: "partner_pairs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      partner_programs: {
+        Row: {
+          active: boolean;
+          community_id: string;
+          created_at: string;
+          created_by: string | null;
+          labels: string[];
+          last_paired_week: string | null;
+          mode: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          active?: boolean;
+          community_id: string;
+          created_at?: string;
+          created_by?: string | null;
+          labels?: string[];
+          last_paired_week?: string | null;
+          mode?: string;
+        };
+        Update: {
+          active?: boolean;
+          community_id?: string;
+          created_at?: string;
+          created_by?: string | null;
+          labels?: string[];
+          last_paired_week?: string | null;
+          mode?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "partner_programs_community_id_fkey";
+            columns: ["community_id"];
+            isOneToOne: true;
+            referencedRelation: "communities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      partner_requests: {
+        Row: {
+          author_id: string;
+          content: string;
+          created_at: string;
+          id: string;
+          pair_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id: string;
+          content: string;
+          created_at?: string;
+          id?: string;
+          pair_id: string;
+        };
+        Update: {
+          author_id?: string;
+          content?: string;
+          created_at?: string;
+          id?: string;
+          pair_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "partner_requests_pair_id_fkey";
+            columns: ["pair_id"];
+            isOneToOne: false;
+            referencedRelation: "partner_pairs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      partner_signups: {
+        Row: {
+          community_id: string;
+          group_label: string | null;
+          joined_at: string;
+          paused: boolean;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          community_id: string;
+          group_label?: string | null;
+          joined_at?: string;
+          paused?: boolean;
+          user_id: string;
+        };
+        Update: {
+          community_id?: string;
+          group_label?: string | null;
+          joined_at?: string;
+          paused?: boolean;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "partner_signups_community_id_user_id_fkey";
+            columns: ["community_id", "user_id"];
+            isOneToOne: true;
+            referencedRelation: "community_members";
+            referencedColumns: ["community_id", "user_id"];
+          },
+        ];
+      };
       passes: {
         Row: {
           buyer_id: string | null;
@@ -1068,6 +1272,7 @@ export type Database = {
       };
       profiles: {
         Row: {
+          adult_confirmed_at: string | null;
           avatar_url: string | null;
           created_at: string;
           display_name: string | null;
@@ -1078,6 +1283,7 @@ export type Database = {
         };
         ComputedFields: never;
         Insert: {
+          adult_confirmed_at?: string | null;
           avatar_url?: string | null;
           created_at?: string;
           display_name?: string | null;
@@ -1087,6 +1293,7 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          adult_confirmed_at?: string | null;
           avatar_url?: string | null;
           created_at?: string;
           display_name?: string | null;
@@ -1695,6 +1902,10 @@ export type Database = {
     };
     Functions: {
       accent_contrast_ok: { Args: { p_hex: string }; Returns: boolean };
+      add_partner_request: {
+        Args: { p_content: string; p_pair_id: string };
+        Returns: string;
+      };
       announce_breakout: {
         Args: { p_message: string; p_room_id: string };
         Returns: undefined;
@@ -1746,6 +1957,16 @@ export type Database = {
         };
         Returns: string;
       };
+      configure_partner_program: {
+        Args: {
+          p_active: boolean;
+          p_community_id: string;
+          p_labels?: string[];
+          p_mode: string;
+        };
+        Returns: undefined;
+      };
+      confirm_adult: { Args: Record<PropertyKey, never>; Returns: undefined };
       control_guide: {
         Args: { p_action: string; p_room_id: string };
         Returns: undefined;
@@ -1835,6 +2056,10 @@ export type Database = {
         Returns: string;
       };
       delete_guide: { Args: { p_guide_id: string }; Returns: undefined };
+      delete_partner_request: {
+        Args: { p_request_id: string };
+        Returns: undefined;
+      };
       devotional_stats: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1903,6 +2128,7 @@ export type Database = {
       has_joined_room: { Args: { p_room_id: string }; Returns: boolean };
       hex_luminance: { Args: { p_hex: string }; Returns: number };
       in_breakout_group: { Args: { p_group_id: string }; Returns: boolean };
+      in_partner_pair: { Args: { p_pair_id: string }; Returns: boolean };
       invoke_dispatcher: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
@@ -1940,14 +2166,46 @@ export type Database = {
         Returns: boolean;
       };
       join_community: { Args: { p_token: string }; Returns: string };
+      join_partner_program: {
+        Args: { p_community_id: string; p_group_label?: string };
+        Returns: undefined;
+      };
       join_room: {
         Args: { p_code: string; p_display_name: string };
         Returns: string;
       };
       leave_community: { Args: { p_community_id: string }; Returns: undefined };
+      leave_partner_program: {
+        Args: { p_community_id: string };
+        Returns: undefined;
+      };
       leave_room: { Args: { p_room_id: string }; Returns: undefined };
       new_invite_token: { Args: Record<PropertyKey, never>; Returns: string };
       normalize_brand_name: { Args: { p_name: string }; Returns: string };
+      pair_partners_now: { Args: { p_community_id: string }; Returns: number };
+      pair_program: {
+        Args: { p_community_id: string; p_week: string };
+        Returns: number;
+      };
+      partner_overview: { Args: { p_community_id: string }; Returns: Json };
+      partner_pair_for_me: {
+        Args: { p_pair_id: string };
+        Returns: {
+          community_id: string;
+          created_at: string;
+          ended_at: string | null;
+          id: string;
+          user_a: string;
+          user_b: string;
+          week_start: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "partner_pairs";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       peek_community: {
         Args: { p_token: string };
         Returns: {
@@ -2029,6 +2287,7 @@ export type Database = {
       };
       revoke_display_link: { Args: { p_room_id: string }; Returns: undefined };
       rooms_over_limit: { Args: Record<PropertyKey, never>; Returns: string[] };
+      run_partner_pairing: { Args: { p_week?: string }; Returns: number };
       security_audit: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2047,6 +2306,14 @@ export type Database = {
       };
       set_member_role: {
         Args: { p_community_id: string; p_role: string; p_user_id: string };
+        Returns: undefined;
+      };
+      set_partner_paused: {
+        Args: { p_community_id: string; p_paused: boolean };
+        Returns: undefined;
+      };
+      set_partner_praying: {
+        Args: { p_on: boolean; p_pair_id: string };
         Returns: undefined;
       };
       set_room_focus: {
@@ -2080,6 +2347,10 @@ export type Database = {
         Args: { p_guide_id: string; p_room_id: string };
         Returns: undefined;
       };
+      submit_partner_checkin: {
+        Args: { p_note?: string; p_pair_id: string; p_status: string };
+        Returns: undefined;
+      };
       subscribe_to_schedule: { Args: { p_token: string }; Returns: string };
       upsert_push_subscription: {
         Args: {
@@ -2091,6 +2362,7 @@ export type Database = {
         Returns: undefined;
       };
       valid_guide_segments: { Args: { p_segments: Json }; Returns: boolean };
+      valid_partner_labels: { Args: { p_labels: string[] }; Returns: boolean };
     };
     Enums: {
       [_ in never]: never;

@@ -48,6 +48,10 @@ test.describe("registro, entrada y recuperación", () => {
     await page.getByLabel("Tu nombre").fill("Lucía");
     await page.getByLabel("Correo electrónico").fill(email);
     await page.getByLabel("Contraseña").fill(PASSWORD);
+    // Sin confirmar la mayoría de edad no se crea la cuenta (CLAUDE.md §17.2)
+    await page.getByRole("button", { name: "Crear cuenta" }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "confirma que eres mayor de edad" })).toBeVisible();
+    await page.getByLabel("Confirmo que soy mayor de edad").check();
     await page.getByRole("button", { name: "Crear cuenta" }).click();
     await expect(page.getByRole("heading", { name: "Revisa tu correo" })).toBeVisible();
 
@@ -93,6 +97,7 @@ test.describe("registro, entrada y recuperación", () => {
     await expect(ana.getByLabel("Tu nombre")).toHaveCount(0); // ya tiene nombre
     await ana.getByLabel("Correo electrónico").fill(email);
     await ana.getByLabel("Contraseña").fill(PASSWORD);
+    await ana.getByLabel("Confirmo que soy mayor de edad").check();
     await ana.getByRole("button", { name: "Crear cuenta" }).click();
     await expect(ana.getByRole("heading", { name: "Revisa tu correo" })).toBeVisible();
 

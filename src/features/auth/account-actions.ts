@@ -44,6 +44,9 @@ export async function signUpAction(_prev: AuthActionState, formData: FormData): 
   const password = passwordSchema.safeParse(text(formData, "password"));
   if (!password.success) return { error: "weak_password" };
 
+  // CLAUDE.md §17.2: mientras no se decida la política de menores, el registro pide confirmar la mayoría de edad
+  if (text(formData, "adult") !== "on") return { error: "adult_required" };
+
   const rawName = text(formData, "displayName").trim();
   const name = rawName ? displayNameSchema.safeParse(rawName) : null;
   if (name && !name.success) return { error: "invalid_name" };
@@ -58,13 +61,14 @@ export async function signUpAction(_prev: AuthActionState, formData: FormData): 
   if (data.user?.is_anonymous) {
     // Convierte al invitado: Supabase envía un correo de confirmación al nuevo correo
     const { error } = await supabase.auth.updateUser({ email: email.data, password: password.data }, { emailRedirectTo: redirectTo });
+    if (!error) await supabase.rpc("confirm_adult"); // el invitado conserva su perfil: la declaración se guarda ahí
     return error ? { error: toAuthError(error) } : { done: "check_email", email: email.data };
   }
 
   const { error } = await supabase.auth.signUp({
     email: email.data,
     password: password.data,
-    options: { emailRedirectTo: redirectTo, captchaToken: getCaptchaToken(formData), data: name?.success ? { display_name: name.data } : undefined },
+    options: { emailRedirectTo: redirectTo, captchaToken: getCaptchaToken(formData), data: { adult_confirmed: true, ...(name?.success ? { display_name: name.data } : {}) } },
   });
   return error ? { error: toAuthError(error) } : { done: "check_email", email: email.data };
 }

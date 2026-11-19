@@ -6,6 +6,26 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.14.0] - 2026-11-21 — Fase 11 (lote 3): Compañero de oración y mayoría de edad
+
+> **B7 solo para personas adultas**, como decidiste. Ver `docs/decisions/0017-companero-de-oracion.md`. Queda pendiente solo **C6 nivel 2** (permiso de Google).
+
+### Añadido
+- **Compañero de oración (B7)**: programa opcional por comunidad. Cada lunes (o con *Emparejar ahora*) se empareja a quienes se anotaron, al azar o dentro del mismo grupo o célula, **sin repetir pareja en 4 semanas** y
+  **nunca con un bloqueo de por medio**. Cada quien escribe 1 a 3 peticiones para su pareja, ve las suyas, puede avisar "Estoy orando por ti" y hace una revisión semanal. **Solo se ve el nombre** (nunca contacto); el liderazgo ve
+  solo totales. Pausar o salir cuando quieras: **salir borra lo que escribiste**. Bloquear termina la pareja; reportar sigue funcionando. No se guarda género.
+- **Confirmación de mayoría de edad en el registro** (CLAUDE.md §17.2), que **faltaba**: casilla obligatoria al crear la cuenta (y al convertir a un invitado). Las cuentas anteriores y las de Google la confirman la primera vez que se anotan.
+  Es una declaración, no una verificación de edad.
+- Aviso `partner_paired` por el envío de notificaciones existente; sección en el aviso de privacidad.
+- Documento: ADR 0017.
+
+### Cambiado
+- La acción de registro rechaza la cuenta si no se confirma la mayoría de edad; las pruebas de registro se actualizaron.
+
+### No incluido / pendiente
+- Adolescentes (esperan una política de menores revisada por un abogado, §17), chat, recordatorios a mitad de semana y tríos. **C6 nivel 2** (sincronización con Google Calendar) espera tu decisión.
+
+
 ## [0.13.0] - 2026-11-20 — Fase 11 (lote 2): Marca de la iglesia
 
 > **B6 sin subdominio**, como decidiste: el subdominio `nombre.intercede.app` y las cookies entre subdominios quedan para después. Ver `docs/decisions/0016-marca-de-la-iglesia.md`.

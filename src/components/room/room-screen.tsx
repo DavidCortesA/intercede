@@ -7,6 +7,8 @@ import { Wordmark } from "@/components/marketing/wordmark";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { sendHostCommand, type HostCommand } from "@/features/audio/api";
 import { BreakoutBanner } from "@/components/breakouts/breakout-banner";
+import { BrandScope, PoweredBy } from "@/components/brand/brand-scope";
+import type { CommunityBrand } from "@/features/brand/queries";
 import { BreakoutHost } from "@/components/breakouts/breakout-host";
 import { useLiveAudio } from "@/features/audio/use-live-audio";
 import { activeGroupId } from "@/features/breakouts/logic";
@@ -35,6 +37,8 @@ interface Props {
   members: RoomMember[];
   requests: PrayerRequest[];
   support: PrayerSupport[];
+  /** Marca de la comunidad (plan Pro), si la sala es de una comunidad que la tiene. */
+  brand?: CommunityBrand | null;
 }
 
 /** Pantalla final cuando la sala se cerró o el anfitrión sacó a la persona. */
@@ -64,6 +68,7 @@ function EndedScreen({ kind }: { kind: "closedLive" | "removed" }) {
 export function RoomScreen(props: Props) {
   const t = useTranslations("Room");
   const audioText = useTranslations("Audio");
+  const brandText = useTranslations("Brand");
   const moderation = useTranslations("Moderation");
   const router = useRouter();
   const { room, members, requests, support, connection, online, error, actions } = useRoomLive({
@@ -114,7 +119,18 @@ export function RoomScreen(props: Props) {
   const audioActive = audio.status === "connected" || audio.status === "reconnecting";
 
   return (
-    <div className="dark flex h-dvh flex-col bg-background text-foreground">
+    <BrandScope accent={props.brand?.accent ?? null} mode="dark" className="dark flex h-dvh flex-col bg-background text-foreground">
+      {props.brand ? (
+        <div className="flex items-center gap-2 border-b border-border px-4 py-2" style={{ boxShadow: "inset 0 -3px 0 var(--brand-accent)" }}>
+          {props.brand.logo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element -- el logo ya viene optimizado (WebP cuadrado) desde nuestro almacenamiento
+            <img src={props.brand.logo_url} alt="" className="size-6 rounded-md object-cover" />
+          ) : null}
+          <p className="min-w-0 truncate text-sm font-bold" data-testid="room-brand-name">
+            {props.brand.name}
+          </p>
+        </div>
+      ) : null}
       <header className="border-b border-border px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <h1 className="min-w-0 truncate font-heading text-lg font-extrabold">{room.name}</h1>
@@ -226,8 +242,9 @@ export function RoomScreen(props: Props) {
             </p>
           ) : null}
           <RequestComposer onSubmit={actions.postRequest} />
+          {props.brand ? <PoweredBy label={brandText("poweredBy")} className="mt-2" /> : null}
         </div>
       </footer>
-    </div>
+    </BrandScope>
   );
 }

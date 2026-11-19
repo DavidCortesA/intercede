@@ -6,6 +6,7 @@ import { JoinForm } from "@/components/room/join-form";
 import { RoomMessage } from "@/components/room/room-message";
 import { RoomScreen } from "@/components/room/room-screen";
 import { RoomShell } from "@/components/room/room-shell";
+import { getCommunityBrand } from "@/features/brand/queries";
 import { getRoomSnapshot } from "@/features/rooms/queries";
 import { getCurrentSession } from "@/features/auth/queries";
 import { routing } from "@/i18n/routing";
@@ -48,7 +49,9 @@ export default async function RoomPage({ params }: PageProps<"/[locale]/r/[code]
         </RoomShell>
       );
     }
-    case "member":
+    case "member": {
+      // Sala de una comunidad con marca (Pro): su nombre, logo y color
+      const brand = snapshot.room.community_id ? await getCommunityBrand(snapshot.room.community_id) : null;
       return (
         <RoomScreen
           room={snapshot.room}
@@ -57,7 +60,9 @@ export default async function RoomPage({ params }: PageProps<"/[locale]/r/[code]
           members={snapshot.members}
           requests={snapshot.requests}
           support={snapshot.support}
+          brand={brand}
         />
       );
+    }
   }
 }

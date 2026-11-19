@@ -217,6 +217,36 @@ export type Database = {
         };
         Relationships: [];
       };
+      community_brands: {
+        Row: {
+          accent: string;
+          community_id: string;
+          display_name: string | null;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          accent: string;
+          community_id: string;
+          display_name?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          accent?: string;
+          community_id?: string;
+          display_name?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "community_brands_community_id_fkey";
+            columns: ["community_id"];
+            isOneToOne: true;
+            referencedRelation: "communities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       community_invites: {
         Row: {
           community_id: string;
@@ -1664,6 +1694,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      accent_contrast_ok: { Args: { p_hex: string }; Returns: boolean };
       announce_breakout: {
         Args: { p_message: string; p_room_id: string };
         Returns: undefined;
@@ -1694,9 +1725,14 @@ export type Database = {
         Returns: boolean;
       };
       claim_notifications: { Args: { p_limit?: number }; Returns: Json };
+      clear_community_brand: {
+        Args: { p_community_id: string };
+        Returns: undefined;
+      };
       close_room: { Args: { p_room_id: string }; Returns: undefined };
       close_room_system: { Args: { p_room_id: string }; Returns: undefined };
       community_billing: { Args: { p_community_id: string }; Returns: Json };
+      community_brand: { Args: { p_community_id: string }; Returns: Json };
       community_role: { Args: { p_community_id: string }; Returns: string };
       community_stats: { Args: { p_community_id: string }; Returns: Json };
       compute_next_occurrence: {
@@ -1865,6 +1901,7 @@ export type Database = {
         }[];
       };
       has_joined_room: { Args: { p_room_id: string }; Returns: boolean };
+      hex_luminance: { Args: { p_hex: string }; Returns: number };
       in_breakout_group: { Args: { p_group_id: string }; Returns: boolean };
       invoke_dispatcher: {
         Args: Record<PropertyKey, never>;
@@ -1910,6 +1947,7 @@ export type Database = {
       leave_community: { Args: { p_community_id: string }; Returns: undefined };
       leave_room: { Args: { p_room_id: string }; Returns: undefined };
       new_invite_token: { Args: Record<PropertyKey, never>; Returns: string };
+      normalize_brand_name: { Args: { p_name: string }; Returns: string };
       peek_community: {
         Args: { p_token: string };
         Returns: {
@@ -1998,6 +2036,14 @@ export type Database = {
           detail: string;
           object_name: string;
         }[];
+      };
+      set_community_brand: {
+        Args: {
+          p_accent: string;
+          p_community_id: string;
+          p_display_name: string;
+        };
+        Returns: undefined;
       };
       set_member_role: {
         Args: { p_community_id: string; p_role: string; p_user_id: string };

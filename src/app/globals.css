@@ -160,6 +160,15 @@
   background-image: linear-gradient(135deg, #5b2ee6 0%, #2563ff 100%);
 }
 
+/* Marca de una comunidad (plan Pro): el acento reemplaza al degradado de la marca. El contraste AA lo garantiza la base al guardar. */
+[data-brand] .bg-brand-gradient {
+  background-image: none;
+  background-color: var(--brand-accent);
+}
+[data-brand='light'] {
+  --primary-text: var(--brand-accent);
+}
+
 /* Animaciones de entrada: solo CSS, sin JS (la landing es estática y debe ser rápida). */
 @keyframes rise {
   from {

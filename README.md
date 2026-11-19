@@ -74,7 +74,7 @@ Los límites del plan gratuito se aplican siempre; los cobros con Conekta necesi
 
 Guías de oración, pantalla de proyección y estadísticas (Fase 10): [`docs/operaciones/guias-pantalla-estadisticas.md`](docs/operaciones/guias-pantalla-estadisticas.md) y [ADR 0014](docs/decisions/0014-guias-pantalla-estadisticas-y-compartir.md).
 
-Grupos pequeños (Fase 11): [ADR 0015](docs/decisions/0015-grupos-pequenos.md).
+Grupos pequeños (Fase 11): [ADR 0015](docs/decisions/0015-grupos-pequenos.md). Marca de la iglesia: [ADR 0016](docs/decisions/0016-marca-de-la-iglesia.md).
 
 ## Fases y versiones
 

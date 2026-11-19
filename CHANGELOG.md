@@ -6,6 +6,24 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.13.0] - 2026-11-20 — Fase 11 (lote 2): Marca de la iglesia
+
+> **B6 sin subdominio**, como decidiste: el subdominio `nombre.intercede.app` y las cookies entre subdominios quedan para después. Ver `docs/decisions/0016-marca-de-la-iglesia.md`.
+
+### Añadido
+- **Marca de la comunidad (plan Pro)** en *Ajustes*: **nombre visible** y **color de acento**, que se aplican en las páginas de la comunidad (encabezado, pestañas, botones, enlaces) y en sus
+  salas (franja con logo y nombre), con **"Con tecnología de INTERCEDE" siempre visible**. La app instalable sigue siendo la de INTERCEDE.
+- **Contraste AA obligatorio**: la base rechaza un color con menos de 4.5:1 (misma fórmula WCAG que la interfaz, comprobada con 40 colores); la interfaz **oscurece** un color claro hasta que pase y
+  muestra una **vista previa** antes de guardar.
+- **Anti-suplantación**: el nombre no puede contener "intercede" ni coincidir con otra comunidad (sin importar acentos, mayúsculas ni signos).
+- Si el plan Pro termina, la marca deja de verse (queda guardada); quitar la marca siempre se puede.
+- Documento: ADR 0016.
+
+### No incluido / pendiente
+- Subdominios, marca en las pantallas de invitación y de entrada a la sala, y segundo color o tipografías.
+- Siguen esperando tu decisión: **B7** (compañero de oración: adolescentes) y **C6 nivel 2** (permiso de Google).
+
+
 ## [0.12.0] - 2026-11-20 — Fase 11 (lote 1): Grupos pequeños
 
 > Alcance elegido: el resto de la Fase 10, **de uno en uno**. Este lote es **B2**. B6 (marca de la iglesia), B7 (compañero de oración) y C6 nivel 2 esperan tus

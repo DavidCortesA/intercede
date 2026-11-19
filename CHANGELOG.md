@@ -22,6 +22,9 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 ### Corregido durante la fase
 - Las pruebas de rutas detectaron que el token de un grupo se firmaba para la sala principal; corregido antes de publicar.
 
+### Aplicado y desplegado (2026-11-20)
+- Migración `20261120100000` aplicada al Supabase remoto (auditoría sin hallazgos) y app desplegada en https://intercede-six.vercel.app; verificado el reparto en grupos contra la base de producción.
+
 ### No incluido / pendiente
 - Solo comunidades con plan Plus o Pro (las salas personales no tienen grupos). Silenciar a uno o a todos actúa sobre la sala principal. Sin prueba en dispositivos reales.
 

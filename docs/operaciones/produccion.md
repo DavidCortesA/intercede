@@ -18,6 +18,8 @@ o cuentas de quien opera el proyecto.
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | clave pública VAPID | La privada va en los secretos de la Edge Function |
 | `NEXT_PUBLIC_GOOGLE_AUTH` | `1` | El proveedor ya está activo en Supabase |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | correo de contacto real | Si falta, el pie no muestra el enlace |
+| `CONEKTA_API_SECRET`, `CONEKTA_WEBHOOK_PUBLIC_KEY` | llave privada (con `orders:write`) y llave pública del webhook | **Solo servidor.** Sin ellas no hay cobros; los límites gratuitos sí se aplican. Ver `docs/operaciones/facturacion.md` |
+| `ENFORCER_SECRET` | secreto largo y aleatorio | Cierra las salas que pasaron su tiempo (`/api/billing/enforce`); el mismo valor va en Vault |
 | `SENTRY_DSN` | DSN del proyecto de Sentry | Opcional: sin él, Sentry está apagado |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | clave de sitio de Turnstile | Opcional: ver §3 |
 
@@ -65,6 +67,11 @@ Para probar sin cuenta de Cloudflare hay claves públicas de prueba (`1x00000000
   interno. Revísalos con:
   `select created_at, target_type, reason, details, target_user_id from reports where status = 'open' and community_id is null order by created_at desc;`
 - Para sancionar a una cuenta (cerrar su acceso) usa el panel de Supabase (Authentication → Users → Ban).
+
+## 6b. Planes, límites y cobros (Fase 9)
+
+Pasos completos en `docs/operaciones/facturacion.md`: migración, llave de Conekta con permiso de escritura, webhook de Conekta y de LiveKit, secretos de Vault
+(`enforcer_url`, `enforcer_secret`) y la variable `ENFORCER_SECRET`. Sin el cierre programado, el tiempo de las salas se rechaza al entrar pero una sala en curso no se corta sola.
 
 ## 7. Después del primer despliegue
 

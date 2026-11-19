@@ -11,6 +11,7 @@ export type ApiErrorCode =
   | "not_a_member"
   | "removed"
   | "room_closed"
+  | "room_expired"
   | "not_host"
   | "participant_not_connected"
   | "livekit_unavailable"
@@ -22,6 +23,12 @@ export type ApiErrorCode =
   | "invalid_endpoint"
   | "invalid_password"
   | "deletion_failed"
+  | "payment_unavailable"
+  | "plan_required"
+  | "invalid_item"
+  | "too_many_pending"
+  | "not_admin"
+  | "invalid_quantity"
   | "unexpected";
 
 /** Respuesta de error uniforme: `{ error: <código> }`, siempre sin caché. */

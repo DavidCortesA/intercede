@@ -35,7 +35,7 @@ describe.skipIf(!hasTestDb)("salas y peticiones — RPC y RLS", () => {
     await Promise.all(userIds.map((id) => admin.auth.admin.deleteUser(id)));
   });
 
-  // El límite de 5 salas abiertas por anfitrión es real: cada prueba parte sin salas previas
+  // El límite de 4 salas personales abiertas por anfitrión es real: cada prueba parte sin salas previas
   // (salvo las que un bloque necesita conservar, registradas en `keepRooms`).
   const keepRooms = new Set<string>();
   beforeEach(async () => {
@@ -69,18 +69,18 @@ describe.skipIf(!hasTestDb)("salas y peticiones — RPC y RLS", () => {
       expect(errorOf(await host.client.rpc("create_room", { p_name: "x".repeat(61), p_display_name: "Ana" }))).toBe("invalid_room_name");
     });
 
-    it("limita a 5 salas abiertas por anfitrión", async () => {
+    it("limita a 4 salas personales abiertas por anfitrión (plan gratuito)", async () => {
       const busy = await signInTestUser("Ocupada");
       userIds.push(busy.user.id);
-      for (let i = 0; i < 5; i++) await newRoom(busy.client, `Sala ${i}`, "Ocupada");
-      const res = await busy.client.rpc("create_room", { p_name: "Sala 6", p_display_name: "Ocupada" });
+      for (let i = 0; i < 4; i++) await newRoom(busy.client, `Sala ${i}`, "Ocupada");
+      const res = await busy.client.rpc("create_room", { p_name: "Sala 5", p_display_name: "Ocupada" });
       expect(errorOf(res)).toBe("too_many_rooms");
     });
 
     it("las tablas no admiten escrituras directas", async () => {
       const insertRoom = await host.client
         .from("rooms")
-        .insert({ code: "abc234", name: "Directa", host_id: host.user.id });
+        .insert({ code: "abc234", name: "Directa", host_id: host.user.id, max_participants: 15, ends_at: new Date().toISOString() });
       expect(insertRoom.error?.code).toBe("42501");
 
       const room = await newRoom(host.client);
@@ -141,10 +141,10 @@ describe.skipIf(!hasTestDb)("salas y peticiones — RPC y RLS", () => {
       expect((await guest.client.rpc("join_room", { p_code: room.code, p_display_name: "Beto" })).error).toBeNull();
     });
 
-    it("aforo de 20: la persona 21 recibe room_full y al salir alguien hay lugar", async () => {
+    it("aforo de 15 (plan gratuito): la persona 16 recibe room_full y al salir alguien hay lugar", async () => {
       const room = await newRoom(host.client, "Sala llena");
       const admin = adminClient();
-      const fillerIds = await Promise.all(Array.from({ length: 19 }, () => createBareUser()));
+      const fillerIds = await Promise.all(Array.from({ length: 14 }, () => createBareUser()));
       userIds.push(...fillerIds);
       const { error } = await admin.from("room_members").insert(
         fillerIds.map((id, i) => ({ room_id: room.id, user_id: id, display_name: `Relleno ${i}` })),

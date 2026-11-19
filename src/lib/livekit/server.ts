@@ -1,8 +1,15 @@
 import { AccessToken, RoomServiceClient, TrackSource } from "livekit-server-sdk";
 import { z } from "zod";
 
-/** Duración del token de acceso (CLAUDE.md §3). LiveKit renueva el de quien sigue conectado. */
-export const LIVEKIT_TOKEN_TTL = "2h";
+/** Duración máxima del token de acceso (CLAUDE.md §3). LiveKit renueva el de quien sigue conectado. */
+export const LIVEKIT_TOKEN_MAX_TTL_SECONDS = 2 * 60 * 60;
+
+/**
+ * Tope de personas de la sala de audio en LiveKit: el MÁS ALTO de cualquier plan. El aforo real de cada sala lo
+ * fija la base (`rooms.max_participants`, que `join_room` aplica) y puede subir después con un pase; LiveKit no
+ * permite cambiar su tope de una sala ya creada, así que aquí solo es un techo de seguridad.
+ */
+export const LIVEKIT_ROOM_CEILING = 100;
 
 const envSchema = z.object({
   LIVEKIT_URL: z.string().min(1),
@@ -47,18 +54,20 @@ interface TokenInput {
   identity: string;
   displayName: string;
   isHost: boolean;
+  /** Segundos de vida del token (se acota para no sobrepasar el final de la sala). */
+  ttlSeconds?: number;
 }
 
 /**
  * Token corto para entrar a UNA sala de audio. Los permisos son los mínimos de la Fase 4:
  * escuchar y publicar solo micrófono (sin cámara, pantalla ni datos).
  */
-export async function createParticipantToken({ roomName, identity, displayName, isHost }: TokenInput) {
+export async function createParticipantToken({ roomName, identity, displayName, isHost, ttlSeconds = LIVEKIT_TOKEN_MAX_TTL_SECONDS }: TokenInput) {
   const env = getLiveKitEnv();
   const token = new AccessToken(env.apiKey, env.apiSecret, {
     identity,
     name: displayName,
-    ttl: LIVEKIT_TOKEN_TTL,
+    ttl: Math.max(60, Math.min(ttlSeconds, LIVEKIT_TOKEN_MAX_TTL_SECONDS)),
     metadata: JSON.stringify({ role: isHost ? "host" : "participant" }),
   });
   token.addGrant({

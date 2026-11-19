@@ -20,12 +20,12 @@ export type TestClient = SupabaseClient<Database>;
 
 /** Cliente anónimo de API (rol `anon`, sin sesión). */
 export function anonClient(): TestClient {
-  return createClient<Database>(testEnv.url!, testEnv.publishableKey!, noPersist);
+  return createClient<Database>(testEnv.url ?? "http://localhost:0", testEnv.publishableKey ?? "sin-base-de-pruebas", noPersist);
 }
 
 /** Cliente con privilegios totales, solo para preparar y limpiar datos de prueba. */
 export function adminClient(): TestClient {
-  return createClient<Database>(testEnv.url!, testEnv.serviceRoleKey!, noPersist);
+  return createClient<Database>(testEnv.url ?? "http://localhost:0", testEnv.serviceRoleKey ?? "sin-base-de-pruebas", noPersist);
 }
 
 /**

@@ -6,6 +6,32 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 
 ## [Sin publicar]
 
+## [0.10.0] - 2026-11-19 — Fase 9: Planes, límites y cobros
+
+> Alcance: CLAUDE.md §14. Las peticiones de la iglesia en la sala, la importación CSV/Excel y las vistas de cámara (§15) quedan para una fase aparte.
+> **La integración con Conekta no se probó contra su sandbox**: la llave entregada solo tiene permiso de lectura. Ver `docs/operaciones/facturacion.md`.
+
+### Añadido
+- **Límites por plan en la base** (`plans`, `products`, `entitlements_for`): el plan gratuito pasa a **15 personas, 2 h por sala, 4 salas a la vez y 30 miembros**
+  (antes 20 personas y 5 salas); Plus y Pro suben cada límite. Los límites de cada sala se fijan al crearla (`rooms.max_participants`, `rooms.ends_at`) y los aplica
+  `join_room`. Toda comunidad nueva estrena **Plus 14 días sin tarjeta**.
+- **Aviso y cierre por tiempo**: a 10 y 2 minutos del final y durante **5 minutos de gracia** todos ven el aviso (la anfitriona puede **ampliar** desde la sala); pasada la
+  gracia el servidor cierra la sala y corta el audio (`pg_cron` → `/api/billing/enforce`). El token de LiveKit ya no dura más que la sala.
+- **Pases y extras**: Sala Larga, Vigilia, Vigilia Grande y Extensión (con precio menor para comunidades con Plus/Pro), +50 miembros, +5 salas y bolsa de +100 horas-persona.
+  Se compran desde la sala o desde *Perfil → Pases y pagos*.
+- **Cobros con Conekta** (checkout alojado: tarjeta, OXXO, SPEI): el precio lo calcula la base; solo el **webhook verificado** (firma RSA-SHA256, idempotente, con comprobación de
+  monto) activa lo comprado; reembolsos revierten. Planes **por periodo** (mensual/anual), sin renovación automática.
+- **Medición de uso** por webhook de LiveKit (minutos por sala y mes, solo agregados para la comunidad; bolsas de horas); pantalla **Facturación** de la comunidad (plan,
+  límites, uso, compras, pagos) y página pública **/precios** leída de la base.
+- Documentos: ADR 0013, `docs/operaciones/facturacion.md`, `scripts/conekta-webhook-key.mjs`; variables nuevas en `.env.example`; aviso de privacidad con los pagos.
+
+### Cambiado
+- Las pruebas de integración corren **en serie** (comparten una base y llaman a funciones globales; en paralelo se pisaban).
+
+### No incluido / pendiente
+- Cámaras simultáneas (límite guardado, sin aplicar), avisos por push/correo de límites y vencimientos, renovación automática y cancelación de suscripciones, plan "Red", CFDI.
+- Aplicar la migración al remoto, configurar Conekta (llave con `orders:write`, webhook), Vault (`enforcer_*`) y el webhook de LiveKit: ver `docs/operaciones/facturacion.md`.
+
 ## [0.9.1] - 2026-11-10 — Despliegue en producción (Vercel)
 
 ### Corregido

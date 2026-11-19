@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { ROOM_CAPACITY } from "@/features/rooms/schemas";
-import { createParticipantToken, getLiveKitEnv, getRoomService } from "@/lib/livekit/server";
+import { ROOM_GRACE_MINUTES } from "@/features/billing/limits";
+import { createParticipantToken, getLiveKitEnv, getRoomService, LIVEKIT_ROOM_CEILING } from "@/lib/livekit/server";
 import { apiError, apiOk, authorizeRoomRequest, parseJson } from "@/lib/livekit/route-auth";
 
 const bodySchema = z.object({ roomId: z.uuid() });
@@ -18,6 +18,11 @@ export async function POST(request: Request) {
   if (!authorization.ok) return authorization.response;
   const { user, room, member } = authorization.auth;
 
+  // El tiempo de la sala (plan o pase) más 5 minutos de gracia; pasado eso no se emiten más tokens (el servidor la cierra)
+  const hardEndMs = new Date(room.ends_at).getTime() + ROOM_GRACE_MINUTES * 60_000;
+  const secondsLeft = Math.floor((hardEndMs - Date.now()) / 1000);
+  if (secondsLeft <= 0) return apiError("room_expired", 409);
+
   let wsUrl: string;
   try {
     wsUrl = getLiveKitEnv().wsUrl;
@@ -27,7 +32,7 @@ export async function POST(request: Request) {
 
   try {
     // Idempotente: crea la sala de audio con aforo y vida corta si no existe todavía
-    await getRoomService().createRoom({ name: room.id, maxParticipants: ROOM_CAPACITY, emptyTimeout: 10 * 60 });
+    await getRoomService().createRoom({ name: room.id, maxParticipants: LIVEKIT_ROOM_CEILING, emptyTimeout: 10 * 60 });
   } catch {
     // No es fatal: LiveKit también crea la sala al entrar el primer participante
   }
@@ -37,6 +42,7 @@ export async function POST(request: Request) {
     identity: user.id,
     displayName: member.display_name,
     isHost: room.host_id === user.id,
+    ttlSeconds: secondsLeft,
   });
 
   return apiOk({ token, serverUrl: wsUrl, identity: user.id });

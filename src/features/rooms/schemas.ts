@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-/** Aforo de una sala (coincide con join_room en la base). */
-export const ROOM_CAPACITY = 20;
 /** Máximo de peticiones por persona y sala (coincide con el trigger de la base). */
 export const MAX_REQUESTS_PER_AUTHOR = 20;
 export const REQUEST_MAX_LENGTH = 500;

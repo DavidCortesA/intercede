@@ -17,10 +17,10 @@ export function CommunityNav({ communityId, isAdmin, isLeader = isAdmin }: { com
   const t = useTranslations("Communities.nav");
   const pathname = usePathname();
   const base = `/comunidades/${communityId}`;
-  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "settings"; path: string }[] = [
+  const items: { key: "wall" | "rooms" | "events" | "devotional" | "members" | "reports" | "billing" | "settings"; path: string }[] = [
     ...SECTIONS,
     ...(isLeader ? [{ key: "reports" as const, path: "/reportes" }] : []),
-    ...(isAdmin ? [{ key: "settings" as const, path: "/ajustes" }] : []),
+    ...(isAdmin ? [{ key: "billing" as const, path: "/facturacion" }, { key: "settings" as const, path: "/ajustes" }] : []),
   ];
 
   return (

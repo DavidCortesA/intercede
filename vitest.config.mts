@@ -13,5 +13,8 @@ export default defineConfig({
     setupFiles: ["./tests/setup.ts"],
     include: ["tests/unit/**/*.test.{ts,tsx}", "tests/integration/**/*.test.{ts,tsx}"],
     css: false,
+    // Las pruebas de integración comparten una sola base local y varias llaman a funciones GLOBALES (process_scheduled_work,
+    // rooms_over_limit): en paralelo se pisan entre sí. En serie son estables y siguen siendo rápidas.
+    fileParallelism: false,
   },
 });

@@ -4,7 +4,7 @@ import { routing } from "@/i18n/routing";
 
 // Páginas indexables. Al crear una página pública nueva, añadirla aquí.
 // `/orar` queda fuera a propósito (provisional, noindex).
-const PATHS = ["", "/privacidad", "/terminos"];
+const PATHS = ["", "/precios", "/privacidad", "/terminos"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routing.locales.flatMap((locale) =>

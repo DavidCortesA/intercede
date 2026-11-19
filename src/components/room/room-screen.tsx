@@ -16,6 +16,7 @@ import { AudioPanel } from "./audio-panel";
 import { ConnectionBanner } from "./connection-banner";
 import { ModerationMenu } from "@/components/moderation/moderation-menu";
 import { HostControls } from "./host-controls";
+import { RoomLimit } from "./room-limit";
 import { Participants } from "./participants";
 import { RequestComposer } from "./request-composer";
 import { RequestList } from "./request-list";
@@ -129,6 +130,7 @@ export function RoomScreen(props: Props) {
         </p>
       </header>
 
+      <RoomLimit room={room} isHost={isHost} isAnonymous={props.isAnonymous} />
       <ConnectionBanner online={online} connection={connection} />
 
       <main id="contenido" className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 overflow-y-auto px-4 py-5">

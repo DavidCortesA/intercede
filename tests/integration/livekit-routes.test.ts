@@ -133,7 +133,7 @@ describe.skipIf(!hasTestDb)("rutas de LiveKit (token y controles del anfitrión)
       expect((claims.exp ?? 0) - (claims.nbf ?? 0)).toBeGreaterThanOrEqual(7190);
       expect((claims.exp ?? 0) - (claims.nbf ?? 0)).toBeLessThanOrEqual(7210);
 
-      expect(livekit.createRoom).toHaveBeenCalledWith({ name: room.id, maxParticipants: 20, emptyTimeout: 600 });
+      expect(livekit.createRoom).toHaveBeenCalledWith({ name: room.id, maxParticipants: 100, emptyTimeout: 600 });
     });
 
     it("el token del anfitrión lo marca como anfitrión", async () => {

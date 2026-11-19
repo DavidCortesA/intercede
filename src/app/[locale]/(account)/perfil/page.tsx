@@ -1,4 +1,4 @@
-import { Bell, Users } from "lucide-react";
+import { Bell, Ticket, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -96,6 +96,17 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/perfi
         <span className="min-w-0">
           <span className="block font-heading font-bold">{t("communitiesLink")}</span>
           <span className="block text-sm text-muted-foreground">{t("communitiesLinkHelp")}</span>
+        </span>
+      </Link>
+
+      <Link
+        href="/facturacion"
+        className="flex items-center gap-4 rounded-3xl bg-background p-5 shadow-sm ring-1 ring-border transition-colors hover:ring-ring"
+      >
+        <Ticket className="size-6 shrink-0 text-primary-text" aria-hidden="true" />
+        <span className="min-w-0">
+          <span className="block font-heading font-bold">{t("billingLink")}</span>
+          <span className="block text-sm text-muted-foreground">{t("billingLinkHelp")}</span>
         </span>
       </Link>
 

@@ -8,6 +8,7 @@ const NAV = [
   { key: "how", href: "/#como-funciona" },
   { key: "features", href: "/#funciones" },
   { key: "churches", href: "/#iglesias" },
+  { key: "pricing", href: "/precios" },
   { key: "trust", href: "/#confianza" },
   { key: "faq", href: "/#preguntas" },
 ] as const;

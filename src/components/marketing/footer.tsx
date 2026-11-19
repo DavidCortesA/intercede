@@ -24,6 +24,9 @@ export async function Footer() {
           <Link href="/entrar" className="hover:text-white hover:underline underline-offset-4">
             {nav("signIn")}
           </Link>
+          <Link href="/precios" className="hover:text-white hover:underline underline-offset-4">
+            {t("pricing")}
+          </Link>
           <Link href="/privacidad" className="hover:text-white hover:underline underline-offset-4">
             {t("privacy")}
           </Link>

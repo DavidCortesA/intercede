@@ -43,7 +43,8 @@
     "trust": "Privacidad",
     "faq": "Preguntas",
     "cta": "Orar ahora",
-    "signIn": "Entrar"
+    "signIn": "Entrar",
+    "pricing": "Precios"
   },
   "Hero": {
     "eyebrow": "Ora · Conecta · Permanece",
@@ -165,7 +166,7 @@
       },
       "size": {
         "q": "¿Cuántas personas caben en una sala?",
-        "a": "Las salas están pensadas para grupos de hasta 20 personas, para que se sienta como orar juntos y no como un auditorio."
+        "a": "Las salas están pensadas para grupos de hasta 15 personas en el plan gratuito (y hasta 100 con un plan o un pase), para que se sienta como orar juntos y no como un auditorio."
       },
       "recording": {
         "q": "¿Se graban las oraciones?",
@@ -194,7 +195,8 @@
     "privacy": "Privacidad",
     "terms": "Términos",
     "contact": "Contacto",
-    "rights": "INTERCEDE. Todos los derechos reservados."
+    "rights": "INTERCEDE. Todos los derechos reservados.",
+    "pricing": "Precios"
   },
   "Install": {
     "button": "Instalar la app",
@@ -269,7 +271,7 @@
       },
       "full": {
         "title": "La sala está llena",
-        "body": "Ya hay 20 personas orando. Inténtalo de nuevo en un momento."
+        "body": "La sala ya llegó a su aforo. Inténtalo de nuevo en un momento."
       },
       "closedLive": {
         "title": "La sala se cerró",
@@ -332,8 +334,8 @@
       "room_not_found": "No encontramos una sala con ese código.",
       "room_closed": "Esa sala ya terminó.",
       "room_locked": "La sala está bloqueada por el anfitrión.",
-      "room_full": "La sala está llena (20 personas).",
-      "too_many_rooms": "Ya tienes 5 salas abiertas. Cierra alguna para crear otra.",
+      "room_full": "La sala está llena según su plan.",
+      "too_many_rooms": "Ya tienes 4 salas abiertas. Cierra alguna para crear otra.",
       "too_many_requests": "Llegaste al máximo de 20 peticiones en esta sala.",
       "not_host": "Solo el anfitrión puede hacer eso.",
       "removed": "El anfitrión te sacó de esta sala y no puedes volver a entrar.",
@@ -347,7 +349,29 @@
       "permission_denied": "No tienes permiso para hacer eso.",
       "network": "No hay conexión. Revisa tu internet.",
       "community_only": "Esta sala es de una comunidad: solo entran sus miembros.",
-      "captcha_failed": "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo."
+      "captcha_failed": "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo.",
+      "room_expired": "Esta sala llegó al límite de tiempo de su plan y ya no admite más personas."
+    },
+    "limit": {
+      "warning": "Esta sala termina en {minutes, plural, one {# minuto} other {# minutos}} por el límite de su plan.",
+      "urgent": "Quedan {minutes, plural, one {# minuto} other {# minutos}}. Termina la oración con calma.",
+      "grace": "Se acabó el tiempo de la sala. Tienes {minutes, plural, one {# minuto} other {# minutos}} para terminar antes de cerrarla.",
+      "extend": "Ampliar sala",
+      "extendTitle": "Ampliar esta sala",
+      "extendBody": "Un pase suma tiempo y personas a esta sala al instante. Quienes ya están dentro no se desconectan.",
+      "yourPasses": "Tus pases disponibles",
+      "use": "Usar",
+      "using": "Aplicando…",
+      "buyTitle": "Comprar un pase",
+      "guestNote": "Para comprar un pase necesitas una cuenta. Crearla toma un minuto y tu sala sigue abierta.",
+      "createAccount": "Crear cuenta",
+      "close": "Cerrar",
+      "applied": "Listo: la sala se amplió.",
+      "noPasses": "No tienes pases disponibles.",
+      "loading": "Cargando…",
+      "errors": {
+        "generic": "No pudimos ampliar la sala. Inténtalo de nuevo."
+      }
     }
   },
   "Legal": {
@@ -373,6 +397,10 @@
         "providers": {
           "title": "Proveedores",
           "body": "Usamos servicios de terceros para operar la plataforma: Supabase (base de datos y autenticación), LiveKit (audio en tiempo real), Vercel (alojamiento y estadísticas de visitas sin cookies) y Sentry (avisos de errores técnicos, sin tu nombre ni el contenido de tus oraciones). Si se activa, Cloudflare Turnstile verifica que quien entra es una persona. Ninguno recibe tus oraciones en forma de grabación."
+        },
+        "payments": {
+          "title": "Pagos",
+          "body": "Orar es gratis y no pedimos pago para entrar a una sala. Si compras un plan o un pase, el pago se hace en la página segura de Conekta (tarjeta, OXXO o transferencia): INTERCEDE nunca ve ni guarda los datos de tu tarjeta. Guardamos el registro de la compra (qué, cuánto y cuándo) para activarla y por obligaciones contables; al borrar tu cuenta, ese registro se conserva sin tu identidad. Para medir las horas de uso de una comunidad contamos los minutos conectados por sala, y la comunidad solo ve el total, nunca el tiempo de una persona."
         },
         "analytics": {
           "title": "Analítica",
@@ -590,7 +618,9 @@
     "notificationsLinkHelp": "Elige cómo y cuándo te avisamos.",
     "communitiesLink": "Comunidades",
     "communitiesLinkHelp": "Tu iglesia, ministerio o grupo.",
-    "dangerTitle": "Zona de cuidado"
+    "dangerTitle": "Zona de cuidado",
+    "billingLink": "Pases y pagos",
+    "billingLinkHelp": "Salas más largas o más grandes para una vigilia, y tus compras."
   },
   "Journal": {
     "title": "Mi diario de oración",
@@ -887,7 +917,8 @@
       "members": "Miembros",
       "settings": "Ajustes",
       "back": "Mis comunidades",
-      "reports": "Reportes"
+      "reports": "Reportes",
+      "billing": "Facturación"
     },
     "members": {
       "title": "Miembros",
@@ -961,8 +992,9 @@
       "schedule_in_past": "Esa fecha y hora ya pasó.",
       "too_many_schedules": "Ya tienes 10 programadas activas. Pausa o elimina una.",
       "invalid_room_name": "Escribe un nombre para la sala (hasta 60 letras).",
-      "too_many_rooms": "Ya tienes 5 salas abiertas. Cierra alguna.",
-      "duplicate_devotional": "Ya hay un devocional de la comunidad para ese día."
+      "too_many_rooms": "Ya tienes demasiadas salas abiertas. Cierra alguna.",
+      "duplicate_devotional": "Ya hay un devocional de la comunidad para ese día.",
+      "community_rooms_limit": "Tu comunidad ya tiene el máximo de salas abiertas a la vez según su plan."
     },
     "wall": {
       "title": "Muro de oración",
@@ -1202,5 +1234,168 @@
     "body": "Ya lo registramos. Inténtalo de nuevo; si estabas en una sala de oración, puedes volver a entrar con el mismo enlace.",
     "retry": "Reintentar",
     "home": "Ir al inicio"
+  },
+  "Billing": {
+    "errors": {
+      "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+      "account_required": "Necesitas una cuenta para pagar.",
+      "invalid_item": "Ese producto ya no está disponible.",
+      "not_admin": "Solo la administración de la comunidad puede hacer esta compra.",
+      "not_host": "Solo quien anfitriona la sala puede ampliarla.",
+      "plan_required": "Los extras son para comunidades con plan Plus o Pro.",
+      "invalid_quantity": "La cantidad no es válida.",
+      "too_many_pending": "Tienes varios pagos pendientes. Termina o espera a que venzan antes de iniciar otro.",
+      "payment_unavailable": "El pago no está disponible por ahora. Inténtalo en unos minutos.",
+      "pass_unavailable": "Ese pase ya no se puede usar.",
+      "pass_not_found": "No encontramos ese pase.",
+      "pass_wrong_community": "Ese pase es de otra comunidad.",
+      "room_closed": "La sala ya está cerrada."
+    },
+    "pay": "Pagar",
+    "paying": "Abriendo el pago…",
+    "payMethods": "Tarjeta, OXXO o transferencia SPEI. Pagas en una página segura de Conekta; INTERCEDE nunca ve tus datos de pago.",
+    "period": {
+      "monthly": "Mensual",
+      "annual": "Anual (2 meses gratis)"
+    },
+    "perMonth": "al mes",
+    "perYear": "al año",
+    "oneTime": "pago único",
+    "free": "Gratis",
+    "plans": {
+      "comunidad": {
+        "name": "Comunidad",
+        "tagline": "Para empezar. Orar siempre es gratis."
+      },
+      "plus": {
+        "name": "Plus",
+        "tagline": "Para iglesias y ministerios en crecimiento."
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "Para congregaciones grandes y redes."
+      }
+    },
+    "limits": {
+      "members": "Miembros",
+      "rooms": "Salas a la vez",
+      "minutes": "Duración por sala",
+      "participants": "Personas por sala",
+      "hours": "Horas-persona al mes",
+      "hoursNone": "Sin medición",
+      "cameras": "Cámaras a la vez",
+      "hoursValue": "{count} h",
+      "minutesValue": "{hours, plural, one {# hora} other {# horas}}"
+    },
+    "products": {
+      "sala_larga": {
+        "name": "Sala Larga",
+        "desc": "1 sala de hasta 6 horas y 30 personas."
+      },
+      "vigilia": {
+        "name": "Vigilia",
+        "desc": "1 sala de hasta 24 horas y 30 personas."
+      },
+      "vigilia_grande": {
+        "name": "Vigilia Grande",
+        "desc": "1 sala de hasta 24 horas y 100 personas."
+      },
+      "extension": {
+        "name": "Extensión de sala",
+        "desc": "+2 horas en una sala en curso, hasta 30 personas."
+      },
+      "members_50": {
+        "name": "+50 miembros",
+        "desc": "Por 30 días. Puedes comprar varias unidades."
+      },
+      "rooms_5": {
+        "name": "+5 salas a la vez",
+        "desc": "Por 30 días. Puedes comprar varias unidades."
+      },
+      "hours_100": {
+        "name": "Bolsa de +100 horas-persona",
+        "desc": "Se usa solo cuando te pasas de las horas del plan. Vigencia de 90 días."
+      }
+    },
+    "pricing": {
+      "metaTitle": "Precios",
+      "metaDescription": "Orar siempre es gratis. Planes para iglesias y ministerios y pases para vigilias, en pesos mexicanos.",
+      "eyebrow": "Precios",
+      "title": "Orar es gratis. Pagas por capacidad.",
+      "subtitle": "Cualquier persona entra a orar sin cuenta ni tarjeta. Los planes dan más tiempo, más personas y administración para tu comunidad.",
+      "plansTitle": "Planes para comunidades",
+      "plansNote": "Precios en pesos mexicanos, IVA incluido. Plus incluye 14 días de prueba al crear tu comunidad, sin tarjeta.",
+      "quote": "Red o ministerio grande: cotización a medida.",
+      "passesTitle": "Pases para una sola oración",
+      "passesSubtitle": "¿Una vigilia de 24 horas? ¿Un retiro? Paga solo esa sala, sin plan.",
+      "extrasTitle": "Extras para Plus y Pro",
+      "guestsNote": "Quien entra por un enlace nunca cuenta como miembro ni ve un muro de pago antes de orar.",
+      "cta": "Orar ahora",
+      "ctaCommunity": "Crear mi comunidad",
+      "orgPrice": "Con Plus o Pro: {price}",
+      "unavailable": "No pudimos cargar los precios ahora. Vuelve a intentarlo en unos minutos."
+    },
+    "personal": {
+      "metaTitle": "Pases y pagos",
+      "title": "Pases y pagos",
+      "subtitle": "Amplía una sala para una vigilia o un retiro. Los pases se usan desde la sala, cuando eres anfitrión.",
+      "guestTitle": "Necesitas una cuenta",
+      "guestBody": "Para comprar pases crea una cuenta. Tu historial y tus salas se conservan.",
+      "available": "Tus pases",
+      "noPasses": "Todavía no tienes pases.",
+      "buyTitle": "Comprar un pase",
+      "buyHelp": "Se aplica a una sala tuya. Al pagar queda disponible aquí, y lo usas desde la sala.",
+      "ordersTitle": "Tus pagos",
+      "noOrders": "Sin pagos todavía.",
+      "passStatus": {
+        "available": "Disponible hasta {date}",
+        "applied": "Usado en una sala",
+        "expired": "Venció",
+        "refunded": "Reembolsado"
+      }
+    },
+    "community": {
+      "metaTitle": "Facturación",
+      "planTitle": "Plan actual",
+      "trialUntil": "Prueba de Plus hasta el {date}. No pedimos tarjeta.",
+      "activeUntil": "Vigente hasta el {date}.",
+      "expired": "Tu plan de pago terminó; la comunidad sigue con el plan gratuito.",
+      "free": "Plan gratuito. Quienes ya son miembros nunca se sacan por cambiar de plan.",
+      "limitsTitle": "Límites de hoy",
+      "usageTitle": "Uso de este mes",
+      "usageNone": "El plan gratuito no mide horas-persona; se limita por duración y personas.",
+      "usageBody": "{used} de {included} horas-persona incluidas",
+      "usagePacks": "Bolsas disponibles: {hours} horas.",
+      "usageOver": "Pasaste las horas del plan. Las salas siguen abiertas; considera una bolsa de +100 horas.",
+      "usagePrivacy": "Solo vemos el total de la comunidad, nunca el tiempo de una persona.",
+      "upgradeTitle": "Cambiar de plan",
+      "upgradeHelp": "Pagas por periodo (mensual o anual) y no se renueva solo: te avisamos antes de que termine. Si cambias de plan, el nuevo empieza al pagar.",
+      "buyPlan": "Elegir {plan}",
+      "extrasTitle": "Extras",
+      "extrasLocked": "Los extras están disponibles con Plus o Pro.",
+      "activeExtras": "Extras activos",
+      "extraUntil": "{quantity} × hasta el {date}",
+      "passesTitle": "Pases para salas de la comunidad",
+      "passesHelp": "Precio con plan de pago. Compras desde aquí o desde la sala; el pase queda disponible para quien anfitriona.",
+      "ordersTitle": "Pagos de la comunidad",
+      "noOrders": "Sin pagos todavía."
+    },
+    "order": {
+      "paid": "Pago confirmado. Gracias, ya está activo.",
+      "pending": "Esperando la confirmación del pago. Con OXXO o transferencia puede tardar; se activará solo.",
+      "expired": "El pago venció sin completarse. Puedes intentarlo de nuevo.",
+      "failed": "El pago no se completó. Puedes intentarlo de nuevo.",
+      "canceled": "El pago se canceló.",
+      "refunded": "Este pago fue reembolsado.",
+      "continuePay": "Continuar el pago",
+      "statusLabel": {
+        "pending": "Pendiente",
+        "paid": "Pagado",
+        "expired": "Vencido",
+        "failed": "Fallido",
+        "canceled": "Cancelado",
+        "refunded": "Reembolsado"
+      }
+    }
   }
 }

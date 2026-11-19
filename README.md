@@ -69,6 +69,9 @@ no se registra en desarrollo. La primera vez: `npx playwright install chromium`.
 Lista de verificación para publicar (Vercel, Supabase, CAPTCHA, Sentry, moderación): [`docs/operaciones/produccion.md`](docs/operaciones/produccion.md).
 Auditoría de seguridad de la base: `node scripts/security-audit.mjs` (local) o `--remote`; debe terminar con "Sin hallazgos".
 
+Planes, límites y cobros (Fase 9): [`docs/operaciones/facturacion.md`](docs/operaciones/facturacion.md) y [ADR 0013](docs/decisions/0013-planes-limites-y-cobros.md).
+Los límites del plan gratuito se aplican siempre; los cobros con Conekta necesitan su llave y su webhook.
+
 ## Fases y versiones
 
 El avance se publica por fases con su tag y su entrada en [`CHANGELOG.md`](CHANGELOG.md)

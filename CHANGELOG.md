@@ -19,6 +19,9 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 - Si el plan Pro termina, la marca deja de verse (queda guardada); quitar la marca siempre se puede.
 - Documento: ADR 0016.
 
+### Aplicado y desplegado (2026-11-20)
+- Migración `20261120200000` aplicada al Supabase remoto (auditoría sin hallazgos) y app desplegada; verificado contra producción: Pro obligatorio, color dorado rechazado, nombre suplantador rechazado y marca aplicada.
+
 ### No incluido / pendiente
 - Subdominios, marca en las pantallas de invitación y de entrada a la sala, y segundo color o tipografías.
 - Siguen esperando tu decisión: **B7** (compañero de oración: adolescentes) y **C6 nivel 2** (permiso de Google).

@@ -22,6 +22,9 @@ Cada fase del plan se publica con su tag (ver `docs/decisions/0004-versionado-ch
 ### Cambiado
 - La acción de registro rechaza la cuenta si no se confirma la mayoría de edad; las pruebas de registro se actualizaron.
 
+### Aplicado y desplegado (2026-11-21)
+- Migración `20261121100000` aplicada al Supabase remoto (auditoría sin hallazgos; el cron `partner-pairing` quedó programado los lunes 06:00 UTC) y app desplegada; verificado contra producción: confirmación de edad obligatoria, emparejar, solo el nombre de la pareja y salir borra lo escrito.
+
 ### No incluido / pendiente
 - Adolescentes (esperan una política de menores revisada por un abogado, §17), chat, recordatorios a mitad de semana y tríos. **C6 nivel 2** (sincronización con Google Calendar) espera tu decisión.
 
